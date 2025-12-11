@@ -1,10 +1,13 @@
 package main.java.model.map;
 
 import main.java.model.station.*;
+import main.java.model.item.*;
 import main.java.model.*;
 
 
 public class MapBuilder {
+    private static int ingredientCounter = 0;
+    private static final String[] INGREDIENT_TYPES = {"Adonan", "Tomat", "Keju", "Sosis", "Ayam"};
 
     public static Map mapImporter(char[][] matrixmap) {
         int height = matrixmap.length;
@@ -36,12 +39,18 @@ public class MapBuilder {
             case 'T' : return new StationTile(pos, new TrashStation(pos));
             case 'C' : return new StationTile(pos, new CuttingStation(pos));
             case 'R' : return new StationTile(pos, new CookingStation(pos, new Oven()));
-            case 'S' : return new StationTile(pos, new ServingStation(pos, GameManager.getInstance()));
+            case 'S' : return new StationTile(pos, new ServingStation(pos));
             case 'W' : return new StationTile(pos, new WashingStation(pos));
             case 'I' : return new StationTile(pos, new IngredientStation(pos, getDefaultIngredientType()));
             case 'P' : return new StationTile(pos, new PlateStorage(pos, 50));
 
             default : throw new IllegalArgumentException();
         }
+    }
+
+    private static String getDefaultIngredientType() {
+        String type = INGREDIENT_TYPES[ingredientCounter % INGREDIENT_TYPES.length];
+        ingredientCounter++;
+        return type;
     }
 }

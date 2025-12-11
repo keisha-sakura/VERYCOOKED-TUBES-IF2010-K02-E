@@ -13,14 +13,14 @@ import java.util.*;
 
 // ServingStation.java
 public class ServingStation extends Station {
-    private PlateStorage plateStorage;
     private OrderManager orderManager;
+    private GameManager gameManager;
     private final Object lock = new Object();
 
-    public ServingStation(Position pos, PlateStorage plateStorage) {
+    public ServingStation(Position pos) {
         super(pos);
-        this.plateStorage = plateStorage;
         this.orderManager = OrderManager.getInstance();
+        this.gameManager = GameManager.getInstance();
     }
 
 
@@ -53,9 +53,9 @@ public class ServingStation extends Station {
                 System.out.println("✗ Dish does not match any order");
             }
 
-            // Return dirty plate after 10 seconds
+            // Return dirty plate - let GameManager handle the routing
             chef.setInventory(null);
-            returnDirtyPlateAsync(plate);
+            gameManager.handleDirtyPlate(plate);
         }
     }
 
@@ -100,26 +100,5 @@ public class ServingStation extends Station {
         }
 
         return dishMap.equals(recipeMap);
-    }
-
-    private void returnDirtyPlateAsync(Plate plate) {
-        Thread returnThread = new Thread(() -> {
-            try {
-                Thread.sleep(10000); // 10 seconds delay before returning to PlateStorage
-                if (plateStorage != null) {
-                    plateStorage.receiveDirtyPlate(plate);
-                    System.out.println("📥 Dirty plate returned to plate storage");
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }, "PlateReturn-" + position + "-" + System.currentTimeMillis());
-
-        returnThread.start();
-    }
-
-    private PlateStorage findPlateStorage() {
-        // Returns injected plateStorage reference
-        return this.plateStorage;
     }
 }
