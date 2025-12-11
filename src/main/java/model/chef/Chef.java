@@ -57,6 +57,7 @@ public class Chef {
         this.direction = Direction.RIGHT;
         move(map, 0, 1);
     }
+
     void dashUp() {
 
     }
