@@ -1,6 +1,7 @@
 package main.java.model.map;
 
 import main.java.model.station.*;
+import main.java.model.item.*;
 import main.java.model.*;
 
 
@@ -36,7 +37,7 @@ public class MapBuilder {
             case 'T' : return new StationTile(pos, new TrashStation(pos));
             case 'C' : return new StationTile(pos, new CuttingStation(pos));
             case 'R' : return new StationTile(pos, new CookingStation(pos, new Oven()));
-            case 'S' : return new StationTile(pos, new ServingStation(pos, GameManager.getInstance()));
+            case 'S' : return new StationTile(pos, new ServingStation(pos));
             case 'W' : return new StationTile(pos, new WashingStation(pos));
             case 'I' : return new StationTile(pos, new IngredientStation(pos, getDefaultIngredientType()));
             case 'P' : return new StationTile(pos, new PlateStorage(pos, 50));
