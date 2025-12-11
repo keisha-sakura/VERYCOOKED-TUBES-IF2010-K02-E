@@ -35,7 +35,7 @@ public class MapBuilder {
             case 'A' : return new StationTile(pos, new AssemblyStation(pos));
             case 'T' : return new StationTile(pos, new TrashStation(pos));
             case 'C' : return new StationTile(pos, new CuttingStation(pos));
-            case 'R' : return new StationTile(pos, new CookingStation(pos));
+            case 'R' : return new StationTile(pos, new CookingStation(pos, new Oven()));
             case 'S' : return new StationTile(pos, new ServingStation(pos, GameManager.getInstance()));
             case 'W' : return new StationTile(pos, new WashingStation(pos));
             case 'I' : return new StationTile(pos, new IngredientStation(pos, getDefaultIngredientType()));

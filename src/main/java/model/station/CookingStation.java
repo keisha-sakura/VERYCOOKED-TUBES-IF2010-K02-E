@@ -21,8 +21,9 @@ public class CookingStation extends Station {
     private Thread cookingThread;
     private final Object lock = new Object();
 
-    public CookingStation(Position pos) {
+    public CookingStation(Position pos, KitchenUtensils kitchenUtensil) {
         super(pos);
+        this.kitchenUtensil = kitchenUtensil;
         this.isCooking = false;
     }
 
@@ -41,38 +42,36 @@ public class CookingStation extends Station {
         synchronized (lock) {
             Item chefItem = chef.getInventory();
 
-            // Case 1: Place kitchen utensil on station
-            if (chefItem instanceof KitchenUtensils && kitchenUtensil == null) {
-                kitchenUtensil = (KitchenUtensils) chefItem;
-                chef.setInventory(null);
-
-                // Auto-start cooking if has ingredients
-                if (kitchenUtensil instanceof CookingDevice) {
-                    CookingDevice device = (CookingDevice) kitchenUtensil;
-                    if (!device.getContents().isEmpty()) {
-                        startCooking();
-                    }
-                }
-                return;
-            }
-
-            // Case 2: Take kitchen utensil from station
-            if (chefItem == null && kitchenUtensil != null) {
-                chef.setInventory(kitchenUtensil);
-                kitchenUtensil = null;
-                stopCooking();
-                return;
-            }
-
-            // Case 3: Add ingredient to utensil on station
+            // Case 1: Add ingredient to oven
             if (chefItem instanceof Ingredient && kitchenUtensil instanceof CookingDevice) {
                 CookingDevice device = (CookingDevice) kitchenUtensil;
                 Ingredient ingredient = (Ingredient) chefItem;
 
-                if (device.canAccept(ingredient)) {
-                    device.addIngredient(ingredient);
+                // Wrap single ingredient in a Set for CookingDevice interface
+                Set<Preparable> ingredientSet = new HashSet<>();
+                ingredientSet.add(ingredient);
+
+                if (device.canAccept(ingredientSet)) {
+                    device.addIngredient(ingredientSet);
                     chef.setInventory(null);
                     startCooking();
+                }
+            }
+            
+            // Case 2: Take cooked dish from oven
+            else if (chefItem == null && kitchenUtensil instanceof CookingDevice && isCooking) {
+                CookingDevice device = (CookingDevice) kitchenUtensil;
+                
+                // Check if cooking is done
+                if (!device.getContents().isEmpty()) {
+                    long elapsedTime = System.currentTimeMillis() - cookingStartTime;
+                    if (elapsedTime >= COOKING_DURATION) {
+                        // Cooking complete, retrieve the dish
+                        Dish dish = device.startCooking();
+                        chef.setInventory(dish);
+                        stopCooking();
+                        System.out.println("📥 Took cooked dish: " + dish.getName());
+                    }
                 }
             }
         }
