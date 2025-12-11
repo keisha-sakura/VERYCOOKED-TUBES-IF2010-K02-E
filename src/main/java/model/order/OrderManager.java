@@ -17,6 +17,7 @@ public class OrderManager {
             Executors.newScheduledThreadPool(1);
 
     private final int MAX_ORDER = 4;
+    private int orderIdCounter = 0;
 
     private OrderManager() {}
 
@@ -36,11 +37,23 @@ public class OrderManager {
 
     public synchronized void spawnOrder(int posisi) {
         Order o = new Order(posisi,
-                RecipePool.getRandomRecipe(),
+                RecipePool.getRandomRecipeStatic(),
                 100,
                 -50);
 
         activeOrders.add(o);
+    }
+
+    public synchronized int getNextOrderId() {
+        return ++orderIdCounter;
+    }
+
+    public synchronized void addOrder(Order order) {
+        activeOrders.add(order);
+    }
+
+    public synchronized List<Order> getActiveOrders() {
+        return new ArrayList<>(activeOrders);
     }
 
     public synchronized void expireOrder(Order o) {
