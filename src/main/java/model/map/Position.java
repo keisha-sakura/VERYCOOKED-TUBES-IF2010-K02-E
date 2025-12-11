@@ -17,6 +17,14 @@ public class Position {
         return col;
     }
 
+    public void setRow(int row){
+        this.row = row;
+    }
+
+    public void setCol(int col){
+        this.col = col;
+    }
+
     public Position up(int x){
         return new Position(row - x, col);
     }
