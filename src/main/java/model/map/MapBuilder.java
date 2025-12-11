@@ -6,6 +6,8 @@ import main.java.model.*;
 
 
 public class MapBuilder {
+    private static int ingredientCounter = 0;
+    private static final String[] INGREDIENT_TYPES = {"Adonan", "Tomat", "Keju", "Sosis", "Ayam"};
 
     public static Map mapImporter(char[][] matrixmap) {
         int height = matrixmap.length;
@@ -44,5 +46,11 @@ public class MapBuilder {
 
             default : throw new IllegalArgumentException();
         }
+    }
+
+    private static String getDefaultIngredientType() {
+        String type = INGREDIENT_TYPES[ingredientCounter % INGREDIENT_TYPES.length];
+        ingredientCounter++;
+        return type;
     }
 }
