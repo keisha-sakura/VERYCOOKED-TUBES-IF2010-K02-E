@@ -14,12 +14,14 @@ import java.util.*;
 // ServingStation.java
 public class ServingStation extends Station {
     private GameManager gameManager;
+    private PlateStorage plateStorage;
     private List<Order> activeOrders;
     private final Object lock = new Object();
 
-    public ServingStation(Position pos, GameManager controller) {
+    public ServingStation(Position pos, GameManager controller, PlateStorage plateStorage) {
         super(pos);
         this.gameManager = controller;
+        this.plateStorage = plateStorage;
         this.activeOrders = new ArrayList<>();
     }
 
@@ -115,11 +117,10 @@ public class ServingStation extends Station {
     private void returnDirtyPlateAsync(Plate plate) {
         Thread returnThread = new Thread(() -> {
             try {
-                Thread.sleep(10000); // 10 seconds
-                WashingStation washingStation = findWashingStation();
-                if (washingStation != null) {
-                    washingStation.receiveDirtyPlate(plate);
-                    System.out.println("Dirty plate returned to washing station");
+                Thread.sleep(10000); // 10 seconds delay before returning to PlateStorage
+                if (plateStorage != null) {
+                    plateStorage.receiveDirtyPlate(plate);
+                    System.out.println("📥 Dirty plate returned to plate storage");
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -129,10 +130,9 @@ public class ServingStation extends Station {
         returnThread.start();
     }
 
-    private WashingStation findWashingStation() {
-        // Find washing station from map
-        // Implementation depends on your Map structure
-        return null; // Placeholder
+    private PlateStorage findPlateStorage() {
+        // Returns injected plateStorage reference
+        return this.plateStorage;
     }
 
     private void spawnNewOrder() {

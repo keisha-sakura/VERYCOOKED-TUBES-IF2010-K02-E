@@ -28,38 +28,39 @@ public class PlateStorage extends Station {
 
     @Override
     protected boolean canInteract(Chef chef) {
-        return true;
+        // Only allow taking plates (no dropping allowed on this station)
+        return chef.getInventory() == null;
     }
 
     @Override
     protected void performInteraction(Chef chef) {
         synchronized (lock) {
-            Item chefItem = chef.getInventory();
-
-            // Case 1: Take clean plate (only if no dirty plates on top)
-            if (chefItem == null && dirtyPlates.isEmpty() && !cleanPlates.isEmpty()) {
-                chef.setInventory(cleanPlates.pop());
-                System.out.println("✓ Took clean plate");
+            // Case 1: Take dirty plate first if any exist (dirty plates on top have priority)
+            if (!dirtyPlates.isEmpty()) {
+                Plate dirtyPlate = dirtyPlates.pop();
+                chef.setInventory(dirtyPlate);
+                System.out.println("✓ Took dirty plate (" + dirtyPlates.size() + " remaining)");
                 return;
             }
 
-            // Case 2: Take all dirty plates
-            if (chefItem == null && !dirtyPlates.isEmpty()) {
-                // Create stack of dirty plates
-                Stack<Plate> platesToTake = new Stack<>();
-                while (!dirtyPlates.isEmpty()) {
-                    platesToTake.push(dirtyPlates.pop());
-                }
-                chef.setInventory(platesToTake); // May need special handling
-                System.out.println("✓ Took " + platesToTake.size() + " dirty plates");
+            // Case 2: Take clean plate only if NO dirty plates remain on top
+            if (!cleanPlates.isEmpty()) {
+                Plate cleanPlate = cleanPlates.pop();
+                chef.setInventory(cleanPlate);
+                System.out.println("✓ Took clean plate (" + cleanPlates.size() + " remaining)");
+                return;
             }
+
+            System.out.println("✗ No plates available");
         }
     }
 
+    // Receive dirty plate from serving station (push to top of stack for priority)
     public void receiveDirtyPlate(Plate plate) {
         synchronized (lock) {
             plate.setClean(false);
             dirtyPlates.push(plate);
+            System.out.println("📥 Received dirty plate (" + dirtyPlates.size() + " dirty total)");
         }
     }
 
