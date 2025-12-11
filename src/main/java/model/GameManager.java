@@ -2,10 +2,10 @@ package main.java.model;
 
 import main.java.model.order.*;
 import main.java.model.recipe.*;
-import main.java.model.map.Map;
+import main.java.model.map.*;
 import main.java.model.chef.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * GameManager manages the overall game state, including:
@@ -33,15 +33,22 @@ public class GameManager {
     private final Object orderLock = new Object();
 
     private GameManager() {
+        this.gameMap = MapBuilder.buildMap();
+        Chef c1 = new Chef("01", "Pikachu", new Position(2, 8), Direction.DOWN, null, true);
+        map.getTile(2, 8).setChef(c1);
+        Chef c2 = new Chef("02", "Jigglypuff", new Position(7, 5), Direction.DOWN, null, false);
+        map.getTile(7, 5).setChef(c2);
+        Chef activeChef = c1;
         this.totalScore = 0;
         this.pizzaServed = 0;
         this.pizzaBurned = 0;
         this.isGameRunning = false;
         this.chefs = new ArrayList<>();
+        this.chefs.add(c1);
+        this.chefs.add(c2);
         this.orderManager = OrderManager.getInstance();
         this.recipePool = new RecipePool();
     }
-
     /**
      * Get singleton instance of GameManager
      */
@@ -50,17 +57,6 @@ public class GameManager {
             instance = new GameManager();
         }
         return instance;
-    }
-
-    /**
-     * Initialize the game with map and chefs
-     */
-    public void initializeGame(Map gameMap, List<Chef> chefs) {
-        this.gameMap = gameMap;
-        this.chefs = new ArrayList<>(chefs);
-        this.totalScore = 0;
-        this.pizzaServed = 0;
-        this.pizzaBurned = 0;
     }
 
     /**
@@ -217,6 +213,11 @@ public class GameManager {
         synchronized (scoreLock) {
             return pizzaBurned;
         }
+    }
+
+    public boolean moveUp(){
+        Position oldPos = new Position(activeChef.getPosition().getRow(), activeChef.getPosition().getCol());
+        activeChef.moveUp();
     }
 
     public boolean isGameRunning() {
