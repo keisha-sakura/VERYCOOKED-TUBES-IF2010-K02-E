@@ -1,32 +1,21 @@
 package view;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Label label = new Label("JavaFX Berhasil Jalan!");
-        Button button = new Button("Klik Akuu");
-
-        button.setOnAction(e -> label.setText("Tombol diklik!"));
-
-        VBox root = new VBox(10);
-        root.getChildren().addAll(label, button);
-
-        Scene scene = new Scene(root, 300, 200);
-
-        stage.setTitle("Test JavaFX");
+        LandingPage landingPage = new LandingPage(stage);
+        Scene scene = landingPage.createScene(1280, 720);
         stage.setScene(scene);
+        stage.setTitle("Verycooked Game");
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
