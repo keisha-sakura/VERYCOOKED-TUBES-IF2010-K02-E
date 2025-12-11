@@ -1,9 +1,19 @@
 package main.java.model.map;
 
 import main.java.model.station.*;
+import main.java.model.*;
 
 
 public class MapBuilder {
+    private static int ingredientCounter = 0;
+    private static final String[] INGREDIENT_TYPES = {"adonan", "tomat", "keju", "sosis", "ayam"};
+    private static PlateStorage plateStorageInstance;  // Cache for ServingStation
+
+    private static String getDefaultIngredientType() {
+        String type = INGREDIENT_TYPES[ingredientCounter % INGREDIENT_TYPES.length];
+        ingredientCounter++;
+        return type;
+    }
 
     public static Map mapImporter(char[][] matrixmap) {
         int height = matrixmap.length;
@@ -31,14 +41,14 @@ public class MapBuilder {
 
             case 'X' : return new WallTile(pos);
 
-            case 'A' : return new StationTile(pos, new AssemblyStation());
-            case 'T' : return new StationTile(pos, new TrashStation());
-            case 'C' : return new StationTile(pos, new CuttingStation());
-            case 'R' : return new StationTile(pos, new CookingStation());
-            case 'S' : return new StationTile(pos, new ServingStation());
-            case 'W' : return new StationTile(pos, new WashingStation());
-            case 'I' : return new StationTile(pos, new IngredientStation());
-            case 'P' : return new StationTile(pos, new PlateStorage(50));
+            case 'A' : return new StationTile(pos, new AssemblyStation(pos));
+            case 'T' : return new StationTile(pos, new TrashStation(pos));
+            case 'C' : return new StationTile(pos, new CuttingStation(pos));
+            case 'R' : return new StationTile(pos, new CookingStation(pos));
+            case 'S' : return new StationTile(pos, new ServingStation(pos, GameManager.getInstance()));
+            case 'W' : return new StationTile(pos, new WashingStation(pos));
+            case 'I' : return new StationTile(pos, new IngredientStation(pos, getDefaultIngredientType()));
+            case 'P' : return new StationTile(pos, new PlateStorage(pos, 50));
 
             default : throw new IllegalArgumentException();
         }
