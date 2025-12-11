@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         Label label = new Label("JavaFX Berhasil Jalan!");
-        Button button = new Button("Klik Aku");
+        Button button = new Button("Klik Akuu");
 
         button.setOnAction(e -> label.setText("Tombol diklik!"));
 
