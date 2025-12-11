@@ -15,8 +15,12 @@ public class Plate extends KitchenUtensils {
         this.isClean = true;
     }
 
+    public void setClean(boolean clean) {
+        this.isClean = clean;
+    }
+
     public void addIngredient(Preparable ingredient) {
-        if (!isClean && this.getContents().size() == 0) {
+        if (!isClean) {
             throw new IllegalStateException("Plate is not clean");
         }
         if (!ingredient.canBePlacedOnPlate()) {
