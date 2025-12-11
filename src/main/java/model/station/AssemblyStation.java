@@ -1,0 +1,69 @@
+package main.java.model.station;
+
+import main.java.model.item.*;
+import main.java.model.map.*;
+import main.java.model.chef.*;
+import main.java.model.recipe.*;
+import main.java.model.order.*;
+
+import java.util.*;
+// ==================== ASSEMBLY STATION ====================
+
+// AssemblyStation.java
+public class AssemblyStation extends Station {
+
+    public AssemblyStation(Position pos) {
+        super(pos);
+    }
+
+    /* temp */
+    public boolean isBusy() { return false; }
+    public int getProgress() { return 1; }
+
+    @Override
+    protected boolean canInteract(Chef chef) {
+        return true;
+    }
+
+    @Override
+    protected void performInteraction(Chef chef) {
+        Item chefItem = chef.getInventory();
+
+        // Case 1: Pick up item from station
+        if (chefItem == null && itemOnStation != null) {
+            chef.setInventory(itemOnStation);
+            itemOnStation = null;
+            return;
+        }
+
+        // Case 2: Place item on station
+        if (chefItem != null && itemOnStation == null) {
+            itemOnStation = chefItem;
+            chef.setInventory(null);
+            return;
+        }
+
+        // Case 3: Plating (chef has clean plate, station has ingredient)
+        if (chefItem instanceof Plate && itemOnStation instanceof Ingredient) {
+            Plate plate = (Plate) chefItem;
+            Ingredient ingredient = (Ingredient) itemOnStation;
+
+            if (plate.isClean() && ingredient.canBePlacedOnPlate()) {
+                plate.addIngredient(ingredient);
+                itemOnStation = plate;
+                chef.setInventory(null);
+            }
+        }
+
+        // Case 4: Add ingredient to plate on station
+        if (chefItem instanceof Ingredient && itemOnStation instanceof Plate) {
+            Plate plate = (Plate) itemOnStation;
+            Ingredient ingredient = (Ingredient) chefItem;
+
+            if (plate.isClean() && ingredient.canBePlacedOnPlate()) {
+                plate.addIngredient(ingredient);
+                chef.setInventory(null);
+            }
+        }
+    }
+}

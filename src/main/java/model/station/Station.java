@@ -1,0 +1,66 @@
+package main.java.model.station;
+
+import main.java.model.item.*;
+import main.java.model.map.*;
+import main.java.model.chef.*;
+import main.java.model.recipe.*;
+import main.java.model.order.*;
+
+import java.util.*;
+
+public abstract class Station {
+
+    protected volatile boolean isProcessing;
+    protected Thread processingThread;
+    protected final Object stateLock = new Object();
+
+    // Tambahkan method untuk monitoring
+    public abstract boolean isBusy();
+    public abstract int getProgress();
+
+    protected Position position;
+    protected Item itemOnStation;
+
+    public Station(Position pos) {
+        this.position = pos;
+        this.itemOnStation = null;
+    }
+
+    // Template Method Pattern
+    public final void interact(Chef chef) {
+        if (!canInteract(chef)) {
+            throw new InvalidInteractionException("Cannot interact with this station");
+        }
+        performInteraction(chef);
+    }
+
+    protected abstract boolean canInteract(Chef chef);
+    protected abstract void performInteraction(Chef chef);
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public Item getItemOnStation() {
+        return itemOnStation;
+    }
+
+    public void setItemOnStation(Item item) {
+        this.itemOnStation = item;
+    }
+
+    public boolean hasItem() {
+        return itemOnStation != null;
+    }
+
+    public void stopProcessing(Chef chef) {
+        synchronized (stateLock) {
+            isProcessing = false;
+            if (processingThread != null && processingThread.isAlive()) {
+                processingThread.interrupt();
+            }
+            chef.setIsBusy(false);
+        }
+    }
+
+}
