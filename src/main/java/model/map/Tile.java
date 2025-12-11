@@ -27,7 +27,9 @@ public class Tile {
         return walkable;
     }
 
-    // Default item management methods - can be overridden by subclasses
+    public Position getPosition() {
+        return position;
+    }
     public boolean hasItem() {
         return false;
     }
