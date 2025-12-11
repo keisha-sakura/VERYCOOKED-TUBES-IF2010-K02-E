@@ -11,7 +11,7 @@ public class RecipePool {
 
     private static final Random random = new Random();
 
-    public static Recipe getRandomRecipeStatic() {
+    public static Recipe getRandomRecipe() {
         return recipes.get(random.nextInt(recipes.size()));
     }
 
