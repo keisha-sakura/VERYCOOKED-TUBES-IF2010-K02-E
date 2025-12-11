@@ -25,6 +25,9 @@ public class Map {
     }
 
     public Tile getTile(int row, int col){
+        if (row < 0 || row >= height || col < 0 || col >= width) {
+            return null;
+        }
         return tiles[row][col];
     }
 
