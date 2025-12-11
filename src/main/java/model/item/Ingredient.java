@@ -47,10 +47,15 @@ public class Ingredient extends Item implements Preparable {
     }
 
     public boolean canBeCooked() {
-        return true;
+        return state == IngredientState.RAW || state == IngredientState.CHOPPED;
     }
 
     public void cook() {
-
+        if (canBeCooked()) {
+            this.state = IngredientState.COOKED;
+            System.out.println(name + " is now COOKED");
+        } else {
+            System.out.println(name + " cannot be cooked in current state: " + state);
+        }
     }
 }
