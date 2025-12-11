@@ -80,16 +80,17 @@ public class Chef {
         Position frontPosition = getFrontPosition();
         Tile frontTile = map.getTile(frontPosition.getRow(), frontPosition.getCol());
 
-        if (frontTile != null){
-            if (this.inventory == null && frontTile.hasItem()) {
+        if (frontTile instanceof FloorTile){
+                FloorTile floorTile = (FloorTile) frontTile;
+                if ( this.inventory == null && frontTile.hasItem()) {
+                
                 this.inventory = frontTile.pickUpItem();
-            }
-            else if (this.inventory != null && !frontTile.hasItem() && frontTile.canHoldItem()){
+            } else if (this.inventory != null && !frontTile.hasItem() && frontTile.canHoldItem()){
                 frontTile.placeItem(this.inventory);
                 this.inventory = null;
-            }
-
+                }
         }
+    
     }
 
     public void throwItem() {
