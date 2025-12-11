@@ -45,9 +45,13 @@ public class Order implements Runnable {
 
     public Recipe getRecipe() { return recipe; }
 
+    public int getReward() { return reward; }
+
+    public int getPenalty() { return penalty; }
+
     public void show() {
         System.out.println("[ORDER " + posisiOrder + "]");
-        System.out.println("Dish: " + recipe.name);
+        System.out.println("Dish: " + recipe.getName());
         System.out.println("Reward: " + reward);
         System.out.println("Penalty: " + penalty);
         System.out.println("Time left: " + timeLeft + "s");
