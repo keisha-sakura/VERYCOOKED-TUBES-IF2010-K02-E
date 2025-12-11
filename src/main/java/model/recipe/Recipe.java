@@ -3,7 +3,7 @@ package main.java.model.recipe;
 import java.util.*;
 
 public class Recipe {
-    public String name;
+    private String name;
     private List<String> ingredients;
     private int cookingTime; // in seconds
 
@@ -46,10 +46,13 @@ public class Recipe {
     }
 
     //getter
+    public String getName() {
+        return name;
+    }
+
     public List<String> getIngredients() {
         return new ArrayList<>(ingredients);
     }
-
 
     public int getCookingTime() {
         return cookingTime;

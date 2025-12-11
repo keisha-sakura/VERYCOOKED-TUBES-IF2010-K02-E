@@ -127,7 +127,7 @@ public class GameManager {
             Order newOrder = new Order(orderManager.getNextOrderId(), recipe, reward, penalty);
             orderManager.addOrder(newOrder);
 
-            System.out.println("📋 New order spawned: " + recipe.name + " (+$" + reward + ")");
+            System.out.println("📋 New order spawned: " + recipe.getName() + " (+$" + reward + ")");
         }
     }
 
