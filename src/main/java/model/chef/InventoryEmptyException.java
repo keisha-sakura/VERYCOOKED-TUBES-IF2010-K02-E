@@ -1,4 +1,7 @@
 package main.java.model.chef;
 
-public class InventoryEmptyException {
+public class InventoryEmptyException extends ChefException {
+    public InventoryEmptyException(String message) {
+        super(message);
+    }
 }

@@ -1,4 +1,8 @@
 package main.java.model.chef;
 
-public class Direction {
+public enum Direction{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
 }

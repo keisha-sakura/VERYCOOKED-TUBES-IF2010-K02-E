@@ -2,7 +2,7 @@ package main.java.model.chef;
 
 import main.java.model.item.*;
 import main.java.model.map.*;
-import main.java.model.chef.*;
+import main.java.model.chef.Direction;
 import main.java.model.station.*;
 
 public class Chef {
