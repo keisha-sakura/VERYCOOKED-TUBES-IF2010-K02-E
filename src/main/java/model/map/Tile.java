@@ -1,6 +1,7 @@
 package main.java.model.map;
 
 import main.java.model.chef.*;
+import main.java.model.item.*;
 import main.java.model.map.*;
 
 public class Tile {
@@ -24,5 +25,22 @@ public class Tile {
 
     public boolean isWalkable(){
         return walkable;
+    }
+
+    // Default item management methods - can be overridden by subclasses
+    public boolean hasItem() {
+        return false;
+    }
+
+    public Item pickUpItem() {
+        return null;
+    }
+
+    public void placeItem(Item item) {
+        // Default: do nothing
+    }
+
+    public boolean canHoldItem() {
+        return false;
     }
 }
