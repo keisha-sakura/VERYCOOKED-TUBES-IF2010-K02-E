@@ -28,8 +28,23 @@ public class Oven extends KitchenUtensils implements CookingDevice {
         }
 
         for (Preparable item : contents) {
-            if (item instanceof Ingredient && ((Ingredient) item).getState() == IngredientState.RAW) {
-                throw new IllegalStateException("Oven cannot accept ingredient: " + item.getName() + ". (Reason: Not prepared/chopped)");
+            if (item instanceof Ingredient) {
+                Ingredient ing = (Ingredient) item;
+                
+                // Check if ingredient is RAW (Oven only accepts CHOPPED for pizza)
+                if (ing.getState() == IngredientState.RAW) {
+                    throw new IllegalStateException("Oven cannot accept ingredient: " + ing.getName() + ". (Reason: Not prepared/chopped)");
+                }
+                
+                // Oven is only for pizza ingredients, ini sebenernya bisa dihapus juga karna Ingredient storage yang ada harusnya cuman buat pizza
+                String ingredientName = ing.getName().toLowerCase();
+                if (!ingredientName.equals("adonan") && 
+                    !ingredientName.equals("tomat") && 
+                    !ingredientName.equals("keju") && 
+                    !ingredientName.equals("sosis") && 
+                    !ingredientName.equals("ayam")) {
+                    throw new IllegalStateException("Oven can only cook pizza ingredients. Invalid ingredient: " + ing.getName());
+                }
             }
         }
 
