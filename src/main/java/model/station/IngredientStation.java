@@ -19,11 +19,12 @@ public class IngredientStation extends Station {
         this.quantity = Integer.MAX_VALUE; // Unlimited
     }
 
-    public int getProgress() { return 1; }
+    // Instant actions; rely on base defaults for monitoring
 
     @Override
     protected boolean canInteract(Chef chef) {
-        return chef.getInventory() == null || itemOnStation != null;
+        // Can always interact: take ingredient, place/take item
+        return true;
     }
 
     @Override
@@ -36,9 +37,10 @@ public class IngredientStation extends Station {
         }
 
         // Case 2: Take ingredient from storage
-        if (chef.getInventory() == null && itemOnStation == null) {
+        if (chef.getInventory() == null && itemOnStation == null && quantity > 0) {
             Ingredient ingredient = createIngredient(ingredientType);
             chef.setInventory(ingredient);
+            // decrement if finite in future; kept unlimited for now
             System.out.println("✓ Took " + ingredientType + " from storage");
         }
 
