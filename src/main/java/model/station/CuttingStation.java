@@ -24,8 +24,8 @@ public class CuttingStation extends Station {
         this.isCutting = false;
     }
 
-    /* temp */
-    public boolean isBusy() { return false; }
+    @Override
+    public boolean isBusy() { return isCutting; }
 
     @Override
     protected boolean canInteract(Chef chef) {
@@ -112,9 +112,8 @@ public class CuttingStation extends Station {
         }
     }
 
-    public int getProgress() {
-        return progress;
-    }
+    @Override
+    public int getProgress() { return progress; }
 
     public boolean isCutting() {
         return isCutting;

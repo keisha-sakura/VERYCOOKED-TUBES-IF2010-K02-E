@@ -26,9 +26,10 @@ public class CookingStation extends Station {
         this.isCooking = false;
     }
 
-    /* temp */
-    public boolean isBusy() { return false; }
-    public int getProgress() { return 1; }
+    @Override
+    public boolean isBusy() { return isCooking; }
+    @Override
+    public int getProgress() { return getCookingProgress(); }
 
     @Override
     protected boolean canInteract(Chef chef) {

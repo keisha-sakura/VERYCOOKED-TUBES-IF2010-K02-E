@@ -28,9 +28,10 @@ public class WashingStation extends Station {
         this.washingProgress = 0;
     }
 
-    /*temp*/
-    public boolean isBusy() { return false; }
-    public int getProgress() { return 1; }
+    @Override
+    public boolean isBusy() { return isWashing; }
+    @Override
+    public int getProgress() { return getWashingProgress(); }
 
     @Override
     protected boolean canInteract(Chef chef) {

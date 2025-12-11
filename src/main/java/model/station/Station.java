@@ -14,9 +14,9 @@ public abstract class Station {
     protected Thread processingThread;
     protected final Object stateLock = new Object();
 
-    // Tambahkan method untuk monitoring
-    public abstract boolean isBusy();
-    public abstract int getProgress();
+    // Monitoring default (override in timed stations)
+    public boolean isBusy() { return false; }
+    public int getProgress() { return 0; }
 
     protected Position position;
     protected Item itemOnStation;

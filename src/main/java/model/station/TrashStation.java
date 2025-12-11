@@ -15,9 +15,6 @@ public class TrashStation extends Station {
         super(pos);
     }
 
-    /*temp*/
-    public boolean isBusy() { return false; }
-    public int getProgress() { return 1; }
 
     @Override
     protected boolean canInteract(Chef chef) {
