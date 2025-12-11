@@ -209,8 +209,8 @@ class Chef {
                 }
             }
 
-            lastValidPosition.setRow(lastValidPosition.getRow());
-            lastValidPosition.setCol(lastValidPosition.getCol()); 
+            lastValidPosition.setRow(currentCheckPosition.getRow());
+            lastValidPosition.setCol(currentCheckPosition.getCol()); 
         }
         
         Tile landingTile = map.getTile(lastValidPosition.getRow(), lastValidPosition.getCol());
