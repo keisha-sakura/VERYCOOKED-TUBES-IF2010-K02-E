@@ -49,7 +49,7 @@ public class Chef {
         this.direction = Direction.DOWN;
         move(map, 1, 0);
     }
-    public void moveleft(Map map) {
+    public void moveLeft(Map map) {
         this.direction = Direction.LEFT;
         move(map, 0, -1);
     }
@@ -159,9 +159,8 @@ public class Chef {
 
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return this.direction;
-
     }
 
     public void setDirection(Direction direction) {
