@@ -13,16 +13,14 @@ import java.util.*;
 
 // ServingStation.java
 public class ServingStation extends Station {
-    private GameManager gameManager;
     private PlateStorage plateStorage;
-    private List<Order> activeOrders;
+    private OrderManager orderManager;
     private final Object lock = new Object();
 
-    public ServingStation(Position pos, GameManager controller, PlateStorage plateStorage) {
+    public ServingStation(Position pos, PlateStorage plateStorage) {
         super(pos);
-        this.gameManager = controller;
         this.plateStorage = plateStorage;
-        this.activeOrders = new ArrayList<>();
+        this.orderManager = OrderManager.getInstance();
     }
 
 
@@ -48,18 +46,11 @@ public class ServingStation extends Station {
             Order matchedOrder = findMatchingOrder(dish);
 
             if (matchedOrder != null) {
-                // Success!
-                gameManager.increaseTotalScore(matchedOrder.getReward());
-                gameManager.incrementPizzaServed();
-                activeOrders.remove(matchedOrder);
-                System.out.println("✓ Order completed! +" + matchedOrder.getReward() + " points");
-
-                // Spawn new order
-                spawnNewOrder();
+                System.out.println("✓ Order validated: " + matchedOrder.getRecipe().getName());
+                matchedOrder.complete();
+                orderManager.completeOrder(matchedOrder);
             } else {
-                // Wrong dish
-                gameManager.decreaseTotalScore(50); // Penalty
-                System.out.println("✗ Wrong dish served! -50 points");
+                System.out.println("✗ Dish does not match any order");
             }
 
             // Return dirty plate after 10 seconds
@@ -75,6 +66,7 @@ public class ServingStation extends Station {
     }
 
     private Order findMatchingOrder(Dish dish) {
+        List<Order> activeOrders = orderManager.getActiveOrders();
         for (Order order : activeOrders) {
             if (validateDish(dish, order.getRecipe())) {
                 return order;
@@ -85,30 +77,26 @@ public class ServingStation extends Station {
 
     private boolean validateDish(Dish dish, Recipe recipe) {
         List<Preparable> dishComponents = dish.getComponents();
-        List<Preparable> recipeIngredients = recipe.getIngredients();
+        List<String> recipeIngredientNames = recipe.getIngredients();
 
-        if (dishComponents.size() != recipeIngredients.size()) {
+        if (dishComponents.size() != recipeIngredientNames.size()) {
             return false;
         }
 
-        // Check if all ingredients match (including state)
+        // Check if all ingredients match (by name)
         Map<String, Integer> dishMap = new HashMap<>();
         Map<String, Integer> recipeMap = new HashMap<>();
 
         for (Preparable prep : dishComponents) {
             if (prep instanceof Ingredient) {
                 Ingredient ing = (Ingredient) prep;
-                String key = ing.getName() + "-" + ing.getState();
-                dishMap.put(key, dishMap.getOrDefault(key, 0) + 1);
+                String name = ing.getName();
+                dishMap.put(name, dishMap.getOrDefault(name, 0) + 1);
             }
         }
 
-        for (Preparable prep : recipeIngredients) {
-            if (prep instanceof Ingredient) {
-                Ingredient ing = (Ingredient) prep;
-                String key = ing.getName() + "-" + ing.getState();
-                recipeMap.put(key, recipeMap.getOrDefault(key, 0) + 1);
-            }
+        for (String ingredientName : recipeIngredientNames) {
+            recipeMap.put(ingredientName, recipeMap.getOrDefault(ingredientName, 0) + 1);
         }
 
         return dishMap.equals(recipeMap);
@@ -133,15 +121,5 @@ public class ServingStation extends Station {
     private PlateStorage findPlateStorage() {
         // Returns injected plateStorage reference
         return this.plateStorage;
-    }
-
-    private void spawnNewOrder() {
-        // Spawn new order logic
-        // Should be handled by GameManager
-        gameManager.spawnNewOrder();
-    }
-
-    public void setActiveOrders(List<Order> orders) {
-        this.activeOrders = orders;
     }
 }
