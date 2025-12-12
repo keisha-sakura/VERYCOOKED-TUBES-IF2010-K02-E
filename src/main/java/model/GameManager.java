@@ -4,6 +4,7 @@ import model.order.*;
 import model.recipe.*;
 import model.map.*;
 import model.chef.*;
+import model.item.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,6 +179,9 @@ public class GameManager {
         gameMap.getTile(activeChef.getPosition().getRow(), activeChef.getPosition().getCol()).setChef(activeChef);
         return true;
     }
+
+    /*TEMP*/
+    public void handleDirtyPlate(Plate plate) { plate.setClean(true); };
 
     // Getters
     public int getTotalScore() { synchronized (scoreLock) { return totalScore; } }

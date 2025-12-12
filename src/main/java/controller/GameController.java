@@ -1,7 +1,7 @@
-package main.java.controller;
+package controller;
 
 import javafx.scene.input.KeyEvent;
-import main.java.model.GameManager;
+import model.GameManager;
 
 public class GameController {
 

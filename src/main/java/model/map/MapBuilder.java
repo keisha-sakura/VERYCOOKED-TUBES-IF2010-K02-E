@@ -3,7 +3,6 @@ package model.map;
 import model.station.*;
 import model.item.*;
 import model.*;
-import model.item.*;
 
 public class MapBuilder {
     private static int ingredientCounter = 0;
@@ -52,8 +51,7 @@ public class MapBuilder {
         }
     }
 
-<<<<<<< HEAD
-    public static Map buildMap(){
+    public static Map buildMap() {
         char[][] mapmatrix = {
                 {'X', 'A', 'T', 'A', 'C', 'A', 'A', 'A', 'C', 'A', 'A', 'A', 'X', 'X'},
                 {'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X'},
@@ -66,12 +64,12 @@ public class MapBuilder {
                 {'X', 'X', 'X', 'X', '.', '.', '.', '.', '.', '.', 'X', 'X', 'X', 'X'},
                 {'X', 'X', 'X', 'X', 'A', 'A', '5', 'A', 'A', 'A', 'X', 'X', 'X', 'X'}};
 
-        return mapImporter(mapmatrix);
-=======
+            return mapImporter(mapmatrix);
+    }
+
     private static String getDefaultIngredientType() {
         String type = INGREDIENT_TYPES[ingredientCounter % INGREDIENT_TYPES.length];
         ingredientCounter++;
         return type;
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
     }
 }

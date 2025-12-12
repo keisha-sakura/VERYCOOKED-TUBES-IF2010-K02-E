@@ -5,7 +5,7 @@ import model.map.*;
 import model.chef.*;
 import model.recipe.*;
 import model.order.*;
-
+import model.*;
 import java.util.*;
 
 

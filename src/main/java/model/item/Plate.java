@@ -15,8 +15,8 @@ public class Plate extends KitchenUtensils {
         this.isClean = true;
     }
 
-    public void setClean(boolean clean) {
-        this.isClean = clean;
+    public void setClean(boolean isClean) {
+        this.isClean = isClean;
     }
 
     public void addIngredient(Preparable ingredient) {
