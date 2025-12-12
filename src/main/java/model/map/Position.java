@@ -1,8 +1,8 @@
 package main.java.model.map;
 
 public class Position {
-    private final int row;
-    private final int col;
+    private int row;
+    private int col;
 
     public Position(int row, int col){
         this.row = row;
