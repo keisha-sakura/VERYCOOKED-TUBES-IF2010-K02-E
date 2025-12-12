@@ -35,7 +35,7 @@ public class LandingPage {
                 new Image(getClass().getResource("/VERYCOOKED.png").toExternalForm())
         );
         headerView.setPreserveRatio(true);
-        headerView.setFitWidth(100);
+        headerView.setFitWidth(900);
 
         //cloud
         ImageView cloud1 = new ImageView(
