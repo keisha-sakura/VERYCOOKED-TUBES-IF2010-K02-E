@@ -36,7 +36,11 @@ public class Plate extends KitchenUtensil {
         contents.add(ingredient);
         return true;
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> refactor
     public void removeIngredient(Preparable ingredient) {
         contents.remove(ingredient);
     }

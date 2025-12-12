@@ -6,6 +6,8 @@ import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.Item;
 import model.position.Position;
+import model.item.utensils.Plate;
+import model.interfaces.Preparable;
 
 //unlimited ingredient
 public class IngredientStorage extends Station {
@@ -18,14 +20,7 @@ public class IngredientStorage extends Station {
     
     @Override
     public void interact(Chef chef) {
-        // Allow storage tiles to act as plating surfaces too.
-        if (PlatingHelper.handlePlateInHand(chef, this)) {
-            return;
-        }
-
-        if (PlatingHelper.handleUtensilInHand(chef, this)) {
-            return;
-        }
+    
 
         Item heldItem = chef.getInventory();
         
@@ -52,8 +47,19 @@ public class IngredientStorage extends Station {
                 e.printStackTrace();
             }
             return;
+      }
+
+        // Plating: Chef pegang plate, station ada ingredient
+        if (heldItem instanceof Plate) {
+            Plate plate = (Plate) heldItem;
+            if (!plate.isDirty() && itemOnStation instanceof Preparable) {
+                Preparable prep = (Preparable) itemOnStation;
+                if (prep.canBePlacedOnPlate() && plate.canAddIngredient()) {
+                    plate.addIngredient(prep);
+                    removeItemFromStation();
+                }
+            }
         }
-        
     }
     
     @Override

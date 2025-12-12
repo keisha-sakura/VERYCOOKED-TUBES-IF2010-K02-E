@@ -72,18 +72,20 @@ public class Tile {
     }
 
     public void setItem(Item item) {
-        this.itemContained = item;
-        if (item != null) {
-            item.setPosition(new Position(this.x, this.y));
-        }
+        itemContained = item;
+    //     this.itemContained = item;
+    //     if (item != null) {
+    //         item.setPosition(new Position(this.x, this.y));
+    //     }
+    // }
     }
 
     public Item removeItem() {
         Item removedItem = this.itemContained;
         this.itemContained = null;
-        if (removedItem != null) {
-            removedItem.setPosition(null);
-        }
+        // if (removedItem != null) {
+        //     removedItem.setPosition(null);
+        // }
         return removedItem;
     }
 

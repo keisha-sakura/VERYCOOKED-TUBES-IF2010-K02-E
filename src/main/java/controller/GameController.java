@@ -104,26 +104,7 @@ public class GameController {
 
         if (station != null && station.canInteract(activeChef)) {
             station.interact(activeChef);
-            return;
-        }
-
-        Tile frontTile = gameMap.getTile(frontPos);
-        if (frontTile == null || !frontTile.getState().isWalkable()) {
-            return;
-        }
-
-        Item tileItem = frontTile.getItem();
-        Item heldItem = activeChef.getInventory();
-
-        if (heldItem == null && tileItem != null) {
-            Item picked = gameMap.removeItemOnMap(frontPos.getX(), frontPos.getY());
-            activeChef.setInventory(picked);
-            return;
-        }
-
-        if (heldItem != null && tileItem == null) {
-            gameMap.placeItemOnMap(frontPos.getX(), frontPos.getY(), heldItem);
-            activeChef.clearInventory();
+            
         }
     }
 
