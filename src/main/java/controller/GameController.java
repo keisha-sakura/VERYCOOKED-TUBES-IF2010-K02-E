@@ -25,6 +25,9 @@ public class GameController {
             case D:
                 gameManager.moveRight();
                 break;
+            case C:
+                gameManager.handlePickupOrDrop();
+                break;
             default:
                 break;
         }

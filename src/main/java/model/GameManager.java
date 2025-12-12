@@ -4,9 +4,12 @@ import main.java.model.order.*;
 import main.java.model.recipe.*;
 import main.java.model.map.*;
 import main.java.model.chef.*;
+import main.java.model.item.*;
+import main.java.model.station.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 public class GameManager {
     private static GameManager instance;
@@ -177,6 +180,182 @@ public class GameManager {
         gameMap.getTile(oldPos.getRow(), oldPos.getCol()).removeChef();
         gameMap.getTile(activeChef.getPosition().getRow(), activeChef.getPosition().getCol()).setChef(activeChef);
         return true;
+    }
+
+    public void handlePickupOrDrop() {
+        if (activeChef == null || gameMap == null) {
+            System.out.println("No active chef to control.");
+            return;
+        }
+
+        Tile frontTile = getFrontTile();
+        if (frontTile == null) {
+            System.out.println("Nothing in front of the chef.");
+            return;
+        }
+
+        try {
+            if (frontTile instanceof StationTile stationTile) {
+                Station station = stationTile.getStation();
+                if (!canPlaceItemOnStation(station)) {
+                    System.out.println("Chef cannot place that item here.");
+                    return;
+                }
+                station.interact(activeChef);
+                return;
+            }
+
+            handleFloorTilePickupDrop(frontTile);
+        } catch (ChefException ex) {
+            System.out.println(ex.getMessage());
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void handleFloorTilePickupDrop(Tile frontTile) throws ChefException {
+        Item heldItem = activeChef.getInventory();
+
+        if (heldItem == null) {
+            if (!frontTile.hasItem()) {
+                System.out.println("No item to pick up.");
+                return;
+            }
+
+            Item pickedItem = frontTile.pickUpItem();
+            if (pickedItem == null) {
+                System.out.println("No item to pick up.");
+                return;
+            }
+
+            activeChef.setInventory(pickedItem);
+            System.out.println("Picked up " + describeItem(pickedItem) + ".");
+            return;
+        }
+
+        if (heldItem instanceof Plate plate && plate.isClean() && frontTile.hasItem()) {
+            Item tileItem = frontTile.pickUpItem();
+            if (tileItem == null) {
+                System.out.println("Nothing to plate.");
+                return;
+            }
+
+            boolean plated = tryPlateItem(plate, tileItem, frontTile);
+            if (!plated) {
+                frontTile.placeItem(tileItem);
+                System.out.println("Item is not ready to plate.");
+            }
+            return;
+        }
+
+        if (!frontTile.hasItem() && frontTile.canHoldItem()) {
+            frontTile.placeItem(heldItem);
+            activeChef.setInventory(null);
+            System.out.println("Placed " + describeItem(heldItem) + " on the floor.");
+            return;
+        }
+
+        throw new InventoryFullException("Cannot place item on occupied tile.");
+    }
+
+    private boolean tryPlateItem(Plate plate, Item tileItem, Tile originTile) {
+        if (tileItem instanceof Ingredient ingredient) {
+            if (!ingredient.canBePlacedOnPlate()) {
+                return false;
+            }
+            plate.addIngredient(ingredient);
+            System.out.println("Plated " + ingredient.getName() + ".");
+            return true;
+        }
+
+        if (tileItem instanceof Dish dish) {
+            plate.addDish(dish);
+            System.out.println("Transferred dish to plate.");
+            return true;
+        }
+
+        if (tileItem instanceof KitchenUtensils utensils) {
+            boolean plated = false;
+            Iterator<Preparable> iterator = new ArrayList<>(utensils.getContents()).iterator();
+            while (iterator.hasNext()) {
+                Preparable prep = iterator.next();
+                if (!prep.canBePlacedOnPlate()) {
+                    continue;
+                }
+
+                if (prep instanceof Ingredient ingredientPrep) {
+                    plate.addIngredient(ingredientPrep);
+                } else {
+                    plate.addDish(prep);
+                }
+                utensils.getContents().remove(prep);
+                plated = true;
+            }
+
+            if (plated) {
+                originTile.placeItem(utensils);
+                System.out.println("Plated items from utensil.");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean canPlaceItemOnStation(Station station) {
+        if (station == null) {
+            return true;
+        }
+
+        Item heldItem = activeChef.getInventory();
+        if (heldItem == null) {
+            return true;
+        }
+
+        if (station instanceof WashingStation && heldItem instanceof Plate plate && plate.isClean()) {
+            return false;
+        }
+
+        if (station instanceof CookingStation && heldItem instanceof Plate) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private Tile getFrontTile() {
+        Position frontPosition = getFrontPosition();
+        if (frontPosition == null) {
+            return null;
+        }
+
+        try {
+            return gameMap.getTile(frontPosition.getRow(), frontPosition.getCol());
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return null;
+        }
+    }
+
+    private Position getFrontPosition() {
+        Position current = activeChef.getPosition();
+        Direction direction = activeChef.getDirection();
+
+        return switch (direction) {
+            case UP -> current.up(1);
+            case DOWN -> current.down(1);
+            case LEFT -> current.left(1);
+            case RIGHT -> current.right(1);
+        };
+    }
+
+    private String describeItem(Item item) {
+        if (item instanceof Ingredient ingredient) {
+            return ingredient.getName();
+        }
+        if (item instanceof Dish dish) {
+            return dish.getName();
+        }
+        return item.getClass().getSimpleName();
     }
 
     // Getters
