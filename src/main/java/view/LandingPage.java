@@ -61,17 +61,17 @@ public class LandingPage {
         Pane cloudLayer = new Pane();
         cloudLayer.getChildren().addAll(cloud1, cloud2, cloud3, cloud4);
 
-        cloud1.setLayoutX(950);
-        cloud1.setLayoutY(400);
+        cloud1.setLayoutX(955);
+        cloud1.setLayoutY(225);
 
         cloud2.setLayoutX(400);
         cloud2.setLayoutY(620);
 
         cloud3.setLayoutX(100);
-        cloud3.setLayoutY(400);
+        cloud3.setLayoutY(440);
 
-        cloud4.setLayoutX(950);
-        cloud4.setLayoutY(200);
+        cloud4.setLayoutX(725);
+        cloud4.setLayoutY(130);
 
         ImageView pikachu = new ImageView(
                 new Image(getClass().getResource("/pikachu.png").toExternalForm())

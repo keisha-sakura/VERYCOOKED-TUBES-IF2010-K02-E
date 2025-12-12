@@ -30,6 +30,12 @@ public class ChooseLevel {
                         "-fx-background-position: center;"
         );
 
+        ImageView header = new ImageView(
+                new Image(getClass().getResource("/ChooseLevel.png").toExternalForm())
+        );
+        header.setPreserveRatio(true);
+        header.setFitWidth(900);
+
         Button level1Btn = createImageButton("Medium.png");
         Button level2Btn = createImageButton("Easy.png");
         Button level3Btn = createImageButton("Hard.png");
@@ -70,13 +76,18 @@ public class ChooseLevel {
 
         HBox levelBox = new HBox(40, level1Box, level2Box, level3Box);
         levelBox.setAlignment(Pos.CENTER);
-        BorderPane.setMargin(levelBox, new Insets(70, 0, 0, 0));
+        BorderPane.setMargin(levelBox, new Insets(50, 0, 0, 0));
         root.setCenter(levelBox);
 
         HBox backBox = new HBox(back);
         backBox.setAlignment(Pos.CENTER);
-        backBox.setPadding(new Insets(0, 0, 70, 0));
+        backBox.setPadding(new Insets(0, 0, 50, 0));
         root.setBottom(backBox);
+
+        HBox headerBox = new HBox(header);
+        headerBox.setAlignment(Pos.TOP_CENTER);
+        headerBox.setPadding(new Insets(50, 0, 0, 0));
+        root.setTop(headerBox);
 
         return new Scene(root, width, height);
     }
@@ -86,7 +97,7 @@ public class ChooseLevel {
                 new Image(getClass().getResource("/"+imageFileName).toExternalForm())
         );
         iv.setPreserveRatio(true);
-        iv.setFitWidth(310);
+        iv.setFitWidth(280);
 
         Button button = new Button();
         button.setGraphic(iv);
