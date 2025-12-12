@@ -207,8 +207,22 @@ public class GameManager {
 
         try {
             if (frontTile instanceof StationTile stationTile) {
-                // For pickup/drop, ignore station interaction; use dedicated interact() method
-                System.out.println("Use 'V' to interact with stations.");
+                Station station = stationTile.getStation();
+                // Serving Action: Trigger on Drop key at ServingStation
+                if (station instanceof ServingStation servingStation) {
+                    try {
+                        servingStation.interact(activeChef);
+                        Plate servedPlate = servingStation.consumeLastServedPlate();
+                        if (servedPlate != null) {
+                            handleDirtyPlate(servedPlate);
+                        }
+                    } catch (RuntimeException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    return;
+                }
+                // Other stations use interact() via 'V'
+                System.out.println("Use 'V' to interact with this station.");
                 return;
             }
 

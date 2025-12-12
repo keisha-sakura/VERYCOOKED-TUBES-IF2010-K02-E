@@ -16,7 +16,7 @@ public final class Driver {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Very Cooked CLI Driver ===");
-        System.out.println("Commands: start | pause | resume | stop | move <w/a/s/d> | map | stats | exit");
+        System.out.println("Commands: start | pause | resume | stop | move <w/a/s/d> | interact | act | map | stats | exit");
 
         boolean running = true;
         while (running) {
@@ -33,7 +33,7 @@ public final class Driver {
             String[] tokens = input.split("\\s+");
             String command = tokens[0].toLowerCase(Locale.ROOT);
 
-            switch (command) {
+                switch (command) {
                 case "start":
                     if (gameManager.isGameRunning()) {
                         System.out.println("Game already running.");
@@ -65,6 +65,12 @@ public final class Driver {
                     }
                     handleMove(gameManager, tokens[1]);
                     break;
+                    case "interact":
+                        gameManager.interact();
+                        break;
+                    case "act":
+                        gameManager.handlePickupOrDrop();
+                        break;
                 case "map":
                     Map map = gameManager.getGameMap();
                     if (map == null) {

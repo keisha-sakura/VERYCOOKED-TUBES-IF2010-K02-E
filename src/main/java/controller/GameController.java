@@ -29,7 +29,7 @@ public class GameController {
                 gameManager.handlePickupOrDrop();
                 break;
             case V:
-                gameManager.handleInteract();
+                gameManager.interact();
                 break;
             case B:
                 gameManager.switchActiveChef();

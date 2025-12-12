@@ -45,15 +45,9 @@ public class WashingStation extends Station {
 
             // Case 1: Put dirty plates on station
             if (chefItem instanceof Plate && !((Plate) chefItem).isClean()) {
-                // Handle multiple dirty plates
-                if (chefItem instanceof Plate) {
-                    Plate plate = (Plate) chefItem;
-                    while (plate != null) {
-                        dirtyPlates.push(plate);
-                    }
-                } else {
-                    dirtyPlates.push((Plate) chefItem);
-                }
+                // Store a single dirty plate from chef
+                Plate plate = (Plate) chefItem;
+                dirtyPlates.push(plate);
                 chef.setInventory(null);
                 return;
             }
