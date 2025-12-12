@@ -1,21 +1,29 @@
 package main.java.model.chef;
 
+import java.util.List;
 import main.java.model.item.*;
 import main.java.model.map.*;
 import main.java.model.chef.Direction;
 import main.java.model.station.*;
+import main.java.model.chef.ChefBusyException;
+import main.java.model.chef.ChefException;
+import main.java.model.chef.InventoryEmptyException;
+import main.java.model.chef.InventoryFullException;
 
-public class Chef {
-    private String id;
-    private String name;
-    private Position position;
-    private Direction direction;
-    private Item inventory;
+class Chef {
+	private String id;
+	private String name;
+	private Position position;
+	private Direction direction;
+	private Item inventory;
     private boolean isActive;
     private boolean isBusy;
+    private static final int THROW_DISTANCE = 2;
+    private long lastDashTime = 0;
+    private static final long DASH_COOLDOWN = 3000; // 3 detik
+    private static final int DASH_DISTANCE = 2; // Jarak dash
 
-
-    public Chef(String id, String name, Position position, Direction direction, Item inventory) {
+	Chef(String id, String name, Position position, Direction direction, Item inventory) { 
         this.id = id;
         this.name = name;
         this.position = position;
@@ -26,7 +34,18 @@ public class Chef {
 
     }
 
+<<<<<<< HEAD
     public boolean move(Map map, int rowChange, int colChange) {
+=======
+    public <T extends Item> T getInventoryAs(Class<T> type){
+        if (this.inventory != null && type.isInstance(this.inventory)){
+            return type.cast(this.inventory);
+        }
+        return null;
+    }
+
+    private void move(Map map, int rowChange, int colChange) {
+>>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         if (isBusy) {
             return false;
         }
@@ -39,66 +58,204 @@ public class Chef {
             this.position = new Position(newRow, newCol);
             return true;
         }
+<<<<<<< HEAD
         return false;
     }
 
     public boolean moveUp(Map map) {
+=======
+    }
+
+	void moveUp(Map map) {
+>>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.UP;
         return move(map, -1, 0);
     }
+<<<<<<< HEAD
     public boolean moveDown(Map map) {
+=======
+
+	void moveDown(Map map) { 
+>>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.DOWN;
         return move(map, 1, 0);
     }
+<<<<<<< HEAD
     public boolean moveLeft(Map map) {
+=======
+
+	void moveLeft(Map map) { 
+>>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.LEFT;
         return move(map, 0, -1);
     }
+<<<<<<< HEAD
     public boolean moveRight(Map map) {
+=======
+
+	void moveRight(Map map) { 
+>>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.RIGHT;
         return move(map, 0, 1);
     }
 
-    void dashUp() {
+    private void performDash(Map map) throws ChefBusyException {
+        if (isBusy) {
+            throw new ChefBusyException("Chef sedang sibuk!");
+        }
 
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastDashTime < DASH_COOLDOWN) {
+            return;
+        }
+
+        int rowChange = 0;
+        int colChange = 0;
+
+        switch (this.direction){
+            case UP:
+                rowChange = -1;
+                break;
+            case DOWN:
+                rowChange = 1;
+                break;
+            case LEFT:
+                colChange = -1;
+                break;
+            case RIGHT:
+                colChange = 1;
+                break;
+        }
+
+        boolean hitWall = false;
+
+        for (int i = 0; i < DASH_DISTANCE; i++){
+            int targetRow = this.position.getRow() + rowChange;
+            int targetCol = this.position.getCol() + colChange;
+
+            Tile targetTile = map.getTile(targetRow, targetCol);
+
+            if (targetTile != null && targetTile.isWalkable()){
+                this.position.setRow(targetRow);
+                this.position.setCol(targetCol);
+            }
+            else{
+                hitWall = true;
+                break;
+            }
+        }
+        
+        this.lastDashTime = System.currentTimeMillis();
+
+        if (hitWall){
+            System.out.println("Dash terhenti karena menabrak!");
+        }
+        else {
+            System.out.println("Dash berhasil!");
+        }
     }
-    void dashDown() {
 
+	void dashUp(Map map) throws ChefBusyException { 
+        this.direction = Direction.UP;
+        performDash(map);
     }
-    void dashleft() {
 
+	void dashDown(Map map) throws ChefBusyException { 
+        this.direction = Direction.DOWN;
+        performDash(map);
     }
-    void dashRight() {
 
+	void dashleft(Map map) throws ChefBusyException { 
+        this.direction = Direction.LEFT;
+        performDash(map);
+    }
+
+	void dashRight(Map map) throws ChefBusyException { 
+        this.direction = Direction.RIGHT;
+        performDash(map);
     }
 
     //pickUp/drop
-    public void act(Map map) {
+	void act(Map map) throws InventoryFullException, ChefBusyException { 
         if (isBusy) {
-            return;
+            throw new ChefBusyException("Chef sedang sibuk!");
         }
 
         Position frontPosition = getFrontPosition();
         Tile frontTile = map.getTile(frontPosition.getRow(), frontPosition.getCol());
 
-        if (frontTile instanceof FloorTile){
-                FloorTile floorTile = (FloorTile) frontTile;
-                if ( this.inventory == null && frontTile.hasItem()) {
-                
+        if (frontTile != null){
+            if (this.inventory == null && frontTile.hasItem()) {
                 this.inventory = frontTile.pickUpItem();
-            } else if (this.inventory != null && !frontTile.hasItem() && frontTile.canHoldItem()){
+            }
+            else if (this.inventory != null && !frontTile.hasItem() && frontTile.canHoldItem()){
                 frontTile.placeItem(this.inventory);
                 this.inventory = null;
-                }
+            }
+            else if (this.inventory != null && frontTile.hasItem()){
+                throw new InventoryFullException("Inventory chef sudah penuh!");
+            }
         }
+    } 
     
+    void throwItem(Map map, List<Chef> otherChefs) throws InventoryEmptyException, ChefBusyException { 
+        if (isBusy){
+            throw new ChefBusyException("Chef sedang sibuk!");
+        }
+        if (inventory == null){
+            throw new InventoryEmptyException("Tidak ada item untuk dilempar!");
+        }
+
+        Item itemToThrow = this.inventory;
+        this.inventory = null;
+
+        Position currentCheckPosition = new Position(this.position.getRow(), this.position.getCol());
+        Position lastValidPosition = new Position(this.position.getRow(), this.position.getCol());
+
+        for (int i = 1; i <= THROW_DISTANCE; i++){
+            updatePositionInDirection(currentCheckPosition, this.direction);
+
+            Tile tile = map.getTile(currentCheckPosition.getRow(), currentCheckPosition.getCol());
+            if (tile == null || !tile.isWalkable()){
+                break; // berhenti di posisi terakhir
+            }
+
+            Chef receiver = getChefAt(otherChefs, currentCheckPosition);
+            if (receiver != null){
+                if (!receiver.isHoldingItem()){
+                    receiver.setInventory(itemToThrow);
+                    System.out.println("Item berhasil dilempar ke chef " + receiver.getName());
+                    return;
+                }
+                else{
+                    lastValidPosition = new Position(currentCheckPosition.getRow(), currentCheckPosition.getCol());
+                    break;
+                }
+            }
+
+            lastValidPosition.setRow(currentCheckPosition.getRow());
+            lastValidPosition.setCol(currentCheckPosition.getCol()); 
+        }
+        
+        Tile landingTile = map.getTile(lastValidPosition.getRow(), lastValidPosition.getCol());
+        if (landingTile != null && landingTile.canHoldItem() && !landingTile.hasItem()){
+            landingTile.placeItem(itemToThrow);
+        }
+        else{
+            this.inventory = itemToThrow;
+        }
     }
 
-    public void throwItem() {
-
+    private Chef getChefAt(List<Chef> chefs, Position position){
+        for (Chef chef : chefs){
+            if (!chef.getId().equals(this.id) && chef.getPosition().getRow() == position.getRow() && chef.getPosition().getCol() == position.getCol()){
+                return chef;
+            }
+        }
+        return null;
     }
-
-    public void interact(Map map) throws ChefBusyException {
+    
+	void interact(Map map) throws ChefBusyException { 
         if (isBusy) {
             throw new ChefBusyException("Chef sedang sibuk!");
         }
@@ -113,89 +270,88 @@ public class Chef {
 
     }
 
-    public Position getFrontPosition() {
-        int row = this.position.getRow();
-        int col = this.position.getCol();
+    private Position getFrontPosition() {
+        Position front = new Position(this.position.getRow(), this.position.getCol());
+        updatePositionInDirection(front, this.direction);
+        return front;
+    }
 
-        switch (this.direction) {
+    private void updatePositionInDirection(Position position, Direction direction) {
+        switch (direction) {
             case UP:
-                return new Position(row - 1, col);
+                position.setRow(position.getRow() - 1);
+                break;
             case DOWN:
-                return new Position(row + 1, col);
+                position.setRow(position.getRow() + 1);
+                break;
             case LEFT:
-                return new Position(row, col - 1);
+                position.setCol(position.getCol() - 1);
+                break;
             case RIGHT:
-                return new Position(row, col + 1);
-            default:
-                return this.position;
+                position.setCol(position.getCol() + 1);
+                break;
         }
     }
 
-    public Position getPosition() {
+
+    // Getter and Setter
+    Position getPosition() { 
         return this.position;
+    } 
 
-    }
-
-    public void setPosition(Position position) {
+	void setPosition(Position position) { 
         this.position = position;
     }
 
-    public String getId() {
+	String getId() { 
         return this.id;
-
     }
 
-    public void setId(String id) {
+	void setId(String id) { 
         this.id = id;
-
     }
 
-    public String getName() {
+	String getName() { 
         return this.name;
-
     }
 
-    public void setName(String name) {
+	void setName(String name) { 
         this.name = name;
-
     }
 
-    public Direction getDirection() {
+	Direction getDirection() { 
         return this.direction;
     }
 
-    public void setDirection(Direction direction) {
+    void setDirection(Direction direction) { 
         this.direction = direction;
-
     }
 
-    public Item getInventory() {
+    Item getInventory() { 
         return this.inventory;
-
     }
 
-    public void setInventory(Item item) {
+    void setInventory(Item item) { 
         this.inventory = item;
-
     }
 
-    public boolean isHoldingItem() {
+    boolean isHoldingItem() { 
         return this.inventory != null;
     }
 
-    public boolean isActive(){
+    boolean isActive(){
         return this.isActive;
     }
 
-    public void setActive(boolean isActive){
+    void setActive(boolean isActive){
         this.isActive = isActive;
     }
 
-    public boolean isBusy(){
+    boolean isBusy(){
         return this.isBusy;
     }
 
-    public void setIsBusy(boolean isBusy){
+    void setIsBusy(boolean isBusy){
         this.isBusy = isBusy;
     }
 }
