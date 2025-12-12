@@ -17,7 +17,6 @@ import model.position.Position;
 
 public class AssemblyStation extends Station {
 
-@@ -20,93 +15,29 @@
  public AssemblyStation(Position position) {
         super(position, StationType.ASSEMBLY);
     }
