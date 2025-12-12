@@ -60,7 +60,7 @@ public class CookingStation extends Station {
             
             // Case 2: Take cooked dish from oven
             else if (chefItem == null && kitchenUtensil instanceof CookingDevice && isCooking) {
-                CookingDevice device = (CookingDevice) kitchenUtensil;
+                Oven device = (Oven) kitchenUtensil;
                 
                 // Check if cooking is done
                 if (!device.getContents().isEmpty()) {
@@ -90,7 +90,7 @@ public class CookingStation extends Station {
 
                 synchronized (lock) {
                     if (isCooking && kitchenUtensil instanceof CookingDevice) {
-                        CookingDevice device = (CookingDevice) kitchenUtensil;
+                        Oven device = (Oven) kitchenUtensil;
                         for (Preparable prep : device.getContents()) {
                             if (prep instanceof Ingredient) {
                                 ((Ingredient) prep).cook();
@@ -105,7 +105,7 @@ public class CookingStation extends Station {
 
                 synchronized (lock) {
                     if (isCooking && kitchenUtensil instanceof CookingDevice) {
-                        CookingDevice device = (CookingDevice) kitchenUtensil;
+                        Oven device = (Oven) kitchenUtensil;
                         for (Preparable prep : device.getContents()) {
                             if (prep instanceof Ingredient) {
                                 Ingredient ingredient = (Ingredient) prep;

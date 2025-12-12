@@ -83,6 +83,8 @@ public class Dish extends Item implements Preparable  {
         return false;
     }
 
+    public Set<Preparable> getComponents() { return contents; }
+
     public void chop() {
 
     }

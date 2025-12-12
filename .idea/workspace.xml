@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="525bad22-aa25-4603-8ff7-bb0dfbd75e1a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/GameController.java" afterDir="false" />
+    <list default="true" id="525bad22-aa25-4603-8ff7-bb0dfbd75e1a" name="Changes" comment="feat: fixing map and game manager">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/chef/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/chef/Chef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/map/MapBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/map/MapBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/item/Dish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/item/Dish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/station/ServingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/ServingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +69,15 @@
       <option name="presentableId" value="Default" />
       <updated>1765501093525</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat: fixing map and game manager">
+      <option name="closed" value="true" />
+      <created>1765504884258</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1765504884258</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -82,5 +90,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: fixing map and game manager" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: fixing map and game manager" />
   </component>
 </project>

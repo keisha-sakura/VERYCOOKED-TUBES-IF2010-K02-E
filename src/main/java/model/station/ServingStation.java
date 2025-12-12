@@ -59,8 +59,7 @@ public class ServingStation extends Station {
     }
 
     private Dish createDishFromPlate(Plate plate) {
-        Dish dish = new Dish();
-        dish.setComponents(new ArrayList<>(plate.getContents()));
+        Dish dish = new Dish(plate.getContents());
         return dish;
     }
 
@@ -75,7 +74,7 @@ public class ServingStation extends Station {
     }
 
     private boolean validateDish(Dish dish, Recipe recipe) {
-        List<Preparable> dishComponents = dish.getComponents();
+        Set<Preparable> dishComponents = dish.getComponents();
         List<String> recipeIngredientNames = recipe.getIngredients();
 
         if (dishComponents.size() != recipeIngredientNames.size()) {
@@ -83,8 +82,8 @@ public class ServingStation extends Station {
         }
 
         // Check if all ingredients match (by name)
-        Map<String, Integer> dishMap = new HashMap<>();
-        Map<String, Integer> recipeMap = new HashMap<>();
+        java.util.Map<String, Integer> dishMap = new HashMap<>();
+        java.util.Map<String, Integer> recipeMap = new HashMap<>();
 
         for (Preparable prep : dishComponents) {
             if (prep instanceof Ingredient) {
