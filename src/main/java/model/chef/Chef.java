@@ -2,6 +2,7 @@ package model.chef;
 
 import model.position.*;
 import model.enums.*;
+import model.interfaces.Preparable;
 import model.item.*;
 
 public class Chef {
@@ -63,7 +64,17 @@ public class Chef {
     public String toString() {
         String status = isActive ? "[ACTIVE]" : "[IDLE]";
         String action = isBusy ? " (BUSY: " + currentAction + ")" : "";
-        String inv = hasInventory() ? " | Holding: " + inventory.getName() : " | Empty hands";
+        String inv;
+        if (hasInventory()) {
+            String invName = inventory.getName();
+            if (inventory instanceof Preparable) {
+                Preparable prep = (Preparable) inventory;
+                invName += " (" + prep.getState() + ")";
+            }
+            inv = " | Holding: " + invName;
+        } else {
+            inv = " | Empty hands";
+        }
         return name + " " + status + action + " at " + position + inv;
     }
 }
