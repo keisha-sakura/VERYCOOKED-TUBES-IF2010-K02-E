@@ -7,16 +7,16 @@ import model.station.StationFactory;
 public class MapPizza extends MapType {
     // Layout Pizza Map - VERIFIED 14 characters per row
     private static final String[] PIZZA_LAYOUT = {
-            "XATACAAACAAAXX",  // Row 0: 14 chars ✓
-            "X...........XX",  // Row 1: 14 chars ✓
-            "X.....A.V...SX",  // Row 2: 14 chars ✓ (V spawn di 2,2)
-            "X...........SX",  // Row 3: 14 chars ✓
-            "XWWAIAIAIAIAPX",  // Row 4: 14 chars ✓
+            "XXATAACAACAAXX",  // Row 0: 14 chars ✓
+            "X............X",  // Row 1: 14 chars ✓
+            "XAVI.....SXXXX",  // Row 2: 14 chars ✓ (V spawn di 2,2)
+            "X............X",  // Row 3: 14 chars ✓
+            "XWWAIAIAIAIPXX",  // Row 4: 14 chars ✓
             "X............X",  // Row 5: 14 chars ✓
-            "XXXX..A...XXXX",  // Row 6: 14 chars ✓
-            "XR....V.....RX",  // Row 7: 14 chars ✓ (V spawn di 6,7)
-            "XXXX......XXXX",  // Row 8: 14 chars ✓
-            "XXXXAAIAAAXXXX"   // Row 9: 14 chars ✓
+            "XXXXXX....XXXX",  // Row 6: 14 chars ✓
+            "XR....V....RXX",  // Row 7: 14 chars ✓ (V spawn di 6,7)
+            "XXXXXX......XX",  // Row 8: 14 chars ✓
+            "XXXXAAIAAAAXXX"   // Row 9: 14 chars ✓
     };
 
     public MapPizza() {

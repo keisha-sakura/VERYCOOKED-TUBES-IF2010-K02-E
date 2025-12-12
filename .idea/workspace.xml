@@ -4,10 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="fix: Map layout dan assembling action">
+    <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/Map.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/MapPizza.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/MapType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/TileState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/item/CombinedIngredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/item/CombinedIngredient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/enums/StationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/enums/StationType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/map/GameMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/order/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/order/OrderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/AssemblyStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/AssemblyStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/CuttingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/CuttingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/IngredientStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/IngredientStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/PlateStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/PlateStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/ServingCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/ServingCounter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/TrashStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/TrashStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,18 +43,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "meleppz"
-  }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/keisha-sakura/VERYCOOKED-TUBES-IF2010-K02-E.git",
-    "accountId": "832eec16-0e1e-4ef0-b97b-9d0e53ee67c3"
-  }
-}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$PROJECT_DIR$/../../../../Program Files/Java/jdk-21/lib/src.zip!/java.base/java/lang/String.java" root0="SKIP_INSPECTION" />
   </component>
@@ -117,6 +123,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+<<<<<<< HEAD
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -156,4 +163,6 @@
       </breakpoints>
     </breakpoint-manager>
   </component>
+=======
+>>>>>>> parent of 7b9e37d (fix: Map layout dan assembling action)
 </project>

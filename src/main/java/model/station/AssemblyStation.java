@@ -1,44 +1,51 @@
 
 package model.station;
 
+<<<<<<< HEAD
 import model.chef.Chef;
 import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.IngredientCombiner;
 import model.item.Item;
 import model.item.utensils.Plate;
+=======
+import model.position.*;
+import model.chef.*;
+>>>>>>> parent of 7b9e37d (fix: Map layout dan assembling action)
 import model.interfaces.Preparable;
 import model.position.Position;
 
 public class AssemblyStation extends Station {
-            public AssemblyStation(Position position) {
-                super(position, StationType.ASSEMBLY);
-            }
 
-            @Override
-            public void interact(Chef chef) {
-                if (PlatingHelper.handlePlateInHand(chef, this)) {
-                    return;
-                }
+    public AssemblyStation(Position position) {
+        super(position, StationType.ASSEMBLY);
+    }
 
-                if (PlatingHelper.handleUtensilInHand(chef, this)) {
-                    return;
-                }
+    @Override
+    public void interact(Chef chef) {
+        Item heldItem = chef.getInventory();
 
-                if (tryCombine(chef)) {
-                    return;
-                }
+        // case : Taruh item di station
+        if (heldItem != null && !hasItem()) {
+            setItemOnStation(heldItem);
+            chef.setInventory(null);
+            return;
+        }
 
-                Item heldItem = chef.getInventory();
+        // case :Ambil item dari station
+        if (heldItem == null && hasItem()) {
+            chef.setInventory(itemOnStation);
+            removeItemFromStation();
+            return;
+        }
 
-                if (heldItem != null && !hasItem()) {
-                    setItemOnStation(heldItem);
-                    chef.setInventory(null);
-                    return;
-                }
-
-                if (heldItem == null && hasItem()) {
-                    chef.setInventory(getItemOnStation());
+        // case : Plating: Chef pegang plate, station ada ingredient
+        if (heldItem instanceof Plate) {
+            Plate plate = (Plate) heldItem;
+            if (!plate.isDirty() && itemOnStation instanceof Preparable) {
+                Preparable prep = (Preparable) itemOnStation;
+                if (prep.canBePlacedOnPlate() && plate.canAddIngredient()) {
+                    plate.addIngredient(prep);
                     removeItemFromStation();
                 }
             }
