@@ -1,5 +1,6 @@
 package view;
 
+import javafx.animation.Interpolator;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -36,6 +37,51 @@ public class ChooseLevel {
         header.setPreserveRatio(true);
         header.setFitWidth(900);
 
+        //cloud
+        ImageView cloud1 = new ImageView(
+                new Image(getClass().getResource("/cloud1.png").toExternalForm())
+        );
+        cloud1.setPreserveRatio(true);
+        cloud1.setFitWidth(200);
+
+        ImageView cloud2 = new ImageView(
+                new Image(getClass().getResource("/cloud2.png").toExternalForm())
+        );
+        cloud2.setPreserveRatio(true);
+        cloud2.setFitWidth(200);
+
+        ImageView cloud3 = new ImageView(
+                new Image(getClass().getResource("/cloud3.png").toExternalForm())
+        );
+        cloud3.setPreserveRatio(true);
+        cloud3.setFitWidth(200);
+
+        ImageView cloud4 = new ImageView(
+                new Image(getClass().getResource("/cloud4.png").toExternalForm())
+        );
+        cloud4.setPreserveRatio(true);
+        cloud4.setFitWidth(200);
+
+        Pane cloudLayer = new Pane();
+        cloudLayer.getChildren().addAll(cloud1, cloud2, cloud3, cloud4);
+
+        cloud1.setLayoutX(955);
+        cloud1.setLayoutY(225);
+
+        cloud2.setLayoutX(400);
+        cloud2.setLayoutY(620);
+
+        cloud3.setLayoutX(100);
+        cloud3.setLayoutY(440);
+
+        cloud4.setLayoutX(725);
+        cloud4.setLayoutY(130);
+
+        addFloatingAnimation1(cloud1);
+        addFloatingAnimation2(cloud2);
+        addFloatingAnimation1(cloud3);
+        addFloatingAnimation2(cloud4);
+
         Button level1Btn = createImageButton("Medium.png");
         Button level2Btn = createImageButton("Easy.png");
         Button level3Btn = createImageButton("Hard.png");
@@ -55,6 +101,10 @@ public class ChooseLevel {
         level1Box.setCursor(javafx.scene.Cursor.HAND);
         level2Box.setCursor(javafx.scene.Cursor.HAND);
         level3Box.setCursor(javafx.scene.Cursor.HAND);
+
+        addHoverEffect(level1Btn);
+        addHoverEffect(level2Btn);
+        addHoverEffect(level3Btn);
 
         level1Box.setPadding(new Insets(40, 0, 0, 0));
         level3Box.setPadding(new Insets(40, 0, 0, 0));
@@ -76,6 +126,9 @@ public class ChooseLevel {
             Scene scene = landingPage.createScene(width, height);
             stage.setScene(scene);
         });
+
+        root.getChildren().addAll(cloudLayer);
+        StackPane.setAlignment(cloudLayer, Pos.TOP_LEFT);
 
         HBox levelBox = new HBox(40, level1Box, level2Box, level3Box);
         levelBox.setAlignment(Pos.CENTER);
@@ -135,17 +188,33 @@ public class ChooseLevel {
         tt.play();
     }
 
+    private void addFloatingAnimation1(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(3), node);
+        tt.setByX(-15);
+        tt.setAutoReverse(true);
+        tt.setCycleCount(TranslateTransition.INDEFINITE);
+        tt.setInterpolator(Interpolator.EASE_BOTH);
+        tt.play();
+    }
+
+    private void addFloatingAnimation2(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(1.8), node);
+        tt.setByX(5);
+        tt.setAutoReverse(true);
+        tt.setCycleCount(TranslateTransition.INDEFINITE);
+        tt.setInterpolator(Interpolator.EASE_BOTH);
+        tt.play();
+    }
+
     private void addHoverEffect(Button button) {
         button.setOnMouseEntered(e -> {
             button.setScaleX(1.05);
             button.setScaleY(1.05);
-            button.setOpacity(0.9);
         });
 
         button.setOnMouseExited(e -> {
             button.setScaleX(1.0);
             button.setScaleY(1.0);
-            button.setOpacity(1.0);
         });
     }
 }

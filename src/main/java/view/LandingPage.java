@@ -1,12 +1,16 @@
 package view;
 
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LandingPage {
     private final Stage stage;
@@ -72,6 +76,11 @@ public class LandingPage {
 
         cloud4.setLayoutX(725);
         cloud4.setLayoutY(130);
+
+        addFloatingAnimation(cloud1);
+        addFloatingAnimation1(cloud2);
+        addFloatingAnimation(cloud3);
+        addFloatingAnimation1(cloud4);
 
         ImageView pikachu = new ImageView(
                 new Image(getClass().getResource("/pikachu.png").toExternalForm())
@@ -141,6 +150,24 @@ public class LandingPage {
         button.setBorder(Border.EMPTY);
 
         return button;
+    }
+
+    private void addFloatingAnimation(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(3), node);
+        tt.setByX(-15);
+        tt.setAutoReverse(true);
+        tt.setCycleCount(TranslateTransition.INDEFINITE);
+        tt.setInterpolator(Interpolator.EASE_BOTH);
+        tt.play();
+    }
+
+    private void addFloatingAnimation1(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(1.8), node);
+        tt.setByX(5);
+        tt.setAutoReverse(true);
+        tt.setCycleCount(TranslateTransition.INDEFINITE);
+        tt.setInterpolator(Interpolator.EASE_BOTH);
+        tt.play();
     }
 
     private void addHoverEffect(Button button) {
