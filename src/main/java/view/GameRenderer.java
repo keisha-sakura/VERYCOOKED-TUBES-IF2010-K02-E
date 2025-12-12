@@ -89,6 +89,9 @@ public class GameRenderer {
                     order.getRecipe().getName(),
                     order.getTimeRemaining());
         }
+        if (controller.getOrderManager().getActiveOrders().isEmpty()) {
+            System.out.println("  No active orders");
+        }
         System.out.println();
     }
 
@@ -119,11 +122,12 @@ public class GameRenderer {
                 }
             }
         }
-
+        System.out.println();
     }
 
+
     private char itemSymbol(Item item) {
-        if (item.getName().isEmpty()) {
+        if (item == null || item.getName() == null || item.getName().isEmpty()) {
             return '?';
         }
         return Character.toUpperCase(item.getName().charAt(0));

@@ -43,7 +43,7 @@ public class StationFactory {
         if (y == 9 && x == 6) {
             return new IngredientStorage(pos, Dough.class);
         }
-        // Default: Dough
+
         return new IngredientStorage(pos, Dough.class);
     }
 
