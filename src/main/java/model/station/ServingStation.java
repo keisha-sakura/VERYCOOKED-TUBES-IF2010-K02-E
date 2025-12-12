@@ -5,6 +5,7 @@ import main.java.model.map.*;
 import main.java.model.chef.*;
 import main.java.model.recipe.*;
 import main.java.model.order.*;
+import main.java.GameManager;
 
 import java.util.*;
 
