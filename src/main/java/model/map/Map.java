@@ -35,6 +35,14 @@ public class Map {
         return tiles[pos.getRow()][pos.getCol()];
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     public void displayMap(){
         for(int i = 0; i < this.height; i++){
             System.out.println("+--+--+--+--+--+--+--+--+--+--+--+--+--+--+");
