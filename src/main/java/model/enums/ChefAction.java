@@ -6,5 +6,6 @@ public enum ChefAction {
     CHOPPING,
     COOKING,
     WASHING,
-    SERVING
+    SERVING,
+    ASSEMBLING
 }
