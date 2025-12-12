@@ -21,6 +21,7 @@ import model.enums.GameStatus;
 import model.enums.IngredientState;
 import model.item.Ingredient;
 import model.item.Item;
+import model.item.utensils.Plate;
 import model.map.Map;
 import model.map.Tile;
 import model.order.Order;
