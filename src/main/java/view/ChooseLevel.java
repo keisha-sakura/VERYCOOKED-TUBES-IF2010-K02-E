@@ -64,9 +64,12 @@ public class ChooseLevel {
         back.setCursor(javafx.scene.Cursor.HAND);
         addHoverEffect(back);
 
-        level1Btn.setOnAction(e -> System.out.println("Level 1 clicked"));
-        level2Btn.setOnAction(e -> System.out.println("Level 2 clicked"));
-        level3Btn.setOnAction(e -> System.out.println("Level 3 clicked"));
+        level1Btn.setOnAction(e -> System.out.println("Level Medium masih terkunci!"));
+        level2Btn.setOnAction(e -> {
+            GamePlay gamePlay = new GamePlay(stage);
+            gamePlay.show();
+        });
+        level3Btn.setOnAction(e -> System.out.println("Level Hard masih terkunci!"));
 
         back.setOnAction(e -> {
             LandingPage landingPage = new LandingPage(stage);
