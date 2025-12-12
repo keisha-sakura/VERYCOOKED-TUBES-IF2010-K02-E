@@ -3,7 +3,6 @@ package main.java.model.map;
 import main.java.model.station.*;
 import main.java.model.item.*;
 import main.java.model.*;
-import main.java.model.item.*;
 
 
 public class MapBuilder {
@@ -67,6 +66,8 @@ public class MapBuilder {
                 {'X', 'X', 'X', 'X', 'A', 'A', '5', 'A', 'A', 'A', 'X', 'X', 'X', 'X'}};
 
         return mapImporter(mapmatrix);
+    }
+
     private static String getDefaultIngredientType() {
         String type = INGREDIENT_TYPES[ingredientCounter % INGREDIENT_TYPES.length];
         ingredientCounter++;
