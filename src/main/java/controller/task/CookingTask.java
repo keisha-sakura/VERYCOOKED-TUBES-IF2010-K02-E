@@ -32,6 +32,7 @@ public class CookingTask extends Thread {
                 }
             }
 
+            oven.setIsCooking(false);
             System.out.println("Oven finished cooking! Take items before they burn!");
 
             int additionalTime = burningDuration - cookingDuration;
@@ -46,7 +47,6 @@ public class CookingTask extends Thread {
 
         } catch (InterruptedException e) {
             System.out.println("Cooking interrupted");
-        } finally {
             oven.setIsCooking(false);
         }
     }
