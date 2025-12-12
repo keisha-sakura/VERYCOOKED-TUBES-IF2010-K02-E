@@ -68,4 +68,8 @@ public abstract class Ingredient extends Item implements Preparable {
     
     @Override
     public abstract Ingredient clone();
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

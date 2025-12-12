@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="" />
-=======
-    <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="fix: Map layout dan assembling action">
+    <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/item/CombinedIngredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/item/CombinedIngredient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" afterDir="false" />
     </list>
->>>>>>> refactor
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,18 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "meleppz"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;meleppz&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/keisha-sakura/VERYCOOKED-TUBES-IF2010-K02-E.git",
-    "accountId": "832eec16-0e1e-4ef0-b97b-9d0e53ee67c3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/keisha-sakura/VERYCOOKED-TUBES-IF2010-K02-E.git&quot;,
+    &quot;accountId&quot;: &quot;832eec16-0e1e-4ef0-b97b-9d0e53ee67c3&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$PROJECT_DIR$/../../../../Program Files/Java/jdk-21/lib/src.zip!/java.base/java/lang/String.java" root0="SKIP_INSPECTION" />
   </component>
@@ -54,7 +50,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Main.executor": "Debug",
+    "Application.Main.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -78,6 +74,7 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="VERYCOOKED-TUBES-IF2010-K02-E" />
+      <option name="VM_PARAMETERS" value="java --module-path &quot;C:\Users\Keisha Sakura\Downloads\openjfx-21.0.9_windows-x64_bin-sdk\javafx-sdk-21.0.9\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -121,8 +118,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-<<<<<<< HEAD
-=======
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -151,18 +146,12 @@
     <MESSAGE value="fix: Map layout dan assembling action" />
     <option name="LAST_COMMIT_MESSAGE" value="fix: Map layout dan assembling action" />
   </component>
->>>>>>> refactor
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-<<<<<<< HEAD
-          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
-          <line>1</line>
-=======
           <url>file://$PROJECT_DIR$/src/main/java/model/station/StationFactory.java</url>
           <line>27</line>
->>>>>>> refactor
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

@@ -11,6 +11,7 @@ public class CombinedIngredient extends Ingredient {
     private final List<Ingredient> components;
 
     public CombinedIngredient(List<Ingredient> ingredients) {
+        super("Combined Ingredient", false, true);
         List<Ingredient> flattened = flattenInput(ingredients);
         if (flattened.isEmpty()) {
             throw new IllegalArgumentException("CombinedIngredient requires at least one component");
