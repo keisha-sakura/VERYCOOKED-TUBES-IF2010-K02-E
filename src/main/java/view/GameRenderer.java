@@ -120,12 +120,13 @@ public class GameRenderer {
             }
         }
 
-        private char itemSymbol(Item item) {
-            if (item.getName().isEmpty()) {
-                return '?';
-            }
-            return Character.toUpperCase(item.getName().charAt(0));
+    }
+
+    private char itemSymbol(Item item) {
+        if (item.getName().isEmpty()) {
+            return '?';
         }
+        return Character.toUpperCase(item.getName().charAt(0));
     }
 
     public void renderMenu() {

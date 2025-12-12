@@ -16,7 +16,8 @@ public class CombinedIngredient extends Ingredient {
             throw new IllegalArgumentException("CombinedIngredient requires at least one component");
         }
 
-        super(buildName(flattened), false, false);
+        super("", false, false);
+
         this.components = new ArrayList<>();
         for (Ingredient ingredient : flattened) {
             if (ingredient instanceof CombinedIngredient) {
