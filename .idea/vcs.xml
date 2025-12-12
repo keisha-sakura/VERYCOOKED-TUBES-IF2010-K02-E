@@ -3,8 +3,11 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
 >>>>>>> src
+=======
+>>>>>>> develop-merge
   </component>
 </project>

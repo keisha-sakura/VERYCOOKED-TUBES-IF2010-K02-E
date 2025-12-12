@@ -1,4 +1,4 @@
-package main.java.model.chef;
+package model.chef;
 
 public enum Direction{
     UP,

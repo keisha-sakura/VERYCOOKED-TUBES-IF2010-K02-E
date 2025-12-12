@@ -3,14 +3,10 @@ package model.chef;
 import java.util.List;
 import model.item.*;
 import model.map.*;
-import model.chef.Direction;
+import model.chef.*;
 import model.station.*;
-import model.chef.ChefBusyException;
-import model.chef.ChefException;
-import model.chef.InventoryEmptyException;
-import model.chef.InventoryFullException;
 
-class Chef {
+public class Chef {
     private String id;
     private String name;
     private Position position;
@@ -23,7 +19,7 @@ class Chef {
     private static final long DASH_COOLDOWN = 3000; // 3 detik
     private static final int DASH_DISTANCE = 2; // Jarak dash
 
-    Chef(String id, String name, Position position, Direction direction, Item inventory) {
+    public Chef(String id, String name, Position position, Direction direction, Item inventory) {
         this.id = id;
         this.name = name;
         this.position = position;
@@ -263,63 +259,63 @@ class Chef {
 
 
     // Getter and Setter
-    Position getPosition() {
+    public Position getPosition() {
         return this.position;
     }
 
-    void setPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    String getId() {
+    public String getId() {
         return this.id;
     }
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    String getName() {
+    public String getName() {
         return this.name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    Direction getDirection() {
+    public Direction getDirection() {
         return this.direction;
     }
 
-    void setDirection(Direction direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    Item getInventory() {
+    public Item getInventory() {
         return this.inventory;
     }
 
-    void setInventory(Item item) {
+    public void setInventory(Item item) {
         this.inventory = item;
     }
 
-    boolean isHoldingItem() {
+    public boolean isHoldingItem() {
         return this.inventory != null;
     }
 
-    boolean isActive(){
+    public boolean isActive(){
         return this.isActive;
     }
 
-    void setActive(boolean isActive){
+    public void setActive(boolean isActive){
         this.isActive = isActive;
     }
 
-    boolean isBusy(){
+    public boolean isBusy(){
         return this.isBusy;
     }
 
-    void setIsBusy(boolean isBusy){
+    public void setIsBusy(boolean isBusy){
         this.isBusy = isBusy;
     }
 }

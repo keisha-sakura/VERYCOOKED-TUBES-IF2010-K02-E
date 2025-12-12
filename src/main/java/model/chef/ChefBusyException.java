@@ -1,4 +1,5 @@
-package main.java.model.chef;
+
+package model.chef;
 
 public class ChefBusyException extends ChefException {
     public ChefBusyException(String message) {
