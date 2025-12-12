@@ -1,5 +1,7 @@
 package model.position;
 
+import model.enums.*;
+
 public class Position {
     private int x;
     private int y;

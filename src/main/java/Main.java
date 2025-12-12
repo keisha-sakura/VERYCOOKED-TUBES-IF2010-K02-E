@@ -1,14 +1,16 @@
-import controller.GameController;
+import controller.*;
 import model.enums.*;
 import model.enums.*;
 import view.GameRenderer;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     private static final int GAME_DURATION = 180; // 3 menit
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Initializing VeryCooked... ");
 
         boolean running = true;
@@ -65,7 +67,7 @@ public class Main {
         System.out.println("  Q - Quit game");
     }
 
-    private static void playGame() {
+    private static void playGame() throws IOException {
         GameController controller = new GameController(GAME_DURATION);
         GameRenderer renderer = new GameRenderer(controller);
 

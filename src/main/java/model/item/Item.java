@@ -1,6 +1,6 @@
 package model.item;
 
-import model.core.Position;
+import model.position.*;
 
 public abstract class Item {
     protected String name;

@@ -1,7 +1,7 @@
 package controller;
 
-import model.core.Position;
-import model.entity.Chef;
+import model.position.*;
+import model.chef.*;
 import model.enums.Direction;
 import model.enums.GameStatus;
 import model.map.GameMap;

@@ -1,6 +1,6 @@
 package model.interfaces;
 
-import model.entity.Chef;
+import model.chef.*;
 
 public interface Interactable {
     void interact(Chef chef);

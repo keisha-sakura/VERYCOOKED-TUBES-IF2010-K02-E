@@ -1,6 +1,6 @@
 package controller.task;
 
-import model.entity.Chef;
+import model.chef.*;
 import model.enums.ChefAction;
 import model.item.Ingredient;
 

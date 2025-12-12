@@ -8,7 +8,6 @@ import model.interfaces.Preparable;
 import model.item.Item;
 import model.item.utensils.Plate;
 
-
 public class AssemblyStation extends Station {
     
     public AssemblyStation(Position position) {
