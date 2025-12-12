@@ -3,9 +3,9 @@ package model.station;
 
 import model.position.*;
 import model.chef.*;
-import model.enums.StationType;
 import model.item.Item;
 import model.item.utensils.KitchenUtensil;
+import model.enums.*;
 
 
 public class TrashStation extends Station {

@@ -4,12 +4,12 @@ package model.station;
 import model.position.*;
 import model.chef.*;
 import model.enums.ChefAction;
-import model.enums.StationType;
 import model.interfaces.Preparable;
 import model.item.Item;
 import model.item.Ingredient;
 import model.item.utensils.Plate;
 import controller.task.ChoppingTask;
+import model.enums.*;
 
 
 public class CuttingStation extends Station {

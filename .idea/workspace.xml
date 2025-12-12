@@ -5,7 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5513d7b-43b9-48ed-b4ff-47d6bdb09190" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/station/TrashStation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/Map.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/MapPizza.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/MapType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/map/TileState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/station/StationFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/enums/StationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/enums/StationType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/map/GameMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/order/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/order/OrderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/AssemblyStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/AssemblyStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/CookingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/CuttingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/CuttingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/IngredientStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/IngredientStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/PlateStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/PlateStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/ServingCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/ServingCounter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/TrashStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/TrashStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/station/WashingStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/GameRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +43,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../../../Program Files/Java/jdk-21/lib/src.zip!/java.base/java/lang/String.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -30,33 +54,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "refactor",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/Keisha Sakura/Documents/VERYCOOKED-TUBES-IF2010-K02-E/src/Main.java",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Keisha Sakura/Documents/VERYCOOKED-TUBES-IF2010-K02-E/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="VERYCOOKED-TUBES-IF2010-K02-E" />
-      <option name="VM_PARAMETERS" value="java --module-path &quot;C:\Users\Keisha Sakura\Downloads\openjfx-21.0.9_windows-x64_bin-sdk\javafx-sdk-21.0.9\lib&quot; --add-modules javafx.controls,javafx.fxml -classpath . view.Main " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -83,7 +106,8 @@
       <option name="presentableId" value="Default" />
       <updated>1765532144668</updated>
       <workItem from="1765532146483" duration="1349000" />
-      <workItem from="1765533984116" duration="1107000" />
+      <workItem from="1765533984116" duration="3851000" />
+      <workItem from="1765542980118" duration="8620000" />
     </task>
     <servers />
   </component>

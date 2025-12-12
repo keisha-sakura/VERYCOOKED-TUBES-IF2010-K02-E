@@ -1,18 +1,19 @@
 package controller;
 
+import model.map.MapPizza;
 import model.position.*;
 import model.chef.*;
 import model.enums.Direction;
 import model.enums.GameStatus;
-import model.map.GameMap;
 import model.order.OrderManager;
 import model.station.*;
 import controller.task.OrderTimerTask;
 import java.util.ArrayList;
 import java.util.List;
+import model.map.Map;
 
 public class GameController {
-    private GameMap gameMap;
+    private Map gameMap;
     private List<Chef> chefs;
     private int activeChefIndex;
     private OrderManager orderManager;
@@ -23,7 +24,7 @@ public class GameController {
     private OrderTimerTask orderTimerTask;
 
     public GameController(int gameDurationSeconds) {
-        this.gameMap = new GameMap();
+        this.gameMap = new Map(new MapPizza());
         this.chefs = new ArrayList<>();
         this.activeChefIndex = 0;
         this.orderManager = new OrderManager();
@@ -135,7 +136,7 @@ public class GameController {
         return new ArrayList<>(chefs);
     }
 
-    public GameMap getGameMap() {
+    public Map getGameMap() {
         return gameMap;
     }
 

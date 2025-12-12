@@ -3,9 +3,9 @@ package model.station;
 
 import model.position.*;
 import model.chef.*;
-import model.enums.StationType;
 import model.interfaces.Interactable;
 import model.item.Item;
+import model.enums.*;
 
 //superclass (abstact)
 public abstract class Station implements Interactable {

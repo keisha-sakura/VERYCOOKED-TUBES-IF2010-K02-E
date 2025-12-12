@@ -42,7 +42,7 @@ public class GameRenderer {
     }
 
     private void renderMap() {
-        GameMap map = controller.getGameMap();
+        Map map = controller.getGameMap();
         char[][] grid = map.getGrid();
         List<Chef> chefs = controller.getAllChefs();
 

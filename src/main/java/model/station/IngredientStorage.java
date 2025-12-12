@@ -3,11 +3,11 @@ package model.station;
 
 import model.position.*;
 import model.chef.*;
-import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.Item;
 import model.item.utensils.Plate;
 import model.interfaces.Preparable;
+import model.enums.*;
 
 //unlimited ingredient
 public class IngredientStorage extends Station {

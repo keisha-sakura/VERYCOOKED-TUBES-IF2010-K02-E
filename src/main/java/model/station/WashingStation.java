@@ -4,11 +4,11 @@ package model.station;
 import model.position.*;
 import model.chef.*;
 import model.enums.ChefAction;
-import model.enums.StationType;
 import model.item.Item;
 import model.item.utensils.Plate;
 import controller.task.WashingTask;
 import java.util.Stack;
+import model.enums.*;
 
 public class WashingStation extends Station {
     private Stack<Plate> dirtyPlates; // Stack plate kotor

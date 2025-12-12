@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 //Thread-safe menggunakan ConcurrentLinkedQueue
 public class OrderManager {
     private static final int MAX_ACTIVE_ORDERS = 5;
-    private static final int ORDER_TIME_LIMIT = 60; // 60 detik per order
+    private static final int ORDER_TIME_LIMIT = 600; // 60 detik per order
     
     private Queue<Order> activeOrders;
     private RecipeBook recipeBook;
