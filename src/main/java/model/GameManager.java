@@ -207,12 +207,8 @@ public class GameManager {
 
         try {
             if (frontTile instanceof StationTile stationTile) {
-                Station station = stationTile.getStation();
-                if (!canPlaceItemOnStation(station)) {
-                    System.out.println("Chef cannot place that item here.");
-                    return;
-                }
-                station.interact(activeChef);
+                // For pickup/drop, ignore station interaction; use dedicated interact() method
+                System.out.println("Use 'V' to interact with stations.");
                 return;
             }
 
@@ -222,6 +218,56 @@ public class GameManager {
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    // Separate interaction handler for stations
+    public void interact() {
+        if (activeChef == null || gameMap == null) {
+            System.out.println("No active chef to control.");
+            return;
+        }
+
+        Tile frontTile = getFrontTile();
+        if (!(frontTile instanceof StationTile stationTile)) {
+            System.out.println("Nothing to interact with.");
+            return;
+        }
+
+        Station station = stationTile.getStation();
+        try {
+            station.interact(activeChef);
+            if (station instanceof ServingStation servingStation) {
+                Plate servedPlate = servingStation.consumeLastServedPlate();
+                if (servedPlate != null) {
+                    handleDirtyPlate(servedPlate);
+                }
+            }
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    // Route dirty plate to the plate storage
+    public void handleDirtyPlate(Plate plate) {
+        if (plate == null) return;
+        PlateStorage storage = locatePlateStorage();
+        if (storage == null) {
+            System.out.println("No plate storage available.");
+            return;
+        }
+        storage.receiveDirtyPlate(plate);
+    }
+
+    private PlateStorage locatePlateStorage() {
+        for (int r = 0; r < gameMap.getHeight(); r++) {
+            for (int c = 0; c < gameMap.getWidth(); c++) {
+                Tile t = gameMap.getTile(r, c);
+                if (t instanceof StationTile st && st.getStation() instanceof PlateStorage ps) {
+                    return ps;
+                }
+            }
+        }
+        return null;
     }
 
     private void handleFloorTilePickupDrop(Tile frontTile) throws ChefException {

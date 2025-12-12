@@ -5,7 +5,7 @@ import main.java.model.map.*;
 import main.java.model.chef.*;
 import main.java.model.recipe.*;
 import main.java.model.order.*;
-import main.java.GameManager;
+// Removed GameManager dependency
 
 import java.util.*;
 
@@ -15,13 +15,13 @@ import java.util.*;
 // ServingStation.java
 public class ServingStation extends Station {
     private OrderManager orderManager;
-    private GameManager gameManager;
+    private Plate lastServedPlate;
     private final Object lock = new Object();
 
     public ServingStation(Position pos) {
         super(pos);
         this.orderManager = OrderManager.getInstance();
-        this.gameManager = GameManager.getInstance();
+        this.lastServedPlate = null;
     }
 
 
@@ -54,9 +54,9 @@ public class ServingStation extends Station {
                 System.out.println("✗ Dish does not match any order");
             }
 
-            // Return dirty plate - let GameManager handle the routing
+            // Mark plate for GameManager to route as dirty later
             chef.setInventory(null);
-            gameManager.handleDirtyPlate(plate);
+            lastServedPlate = plate;
         }
     }
 
@@ -100,5 +100,12 @@ public class ServingStation extends Station {
         }
 
         return dishMap.equals(recipeMap);
+    }
+
+    // Exposed for GameManager: retrieve and clear the last served plate
+    public Plate consumeLastServedPlate() {
+        Plate plate = lastServedPlate;
+        lastServedPlate = null;
+        return plate;
     }
 }
