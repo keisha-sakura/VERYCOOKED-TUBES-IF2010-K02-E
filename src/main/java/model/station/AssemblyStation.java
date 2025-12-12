@@ -47,5 +47,5 @@ public class AssemblyStation extends Station {
     public boolean canInteract(Chef chef) {
         return true;
     }
-
+}
  
