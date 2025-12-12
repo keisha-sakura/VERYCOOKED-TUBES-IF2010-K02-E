@@ -1,10 +1,10 @@
 package model.item.utensils;
 
-import java.util.StringJoiner;
-import java.util.List;
+// import java.util.StringJoiner;
+// import java.util.List;
 import model.interfaces.Preparable;
-import model.item.CombinedIngredient;
-import model.item.Ingredient;
+
+// import model.item.Ingredient;
 
 public class Plate extends KitchenUtensil {
     private boolean isDirty;
@@ -31,33 +31,12 @@ public class Plate extends KitchenUtensil {
     public boolean canAddIngredient() {
         return !isDirty && contents.size() < MAX_CAPACITY;
     }
+    public void addIngredient(Preparable ingredient) {
+        if (canAddIngredient()) {
+            contents.add(ingredient);
     
-    // Accept either a single ingredient or a combined bundle so plating stays simple.
-    public boolean addIngredient(Preparable ingredient) {
-        if (ingredient instanceof CombinedIngredient) {
-            CombinedIngredient combined = (CombinedIngredient) ingredient;
-            List<Ingredient> components = combined.getComponents();
-            if (components.size() > getRemainingSlots()) {
-                return false;
-            }
-            for (Ingredient component : components) {
-                if (!addIngredient(component)) {
-                    return false;
-                }
-            }
-            return true;
         }
 
-        if (!canAddIngredient()) {
-            return false;
-        }
-
-        contents.add(ingredient);
-        return true;
-    }
-
-    public int getRemainingSlots() {
-        return isDirty ? 0 : MAX_CAPACITY - contents.size();
     }
     
     public void removeIngredient(Preparable ingredient) {
@@ -77,14 +56,6 @@ public class Plate extends KitchenUtensil {
     @Override
     public String toString() {
         String status = isDirty ? " (Kotor)" : " (Bersih)";
-        if (contents.isEmpty()) {
-            return name + status + " [Kosong]";
-        }
-
-        StringJoiner joiner = new StringJoiner("+");
-        for (Preparable prep : contents) {
-            joiner.add(prep.getName());
-        }
-        return name + status + " [" + joiner.toString() + "]";
+        
     }
 }

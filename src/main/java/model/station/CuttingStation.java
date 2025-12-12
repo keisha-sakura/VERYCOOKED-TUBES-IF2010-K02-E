@@ -18,14 +18,7 @@ public class CuttingStation extends Station {
     
     @Override
     public void interact(Chef chef) {
-        // Cutting tables also support plating transfers before other actions.
-        if (PlatingHelper.handlePlateInHand(chef, this)) {
-            return;
-        }
-
-        if (PlatingHelper.handleUtensilInHand(chef, this)) {
-            return;
-        }
+        
 
         Item heldItem = chef.getInventory();
         
@@ -50,6 +43,26 @@ public class CuttingStation extends Station {
                 ChoppingTask task = new ChoppingTask(chef, ing, CHOPPING_DURATION);
                 chef.setCurrentAction(ChefAction.CHOPPING);
                 task.start();
+            }
+       }
+        
+        
+        handlePlating(chef);
+    }
+    
+    
+    private void handlePlating(Chef chef) {
+        Item heldItem = chef.getInventory();
+        
+        
+        if (heldItem instanceof Plate) {
+            Plate plate = (Plate) heldItem;
+            if (!plate.isDirty() && itemOnStation instanceof Preparable) {
+                Preparable prep = (Preparable) itemOnStation;
+                if (prep.canBePlacedOnPlate()) {
+                    plate.addIngredient(prep);
+                    removeItemFromStation();
+                }
             }
         }
     }
