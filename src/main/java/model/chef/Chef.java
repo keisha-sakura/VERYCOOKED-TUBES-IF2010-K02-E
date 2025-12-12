@@ -26,9 +26,9 @@ public class Chef {
 
     }
 
-    public void move(Map map, int rowChange, int colChange) {
+    public boolean move(Map map, int rowChange, int colChange) {
         if (isBusy) {
-            return;
+            return false;
         }
 
         int newRow = this.position.getRow() + rowChange;
@@ -37,25 +37,26 @@ public class Chef {
         Tile targetTile = map.getTile(newRow, newCol);
         if (targetTile != null && targetTile.isWalkable()) {
             this.position = new Position(newRow, newCol);
+            return true;
         }
-
+        return false;
     }
 
-    public void moveUp(Map map) {
+    public boolean moveUp(Map map) {
         this.direction = Direction.UP;
-        move(map, -1, 0);
+        return move(map, -1, 0);
     }
-    public void moveDown(Map map) {
+    public boolean moveDown(Map map) {
         this.direction = Direction.DOWN;
-        move(map, 1, 0);
+        return move(map, 1, 0);
     }
-    public void moveLeft(Map map) {
+    public boolean moveLeft(Map map) {
         this.direction = Direction.LEFT;
-        move(map, 0, -1);
+        return move(map, 0, -1);
     }
-    public void moveRight(Map map) {
+    public boolean moveRight(Map map) {
         this.direction = Direction.RIGHT;
-        move(map, 0, 1);
+        return move(map, 0, 1);
     }
 
     void dashUp() {

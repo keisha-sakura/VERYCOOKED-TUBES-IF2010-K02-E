@@ -17,9 +17,8 @@ public class ServingStation extends Station {
     private OrderManager orderManager;
     private final Object lock = new Object();
 
-    public ServingStation(Position pos, PlateStorage plateStorage) {
+    public ServingStation(Position pos) {
         super(pos);
-        this.plateStorage = plateStorage;
         this.orderManager = OrderManager.getInstance();
     }
 

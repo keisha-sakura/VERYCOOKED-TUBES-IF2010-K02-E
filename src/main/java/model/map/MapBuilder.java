@@ -2,7 +2,7 @@ package main.java.model.map;
 
 import main.java.model.station.*;
 import main.java.model.*;
-import main.java.item.*
+import main.java.model.item.*;
 
 
 public class MapBuilder {
@@ -39,7 +39,11 @@ public class MapBuilder {
             case 'R' : return new StationTile(pos, new CookingStation(pos, new Oven()));
             case 'S' : return new StationTile(pos, new ServingStation(pos));
             case 'W' : return new StationTile(pos, new WashingStation(pos));
-            case 'I' : return new StationTile(pos, new IngredientStation(pos, getDefaultIngredientType()));
+            case '1' : return new StationTile(pos, new IngredientStation(pos, "ayam"));
+            case '2' : return new StationTile(pos, new IngredientStation(pos, "tomat"));
+            case '3' : return new StationTile(pos, new IngredientStation(pos, "keju"));
+            case '4' : return new StationTile(pos, new IngredientStation(pos, "sosis"));
+            case '5' : return new StationTile(pos, new IngredientStation(pos, "adonan"));
             case 'P' : return new StationTile(pos, new PlateStorage(pos, 50));
 
             default : throw new IllegalArgumentException();
@@ -52,12 +56,12 @@ public class MapBuilder {
                 {'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X'},
                 {'X', '.', '.', '.', '.', '.', 'A', '.', '.', '.', '.', '.', 'S', 'X'},
                 {'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'S', 'X'},
-                {'X', 'W', 'W', 'A', 'I', 'A', 'I', 'A', 'I', 'A', 'I', 'A', 'P', 'X'},
+                {'X', 'W', 'W', 'A', '1', 'A', '2', 'A', '3', 'A', '4', 'A', 'P', 'X'},
                 {'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'S', 'X'},
                 {'X', 'X', 'X', 'X', '.', '.', 'A', '.', '.', '.', 'X', 'X', 'X', 'X'},
                 {'X', 'R', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'R', 'X'},
                 {'X', 'X', 'X', 'X', '.', '.', '.', '.', '.', '.', 'X', 'X', 'X', 'X'},
-                {'X', 'X', 'X', 'X', 'A', 'A', 'I', 'A', 'A', 'A', 'X', 'X', 'X', 'X'}};
+                {'X', 'X', 'X', 'X', 'A', 'A', '5', 'A', 'A', 'A', 'X', 'X', 'X', 'X'}};
 
         return mapImporter(mapmatrix);
     }
