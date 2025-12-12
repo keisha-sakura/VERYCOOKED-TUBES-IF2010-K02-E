@@ -23,7 +23,8 @@ public class GameManager {
 
     private OrderManager orderManager;
     private RecipePool recipePool;
-    private List<Chef> chefs;
+    private Chef primaryChef;
+    private Chef secondaryChef;
     private Map gameMap;
 
     private Chef activeChef;
@@ -39,15 +40,13 @@ public class GameManager {
 
         Chef c2 = new Chef("02", "Jigglypuff", new Position(7, 5), Direction.DOWN, null);
         gameMap.getTile(7, 5).setChef(c2);
+        this.primaryChef = c1;
+        this.secondaryChef = c2;
         this.activeChef = c1;
         this.totalScore = 0;
         this.pizzaServed = 0;
         this.pizzaBurned = 0;
         this.isGameRunning = false;
-
-        this.chefs = new ArrayList<>();
-        this.chefs.add(c1);
-        this.chefs.add(c2);
 
         this.orderManager = OrderManager.getInstance();
         this.recipePool = new RecipePool();
@@ -180,6 +179,18 @@ public class GameManager {
         gameMap.getTile(oldPos.getRow(), oldPos.getCol()).removeChef();
         gameMap.getTile(activeChef.getPosition().getRow(), activeChef.getPosition().getCol()).setChef(activeChef);
         return true;
+    }
+
+    public void switchActiveChef() {
+        Chef previousChef = activeChef;
+
+        if (previousChef == primaryChef) {
+            activeChef = secondaryChef;
+        } else {
+            activeChef = primaryChef;
+        }
+
+        System.out.println("Switched control to " + describeChef(activeChef) + ".");
     }
 
     public void handlePickupOrDrop() {
@@ -358,6 +369,16 @@ public class GameManager {
         return item.getClass().getSimpleName();
     }
 
+    private String describeChef(Chef chef) {
+        if (chef == primaryChef) {
+            return "Chef 1";
+        }
+        if (chef == secondaryChef) {
+            return "Chef 2";
+        }
+        return "Chef";
+    }
+
     // Getters
     public int getTotalScore() { synchronized (scoreLock) { return totalScore; } }
     public int getPizzaServed() { synchronized (scoreLock) { return pizzaServed; } }
@@ -366,6 +387,11 @@ public class GameManager {
     public long getElapsedSeconds() { return (System.currentTimeMillis() - gameStartTime) / 1000; }
     public long getRemainingSeconds() { return Math.max(0, GAME_DURATION - getElapsedSeconds()); }
     public Map getGameMap() { return gameMap; }
-    public List<Chef> getChefs() { return new ArrayList<>(chefs); }
+    public List<Chef> getChefs() {
+        List<Chef> list = new ArrayList<>();
+        if (primaryChef != null) list.add(primaryChef);
+        if (secondaryChef != null) list.add(secondaryChef);
+        return list;
+    }
     public OrderManager getOrderManager() { return orderManager; }
 }

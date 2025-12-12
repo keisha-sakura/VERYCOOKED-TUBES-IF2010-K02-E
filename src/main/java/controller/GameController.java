@@ -28,6 +28,9 @@ public class GameController {
             case C:
                 gameManager.handlePickupOrDrop();
                 break;
+            case B:
+                gameManager.switchActiveChef();
+                break;
             default:
                 break;
         }
