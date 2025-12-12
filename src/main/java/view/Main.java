@@ -1,4 +1,3 @@
-// File: view/Main.java (atau tetap GameRenderer.java)
 package view;
 
 import javafx.application.Application;

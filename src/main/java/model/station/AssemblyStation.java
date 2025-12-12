@@ -1,4 +1,3 @@
-
 package model.station;
 
 import model.position.*;

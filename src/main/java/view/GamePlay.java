@@ -1,4 +1,3 @@
-// File: view/GamePlay.java
 package view;
 
 import controller.GameController;
