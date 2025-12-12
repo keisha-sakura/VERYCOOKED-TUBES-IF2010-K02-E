@@ -219,8 +219,7 @@ public class ChooseLevel {
     private void startGame(String difficulty) {
         System.out.println("Starting game with difficulty: " + difficulty);
 
-        GamePlay gamePlay = new GamePlay(stage, difficulty);
-
-        gamePlay.show();
+        GameRender gameRender = new GameRender(stage, difficulty);
+        gameRender.showGame();
     }
 }
