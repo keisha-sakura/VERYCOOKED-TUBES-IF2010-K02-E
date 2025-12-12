@@ -15,8 +15,8 @@ import controller.task.ChoppingTask;
 public class CuttingStation extends Station {
     private static final int CHOPPING_DURATION = 3000; // 3 detik
     
-    public CuttingStation(Position position) {
-        super(position, StationType.CUTTING);
+    public CuttingStation() {
+        super(StationType.CUTTING);
     }
     
     @Override

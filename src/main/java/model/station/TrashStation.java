@@ -10,8 +10,8 @@ import model.item.utensils.KitchenUtensil;
 
 public class TrashStation extends Station {
     
-    public TrashStation(Position position) {
-        super(position, StationType.TRASH);
+    public TrashStation() {
+        super(StationType.TRASH);
     }
     
     @Override

@@ -19,8 +19,8 @@ public class ServingCounter extends Station {
     private OrderManager orderManager;
     private GameController gameController;
     
-    public ServingCounter(Position position) {
-        super(position, StationType.SERVING);
+    public ServingCounter() {
+        super(StationType.SERVING);
     }
     
     public void setOrderManager(OrderManager om) {

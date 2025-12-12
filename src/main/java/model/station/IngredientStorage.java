@@ -13,8 +13,8 @@ import model.interfaces.Preparable;
 public class IngredientStorage extends Station {
     private Class<? extends Ingredient> ingredientType;
     
-    public IngredientStorage(Position position, Class<? extends Ingredient> type) {
-        super(position, StationType.INGREDIENT_STORAGE);
+    public IngredientStorage(Class<? extends Ingredient> type) {
+        super(StationType.INGREDIENT_STORAGE);
         this.ingredientType = type;
     }
     

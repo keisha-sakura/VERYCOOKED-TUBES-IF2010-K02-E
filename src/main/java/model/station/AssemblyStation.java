@@ -11,8 +11,8 @@ import model.item.utensils.Plate;
 
 public class AssemblyStation extends Station {
     
-    public AssemblyStation(Position position) {
-        super(position, StationType.ASSEMBLY);
+    public AssemblyStation() {
+        super (StationType.ASSEMBLY);
     }
     
     @Override

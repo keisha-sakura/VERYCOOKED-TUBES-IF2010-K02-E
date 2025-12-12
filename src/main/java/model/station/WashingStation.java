@@ -16,8 +16,8 @@ public class WashingStation extends Station {
     private boolean isWashing;
     private static final int WASHING_DURATION = 3000; // cuci3 detik per plate
     
-    public WashingStation(Position position) {
-        super(position, StationType.WASHING);
+    public WashingStation() {
+        super(StationType.WASHING);
         this.dirtyPlates = new Stack<>();
         this.cleanPlates = new Stack<>();
         this.isWashing = false;

@@ -9,17 +9,17 @@ import model.item.Item;
 
 //superclass (abstact)
 public abstract class Station implements Interactable {
-    protected Position position;
+    // protected Position position;
     protected StationType type;
     protected Item itemOnStation; // Item yang ada di atas station, defaulny null
     
-    public Station(Position position, StationType type) {
-        this.position = position;
+    public Station(StationType type) {
+        // this.position = position;
         this.type = type;
         this.itemOnStation = null;
     }
     
-    public Position getPosition() { return position; }
+    // public Position getPosition() { return position; }
     public StationType getType() { return type; }
     public Item getItemOnStation() { return itemOnStation; }
     
@@ -51,7 +51,7 @@ public abstract class Station implements Interactable {
     
     @Override
     public String toString() {
-        return type + " at " + position;
+        return type;
     }
 }
 

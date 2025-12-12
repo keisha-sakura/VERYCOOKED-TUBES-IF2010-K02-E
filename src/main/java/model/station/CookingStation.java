@@ -17,8 +17,8 @@ public class CookingStation extends Station {
     private static final int COOKING_DURATION = 12000; // 12 detik
     private static final int BURNING_DURATION = 24000; // 24 detik total (12 + 12)
     
-    public CookingStation(Position position) {
-        super(position, StationType.COOKING);
+    public CookingStation() {
+        super (StationType.COOKING);
         this.oven = new Oven();
     }
     

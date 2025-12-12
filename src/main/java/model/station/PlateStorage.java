@@ -13,8 +13,8 @@ public class PlateStorage extends Station {
     private Stack<Plate> plateStack;
     private int initialCleanPlates;
     
-    public PlateStorage(Position position, int initialPlates) {
-        super(position, StationType.PLATE_STORAGE);
+    public PlateStorage(int initialPlates) {
+        super(StationType.PLATE_STORAGE);
         this.plateStack = new Stack<>();
         this.initialCleanPlates = initialPlates;
         
