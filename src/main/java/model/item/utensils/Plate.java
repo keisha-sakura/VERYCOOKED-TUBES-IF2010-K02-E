@@ -37,6 +37,18 @@ public class Plate extends KitchenUtensil {
         return true;
     }
     
+    public String describeContents() {
+        if (contents.isEmpty()) {
+            return "[empty]";
+        }
+
+        StringJoiner joiner = new StringJoiner(", ");
+        for (Preparable prep : contents) {
+            joiner.add(prep.getName() + " (" + prep.getState() + ")");
+        }
+        return joiner.toString();
+    }
+
     public void removeIngredient(Preparable ingredient) {
         contents.remove(ingredient);
     }
@@ -58,10 +70,6 @@ public class Plate extends KitchenUtensil {
             return getName() + status + " [Kosong]";
         }
 
-        StringJoiner joiner = new StringJoiner(", ");
-        for (Preparable prep : contents) {
-            joiner.add(prep.getName());
-        }
-        return getName() + status + " [" + joiner.toString() + "]";
+        return getName() + status + " [" + describeContents() + "]";
     }
 }

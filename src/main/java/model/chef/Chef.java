@@ -4,6 +4,7 @@ import model.position.*;
 import model.enums.*;
 import model.interfaces.Preparable;
 import model.item.*;
+import model.item.utensils.Plate;
 
 public class Chef {
     private String id;
@@ -37,7 +38,7 @@ public class Chef {
 
     public void setPosition(Position position) { this.position = position; }
     public void setDirection(Direction direction) { this.direction = direction; }
-    public void setInventory(Item inventory) { this.inventory = inventory; }
+    public void setInventory(Item inventory) {this.inventory = inventory;}
     public void setCurrentAction(ChefAction action) { this.currentAction = action; }
     public void setActive(boolean active) { this.isActive = active; }
     public void setBusy(boolean busy) { this.isBusy = busy; }
@@ -67,7 +68,10 @@ public class Chef {
         String inv;
         if (hasInventory()) {
             String invName = inventory.getName();
-            if (inventory instanceof Preparable) {
+            if (inventory instanceof Plate) {
+                Plate plate = (Plate) inventory;
+                invName += " [" + plate.describeContents() + "]";
+            } else if (inventory instanceof Preparable) {
                 Preparable prep = (Preparable) inventory;
                 invName += " (" + prep.getState() + ")";
             }
