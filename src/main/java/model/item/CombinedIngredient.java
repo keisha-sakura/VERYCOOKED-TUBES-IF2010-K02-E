@@ -11,12 +11,12 @@ public class CombinedIngredient extends Ingredient {
     private final List<Ingredient> components;
 
     public CombinedIngredient(List<Ingredient> ingredients) {
+        super("", false, false);
+
         List<Ingredient> flattened = flattenInput(ingredients);
         if (flattened.isEmpty()) {
             throw new IllegalArgumentException("CombinedIngredient requires at least one component");
         }
-
-        super("", false, false);
 
         this.components = new ArrayList<>();
         for (Ingredient ingredient : flattened) {
