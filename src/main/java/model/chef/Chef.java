@@ -63,7 +63,7 @@ public class Chef {
     public String toString() {
         String status = isActive ? "[ACTIVE]" : "[IDLE]";
         String action = isBusy ? " (BUSY: " + currentAction + ")" : "";
-        String inv = hasInventory() ? " | Holding: " + inventory.getName() : " | Empty hands";
+        String inv = hasInventory() ? " | Holding: " + inventory.toString() : " | Empty hands";
         return name + " " + status + action + " at " + position + inv;
     }
 }

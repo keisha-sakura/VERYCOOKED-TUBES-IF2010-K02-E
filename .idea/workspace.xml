@@ -146,15 +146,4 @@
     <MESSAGE value="fix: Map layout dan assembling action" />
     <option name="LAST_COMMIT_MESSAGE" value="fix: Map layout dan assembling action" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/model/station/StationFactory.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
 </project>

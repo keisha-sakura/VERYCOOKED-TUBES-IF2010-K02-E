@@ -1,10 +1,10 @@
+// File: view/GamePlay.java
 package view;
 
 import controller.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import model.chef.Chef;
 import model.enums.Direction;
 import model.enums.GameStatus;
+import model.item.Item;
 import model.map.Map;
 import model.map.Tile;
 import model.map.TileState;
@@ -45,6 +46,9 @@ public class GamePlay {
     private Image pikachuSprite;
     private Image jigglypuffSprite;
 
+    // Item images
+    private java.util.Map<String, Image> itemImages = new HashMap<>();
+
     // Chef ImageViews
     private java.util.Map<String, ImageView> chefViews = new HashMap<>();
     private java.util.Map<String, Integer> chefAnimFrames = new HashMap<>();
@@ -53,23 +57,20 @@ public class GamePlay {
     private static final int SPRITE_WIDTH = 60;
     private static final int SPRITE_HEIGHT = 60;
 
-    /**
-     * Constructor
-     */
     public GamePlay(Stage stage, String difficulty) {
         this.stage = stage;
 
-        // Set duration based on difficulty
         int duration = switch (difficulty.toUpperCase()) {
-            case "EASY" -> 240;   // 4 minutes
-            case "MEDIUM" -> 180; // 3 minutes
-            case "HARD" -> 120;   // 2 minutes
+            case "EASY" -> 240;
+            case "MEDIUM" -> 180;
+            case "HARD" -> 120;
             default -> 180;
         };
 
         this.controller = new GameController(duration);
         loadTileImages();
         loadChefSprites();
+        loadItemImages();  // Load item images
     }
 
     private void loadTileImages() {
@@ -96,69 +97,114 @@ public class GamePlay {
         }
     }
 
-    /**
-     * Load chef sprites
-     */
     private void loadChefSprites() {
         try {
-            // TODO: Ganti dengan spritesheet gabungan
-            // Sementara pakai sprite individual (front-1 aja)
             pikachuSprite = new Image(getClass().getResource("/chefPikachu/pikachu-front-1.png").toExternalForm());
             jigglypuffSprite = new Image(getClass().getResource("/chefJig/jigglypuff-front-1.png").toExternalForm());
 
             System.out.println("✓ Chef sprites loaded");
         } catch (Exception e) {
             System.err.println("ERROR loading chef sprites: " + e.getMessage());
-            System.err.println("Make sure sprite files are in src/main/resources/chefs/");
         }
     }
 
     /**
-     * Show gameplay screen (MAIN ENTRY POINT)
+     * Load item images
      */
+    private void loadItemImages() {
+        System.out.println("Loading item images...");
+
+        try {
+            // Load dari folder /item/ sesuai nama file yang ada
+            itemImages.put("Plate", new Image(getClass().getResource("/item/plate.png").toExternalForm()));
+            itemImages.put("Dirty Plate", new Image(getClass().getResource("/item/plate-dirty.png").toExternalForm()));
+            itemImages.put("Adonan", new Image(getClass().getResource("/item/dough-raw-export.png").toExternalForm()));
+            itemImages.put("Tomat", new Image(getClass().getResource("/item/tomato-raw.png").toExternalForm()));
+            itemImages.put("Keju", new Image(getClass().getResource("/item/cheese-raw.png").toExternalForm()));
+            itemImages.put("Sosis", new Image(getClass().getResource("/item/sausage-raw.png").toExternalForm()));
+            itemImages.put("Ayam", new Image(getClass().getResource("/item/chicken-raw.png").toExternalForm()));
+
+            System.out.println("✓ Item images loaded");
+        } catch (Exception e) {
+            System.err.println("ERROR loading item images: " + e.getMessage());
+            // Create placeholders if files not found
+            createItemPlaceholders();
+        }
+    }
+
+    /**
+     * Create placeholder untuk item yang belum ada imagenya
+     */
+    private void createItemPlaceholders() {
+        System.out.println("Creating item placeholders...");
+
+        String[] itemNames = {
+                "Plate", "Dirty Plate", "Dough", "Tomato", "Cheese",
+                "Sausage", "Chicken"
+        };
+
+        for (String name : itemNames) {
+            if (!itemImages.containsKey(name)) {
+                itemImages.put(name, createItemPlaceholder(name));
+            }
+        }
+    }
+
+    private Image createItemPlaceholder(String itemName) {
+        javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(32, 32);
+        javafx.scene.canvas.GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        Color color = switch(itemName) {
+            case "Plate" -> Color.WHITE;
+            case "Dirty Plate" -> Color.GRAY;
+            case "Dough" -> Color.WHEAT;
+            case "Tomato" -> Color.RED;
+            case "Cheese" -> Color.YELLOW;
+            case "Sausage" -> Color.PINK;
+            case "Chicken" -> Color.LIGHTYELLOW;
+            default -> Color.ORANGE;
+        };
+
+        gc.setFill(color);
+        gc.fillOval(4, 4, 24, 24);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        gc.strokeOval(4, 4, 24, 24);
+
+        javafx.scene.SnapshotParameters params = new javafx.scene.SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        return canvas.snapshot(params, null);
+    }
+
     public void show() {
         System.out.println("GamePlay.show() called");
 
-        // Root layout
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #1a1a2e;");
 
-        // TOP: Header
         HBox header = createHeader();
         root.setTop(header);
 
-        // CENTER: Map + Chefs
         StackPane gameArea = createGameArea();
         root.setCenter(gameArea);
 
-        // RIGHT: Info Panel
         VBox rightPanel = createRightPanel();
         root.setRight(rightPanel);
 
-        // Create scene
         Scene scene = new Scene(root, 1280, 720);
 
-        // Setup input
         setupInputHandler(scene);
-
-        // Start game
         controller.startGame();
 
-        // Initial render
         renderMap();
         renderChefs();
 
-        // Start game loop
         startGameLoop();
 
-        // Show stage
         stage.setScene(scene);
         stage.show();
     }
 
-    /**
-     * Create header (Score & Timer)
-     */
     private HBox createHeader() {
         HBox header = new HBox(30);
         header.setPadding(new Insets(15, 20, 15, 20));
@@ -185,20 +231,15 @@ public class GamePlay {
         return header;
     }
 
-    /**
-     * Create game area (Map + Chefs)
-     */
     private StackPane createGameArea() {
         StackPane gameArea = new StackPane();
         gameArea.setStyle("-fx-background-color: #0f3460;");
         gameArea.setPadding(new Insets(20));
 
-        // Map grid (bottom layer)
         mapGrid = new GridPane();
         mapGrid.setHgap(0);
         mapGrid.setVgap(0);
 
-        // Chef layer (top layer)
         chefLayer = new Pane();
 
         gameArea.getChildren().addAll(mapGrid, chefLayer);
@@ -206,16 +247,12 @@ public class GamePlay {
         return gameArea;
     }
 
-    /**
-     * Create right panel (Orders & Chefs info)
-     */
     private VBox createRightPanel() {
         VBox panel = new VBox(15);
         panel.setPadding(new Insets(20));
         panel.setPrefWidth(320);
         panel.setStyle("-fx-background-color: #16213e;");
 
-        // Orders section
         Text ordersTitle = new Text("ACTIVE ORDERS");
         ordersTitle.setFill(Color.WHITE);
         ordersTitle.setFont(Font.font("Arial", 18));
@@ -224,7 +261,6 @@ public class GamePlay {
         ordersBox.setPadding(new Insets(10));
         ordersBox.setStyle("-fx-background-color: #0f3460; -fx-background-radius: 5;");
 
-        // Chefs section
         Text chefsTitle = new Text("CHEFS");
         chefsTitle.setFill(Color.WHITE);
         chefsTitle.setFont(Font.font("Arial", 18));
@@ -233,7 +269,6 @@ public class GamePlay {
         chefsBox.setPadding(new Insets(10));
         chefsBox.setStyle("-fx-background-color: #0f3460; -fx-background-radius: 5;");
 
-        // Controls section
         Text controlsTitle = new Text("CONTROLS");
         controlsTitle.setFill(Color.WHITE);
         controlsTitle.setFont(Font.font("Arial", 14));
@@ -261,9 +296,6 @@ public class GamePlay {
         return panel;
     }
 
-    /**
-     * Render map - PULL dari model
-     */
     private void renderMap() {
         System.out.println("\n=== RENDER MAP DEBUG ===");
 
@@ -312,13 +344,11 @@ public class GamePlay {
                 mapGrid.add(iv, x, y);
                 successCount++;
 
-                // Debug first tile
                 if (x == 0 && y == 0) {
                     System.out.println("First tile (0,0):");
                     System.out.println("  State: " + tile.getState());
                     System.out.println("  ImageID: " + imageId);
                     System.out.println("  Image size: " + img.getWidth() + "x" + img.getHeight());
-                    System.out.println("  ImageView bounds: " + iv.getBoundsInParent());
                 }
             }
         }
@@ -328,28 +358,22 @@ public class GamePlay {
         System.out.println("❌ NULL tiles: " + nullTileCount);
         System.out.println("❌ NULL images: " + nullImageCount);
         System.out.println("MapGrid children: " + mapGrid.getChildren().size());
-        System.out.println("MapGrid bounds: " + mapGrid.getBoundsInParent());
         System.out.println("======================\n");
     }
 
-
-    /**
-     * Get tile image ID
-     */
     private int getTileImageId(Tile tile, int x, int y) {
         TileState state = tile.getState();
 
-        // Ingredient storage: berbeda per posisi
         if (state == TileState.INGREDIENT_STORAGE) {
-            if (y == 2 && x == 3) return 7;  // Dough
+            if (y == 2 && x == 3) return 7;
             if (y == 4) {
-                if (x == 4) return 9;        // Tomato
-                if (x == 6) return 5;        // Cheese
-                if (x == 8) return 8;        // Sausage
-                if (x == 10) return 6;       // Chicken
+                if (x == 4) return 9;
+                if (x == 6) return 5;
+                if (x == 8) return 8;
+                if (x == 10) return 6;
             }
-            if (y == 9 && x == 6) return 7;  // Dough
-            return 7; // Default: Dough
+            if (y == 9 && x == 6) return 7;
+            return 7;
         }
 
         return switch (state) {
@@ -361,12 +385,12 @@ public class GamePlay {
             case SERVING_COUNTER -> 11;
             case TRASH_STATION -> 12;
             case WASHING_STATION -> 13;
-            default -> 0; // Floor
+            default -> 0;
         };
     }
 
     /**
-     * Render chefs
+     * Render chefs DENGAN item overlay
      */
     private void renderChefs() {
         chefLayer.getChildren().clear();
@@ -381,7 +405,7 @@ public class GamePlay {
 
             Position pos = chef.getPosition();
 
-            // Pilih sprite
+            // === RENDER CHEF SPRITE ===
             Image sprite = (chefIndex == 0) ? pikachuSprite : jigglypuffSprite;
 
             ImageView chefView = new ImageView(sprite);
@@ -389,11 +413,9 @@ public class GamePlay {
             chefView.setFitHeight(TILE_SIZE);
             chefView.setPreserveRatio(true);
 
-            // Set position
             chefView.setLayoutX(pos.getX() * TILE_SIZE);
             chefView.setLayoutY(pos.getY() * TILE_SIZE);
 
-            // Glow effect for active chef
             if (chef.isActive()) {
                 chefView.setStyle("-fx-effect: dropshadow(gaussian, yellow, 15, 0.8, 0, 0);");
             }
@@ -402,38 +424,57 @@ public class GamePlay {
             chefViews.put(chef.getId(), chefView);
             chefAnimFrames.put(chef.getId(), 0);
 
+            // === RENDER ITEM OVERLAY (kalau chef bawa item) ===
+            if (chef.getInventory() != null) {
+                ImageView itemView = createItemOverlay(chef);
+                if (itemView != null) {
+                    chefLayer.getChildren().add(itemView);
+                }
+            }
+
             chefIndex++;
         }
     }
 
     /**
-     * Update chef positions & animation
+     * Create item overlay di atas chef
      */
-    private void updateChefPositions() {
-        for (Chef chef : controller.getAllChefs()) {
-            if (chef == null || chef.getPosition() == null) continue;
+    private ImageView createItemOverlay(Chef chef) {
+        Item item = chef.getInventory();
+        if (item == null) return null;
 
-            ImageView chefView = chefViews.get(chef.getId());
-            if (chefView != null) {
-                Position pos = chef.getPosition();
+        Position pos = chef.getPosition();
 
-                // Update position
-                chefView.setLayoutX(pos.getX() * TILE_SIZE);
-                chefView.setLayoutY(pos.getY() * TILE_SIZE);
+        // Get item image berdasarkan nama
+        Image itemImg = itemImages.get(item.getName());
 
-                // Update glow
-                if (chef.isActive()) {
-                    chefView.setStyle("-fx-effect: dropshadow(gaussian, yellow, 15, 0.8, 0, 0);");
-                } else {
-                    chefView.setStyle("");
-                }
-            }
+        if (itemImg == null) {
+            // Fallback: coba cari dengan key lain atau buat placeholder
+            itemImg = createItemPlaceholder(item.getName());
         }
+
+        ImageView itemView = new ImageView(itemImg);
+        itemView.setFitWidth(TILE_SIZE * 0.6);   // 60% ukuran tile
+        itemView.setFitHeight(TILE_SIZE * 0.6);
+        itemView.setPreserveRatio(true);
+
+        // Posisi: di atas kepala chef
+        itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.2);  // Center
+        itemView.setLayoutY(pos.getY() * TILE_SIZE - 25);  // Di atas chef
+
+        // Shadow untuk item
+        itemView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.7, 2, 2);");
+
+        return itemView;
     }
 
     /**
-     * Setup input handler
+     * Update chef positions - re-render semua (termasuk item overlay)
      */
+    private void updateChefPositions() {
+        renderChefs();  // Re-render semua chef + items
+    }
+
     private void setupInputHandler(Scene scene) {
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
@@ -473,29 +514,23 @@ public class GamePlay {
                 }
             }
 
-            // Update immediately
             updateChefPositions();
             updateInfoPanel();
         });
     }
 
-    /**
-     * Start game loop
-     */
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
             private long lastUpdate = 0;
 
             @Override
             public void handle(long now) {
-                // Update every 500ms
                 if (now - lastUpdate >= 500_000_000) {
                     updateInfoPanel();
                     controller.checkGameOver();
                     lastUpdate = now;
                 }
 
-                // Check game over
                 if (controller.getGameStatus() != GameStatus.PLAYING) {
                     stop();
                     showGameOver();
@@ -511,18 +546,12 @@ public class GamePlay {
         }
     }
 
-    /**
-     * Update info panel - PULL dari controller
-     */
     private void updateInfoPanel() {
-        // Score
         scoreText.setText("Score: " + controller.getScore());
 
-        // Time
         int time = controller.getRemainingTime();
         timeText.setText(String.format("Time: %02d:%02d", time / 60, time % 60));
 
-        // Orders
         ordersBox.getChildren().clear();
         for (Order order : controller.getOrderManager().getActiveOrders()) {
             HBox orderRow = new HBox(10);
@@ -546,7 +575,6 @@ public class GamePlay {
             ordersBox.getChildren().add(orderRow);
         }
 
-        // Chefs
         chefsBox.getChildren().clear();
         for (Chef chef : controller.getAllChefs()) {
             HBox chefRow = new HBox(8);
@@ -580,8 +608,8 @@ public class GamePlay {
     }
 
     private void backToMenu() {
-//        LandingPage landingPage = new LandingPage(stage);
-////        Scene scene = landingPage.createScene(width, height);
-//        stage.setScene(scene);
+        // Uncomment kalau sudah fix LandingPage
+        // LandingPage landingPage = new LandingPage(stage);
+        // landingPage.show();
     }
 }

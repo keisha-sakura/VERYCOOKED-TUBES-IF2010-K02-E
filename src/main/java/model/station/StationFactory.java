@@ -27,16 +27,16 @@ public class StationFactory {
         // Row 4: Various ingredients
         if (y == 4) {
             if (x == 4) {
-                return new IngredientStorage(pos, Chicken.class);
-            }
-            if (x == 6) {
                 return new IngredientStorage(pos, Tomato.class);
             }
-            if (x == 8) {
+            if (x == 6) {
                 return new IngredientStorage(pos, Cheese.class);
             }
-            if (x == 10) {
+            if (x == 8) {
                 return new IngredientStorage(pos, Sausage.class);
+            }
+            if (x == 10) {
+                return new IngredientStorage(pos, Chicken.class);
             }
         }
 
