@@ -1,8 +1,6 @@
-package main.java;
-
 import controller.GameController;
-import model.enums.Direction;
-import model.enums.GameStatus;
+import model.enums.*;
+import model.enums.*;
 import view.GameRenderer;
 import java.util.Scanner;
 

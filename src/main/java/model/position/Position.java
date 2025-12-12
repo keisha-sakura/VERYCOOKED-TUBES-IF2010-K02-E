@@ -1,4 +1,4 @@
-package main.java.model.position;
+package model.position;
 
 public class Position {
     private int x;

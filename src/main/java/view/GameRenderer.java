@@ -1,11 +1,11 @@
 package view;
 
 import controller.GameController;
-import model.core.Position;
-import model.entity.Chef;
-import model.map.GameMap;
-import model.order.Order;
-import model.station.Station;
+import model.position.*;
+import model.chef.*;
+import model.map.*;
+import model.order.*;
+import model.station.*;
 import java.util.List;
 
 public class GameRenderer {

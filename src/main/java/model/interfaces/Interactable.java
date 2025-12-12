@@ -1,4 +1,4 @@
-package main.java.model.interfaces;
+package model.interfaces;
 
 import model.entity.Chef;
 

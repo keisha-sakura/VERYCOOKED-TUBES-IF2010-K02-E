@@ -1,4 +1,4 @@
-package main.java.model.enums;
+package model.enums;
 
 public enum ChefAction {
     IDLE,

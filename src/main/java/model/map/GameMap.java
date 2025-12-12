@@ -1,7 +1,7 @@
 package model.map;
 
-import model.core.Position;
-import model.entity.Chef;
+import model.position.*;
+import model.chef.*;
 import model.enums.StationType;
 import model.item.ingredients.*;
 import model.station.*;

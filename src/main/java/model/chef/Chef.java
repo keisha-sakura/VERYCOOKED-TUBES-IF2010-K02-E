@@ -1,9 +1,8 @@
 package model.chef;
 
-import model.position;
-import model.enums.ChefAction;
-import model.enums.Direction;
-import model.item.Item;
+import model.position.*;
+import model.enums.*;
+import model.item.*;
 
 public class Chef {
     private String id;
