@@ -63,4 +63,5 @@ public class Plate extends KitchenUtensil {
             joiner.add(prep.getName());
         }
         return getName() + status + " [" + joiner.toString() + "]";
+    }
 }
