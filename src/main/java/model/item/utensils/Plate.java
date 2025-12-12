@@ -1,10 +1,7 @@
 package model.item.utensils;
 
-// import java.util.StringJoiner;
-// import java.util.List;
+import java.util.StringJoiner;
 import model.interfaces.Preparable;
-
-// import model.item.Ingredient;
 
 public class Plate extends KitchenUtensil {
     private boolean isDirty;
@@ -31,12 +28,13 @@ public class Plate extends KitchenUtensil {
     public boolean canAddIngredient() {
         return !isDirty && contents.size() < MAX_CAPACITY;
     }
-    public void addIngredient(Preparable ingredient) {
-        if (canAddIngredient()) {
-            contents.add(ingredient);
-    
-        }
 
+    public boolean addIngredient(Preparable ingredient) {
+        if (!canAddIngredient()) {
+            return false;
+        }
+        contents.add(ingredient);
+        return true;
     }
     
     public void removeIngredient(Preparable ingredient) {
@@ -56,7 +54,13 @@ public class Plate extends KitchenUtensil {
     @Override
     public String toString() {
         String status = isDirty ? " (Kotor)" : " (Bersih)";
-        
-    }
-        return getName() + status;
+        if (contents.isEmpty()) {
+            return getName() + status + " [Kosong]";
+        }
+
+        StringJoiner joiner = new StringJoiner(", ");
+        for (Preparable prep : contents) {
+            joiner.add(prep.getName());
+        }
+        return getName() + status + " [" + joiner.toString() + "]";
 }
