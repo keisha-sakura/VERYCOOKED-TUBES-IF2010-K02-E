@@ -28,40 +28,16 @@ public class PlateStorage extends Station {
     public void interact(Chef chef) {
         Item heldItem = chef.getInventory();
         
-        // Chef taruh dirty plates (bisa lebih dari 1)
-        if (heldItem instanceof Plate) {
-            Plate plate = (Plate) heldItem;
-            if (plate.isDirty()) {
-                plateStack.push(plate);
-                chef.setInventory(null);
-            }
+        // Tidak dapat melakukan drop item apapun pada PlateStorage
+        if (heldItem != null) {
             return;
         }
         
-        // Chef ambil plate
-        if (heldItem == null && !plateStack.isEmpty()) {
-            Plate topPlate = plateStack.peek();
-            
-            if (topPlate.isDirty()) {
-                
-                int dirtyCount = 0;
-                for (int i = plateStack.size() - 1; i >= 0; i--) {
-                    if (plateStack.get(i).isDirty()) {
-                        dirtyCount++;
-                    } else {
-                        break;
-                    }
-                }
-                
-                
-                chef.setInventory(plateStack.pop());
-            } else {
-                
-                chef.setInventory(plateStack.pop());
-            }
+        // Ambil satu piring dari atas tumpukan (dirty atau clean)
+        if (!plateStack.isEmpty()) {
+            chef.setInventory(plateStack.pop());
         }
     }
-    
     
     public void returnDirtyPlate(Plate plate) {
         plate.setDirty(true);
