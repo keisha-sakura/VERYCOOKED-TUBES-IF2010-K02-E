@@ -31,13 +31,6 @@ public class CuttingStation extends Station {
             return;
         }
         
-        // Jika chef tidak memegang apa-apa dan station ada item -> ambil item
-        if (heldItem == null && hasItem()) {
-            chef.setInventory(itemOnStation);
-            removeItemFromStation();
-            return;
-        }
-        
         // Jika station ada ingredient RAW -> mulai chopping
         if (heldItem == null && itemOnStation instanceof Ingredient) {
             Ingredient ing = (Ingredient) itemOnStation;
@@ -45,11 +38,18 @@ public class CuttingStation extends Station {
                 ChoppingTask task = new ChoppingTask(chef, ing, CHOPPING_DURATION);
                 chef.setCurrentAction(ChefAction.CHOPPING);
                 task.start();
+                return;
             }
        }
         
         
         handlePlating(chef);
+
+        // Jika chef tidak memegang apa-apa dan station ada item -> ambil item
+        if (heldItem == null && hasItem()) {
+            chef.setInventory(itemOnStation);
+            removeItemFromStation();
+        }
     }
     
     
