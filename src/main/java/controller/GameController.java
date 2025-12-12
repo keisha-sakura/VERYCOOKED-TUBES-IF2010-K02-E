@@ -42,8 +42,8 @@ public class GameController {
         List<Position> spawnPoints = gameMap.getChefSpawnPoints();
 
         if (spawnPoints.size() >= 2) {
-            Chef chef1 = new Chef("CHEF_1", "Kebin", spawnPoints.get(0));
-            Chef chef2 = new Chef("CHEF_2", "Stewart", spawnPoints.get(1));
+            Chef chef1 = new Chef("CHEF_1", "Pikachu", spawnPoints.get(0));
+            Chef chef2 = new Chef("CHEF_2", "Jigglypuff", spawnPoints.get(1));
 
             chef1.setActive(true);
 
