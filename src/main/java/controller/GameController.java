@@ -191,11 +191,11 @@ public class GameController {
     }
 
     private void displayResults() {
-        System.out.println("\n========== GAME OVER ==========");
+        System.out.println("\n========== GAME FINISHED ==========");
         System.out.println("Final Score: " + score);
         System.out.println("Status: " + (gameStatus == GameStatus.STAGE_CLEARED ? "PASSED" : "FAILED"));
         System.out.println("Consecutive Failures: " + orderManager.getConsecutiveFailures());
-        System.out.println("===============================\n");
+        System.out.println("=====================================\n");
     }
 
     public GameStatus getGameStatus() {

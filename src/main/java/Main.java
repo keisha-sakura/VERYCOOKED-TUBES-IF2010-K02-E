@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static final int GAME_DURATION = 1200;
+    private static final int GAME_DURATION = 600; // dalam detik, KALO GANTI WAKTU DI SINI AJA
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
