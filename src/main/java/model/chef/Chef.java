@@ -34,18 +34,7 @@ class Chef {
 
     }
 
-<<<<<<< HEAD
     public boolean move(Map map, int rowChange, int colChange) {
-=======
-    public <T extends Item> T getInventoryAs(Class<T> type){
-        if (this.inventory != null && type.isInstance(this.inventory)){
-            return type.cast(this.inventory);
-        }
-        return null;
-    }
-
-    private void move(Map map, int rowChange, int colChange) {
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         if (isBusy) {
             return false;
         }
@@ -58,43 +47,22 @@ class Chef {
             this.position = new Position(newRow, newCol);
             return true;
         }
-<<<<<<< HEAD
         return false;
     }
 
     public boolean moveUp(Map map) {
-=======
-    }
-
-	void moveUp(Map map) {
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.UP;
         return move(map, -1, 0);
     }
-<<<<<<< HEAD
     public boolean moveDown(Map map) {
-=======
-
-	void moveDown(Map map) { 
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.DOWN;
         return move(map, 1, 0);
     }
-<<<<<<< HEAD
     public boolean moveLeft(Map map) {
-=======
-
-	void moveLeft(Map map) { 
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.LEFT;
         return move(map, 0, -1);
     }
-<<<<<<< HEAD
     public boolean moveRight(Map map) {
-=======
-
-	void moveRight(Map map) { 
->>>>>>> 267a7b3ce40c0ba94c7b9bc561b01d5a6ece47c8
         this.direction = Direction.RIGHT;
         return move(map, 0, 1);
     }
