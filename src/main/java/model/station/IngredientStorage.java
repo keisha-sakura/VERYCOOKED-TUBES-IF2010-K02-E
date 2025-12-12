@@ -1,13 +1,11 @@
 
 package model.station;
 
-import model.position.*;
-import model.chef.*;
+import model.chef.Chef;
+import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.Item;
-import model.item.utensils.Plate;
-import model.interfaces.Preparable;
-import model.enums.*;
+import model.position.Position;
 
 //unlimited ingredient
 public class IngredientStorage extends Station {
@@ -20,6 +18,15 @@ public class IngredientStorage extends Station {
     
     @Override
     public void interact(Chef chef) {
+        // Allow storage tiles to act as plating surfaces too.
+        if (PlatingHelper.handlePlateInHand(chef, this)) {
+            return;
+        }
+
+        if (PlatingHelper.handleUtensilInHand(chef, this)) {
+            return;
+        }
+
         Item heldItem = chef.getInventory();
         
         // case :Jika ada item di atas storage, ambil dulu
@@ -47,17 +54,6 @@ public class IngredientStorage extends Station {
             return;
         }
         
-        // Plating: Chef pegang plate, station ada ingredient
-        if (heldItem instanceof Plate) {
-            Plate plate = (Plate) heldItem;
-            if (!plate.isDirty() && itemOnStation instanceof Preparable) {
-                Preparable prep = (Preparable) itemOnStation;
-                if (prep.canBePlacedOnPlate() && plate.canAddIngredient()) {
-                    plate.addIngredient(prep);
-                    removeItemFromStation();
-                }
-            }
-        }
     }
     
     @Override

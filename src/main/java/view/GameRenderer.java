@@ -1,10 +1,11 @@
 package view;
 
 import controller.GameController;
-import model.position.*;
 import model.chef.*;
+import model.item.Item;
 import model.map.*;
 import model.order.*;
+import model.position.*;
 import model.station.*;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class GameRenderer {
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
                 Position pos = new Position(x, y);
+                Tile tile = map.getTile(x, y);
 
                 Chef chefHere = null;
                 for (Chef chef : chefs) {
@@ -66,7 +68,12 @@ public class GameRenderer {
                         System.out.print('*');
                     }
                 } else {
-                    System.out.print(grid[y][x]);
+                    Item item = tile != null ? tile.getItem() : null;
+                    if (item != null && (tile.getStation() == null)) {
+                        System.out.print(itemSymbol(item));
+                    } else {
+                        System.out.print(grid[y][x]);
+                    }
                 }
             }
             System.out.println();
@@ -101,7 +108,23 @@ public class GameRenderer {
 
             if (station != null) {
                 System.out.println("► " + station.getInteractionPrompt());
+            } else {
+                Tile tile = controller.getGameMap().getTile(frontPos);
+                if (tile != null && tile.getState().isWalkable()) {
+                    if (tile.getItem() != null && !activeChef.hasInventory()) {
+                        System.out.println("► Press C to pick item from floor");
+                    } else if (tile.getItem() == null && activeChef.hasInventory()) {
+                        System.out.println("► Press C to drop item on floor");
+                    }
+                }
             }
+        }
+
+        private char itemSymbol(Item item) {
+            if (item.getName().isEmpty()) {
+                return '?';
+            }
+            return Character.toUpperCase(item.getName().charAt(0));
         }
     }
 
