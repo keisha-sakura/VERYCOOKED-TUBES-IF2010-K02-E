@@ -3,6 +3,7 @@ package model.station;
 import model.position.*;
 import model.chef.*;
 import model.item.Item;
+import model.item.CombinedIngredient;
 import model.item.utensils.Oven;
 import model.item.utensils.Plate;
 import model.interfaces.Preparable;
@@ -52,8 +53,12 @@ public class CookingStation extends Station {
             Plate plate = (Plate) heldItem;
             if (!oven.isEmpty() && !oven.isCooking()) {
                 for (Preparable prep : oven.getContents()) {
-                    if (plate.canAddIngredient()) {
-                        plate.addIngredient(prep);
+                    int requiredSlots = requiredSlots(prep);
+                    if (requiredSlots > plate.getRemainingSlots()) {
+                        break;
+                    }
+                    if (!plate.addIngredient(prep)) {
+                        break;
                     }
                 }
                 oven.clear();
@@ -75,5 +80,13 @@ public class CookingStation extends Station {
             return "Press V to take cooked items";
         }
         return "Press V to put items in oven";
+    }
+
+    // Ensure cooked bundles respect plate capacity when unloaded.
+    private int requiredSlots(Preparable prep) {
+        if (prep instanceof CombinedIngredient) {
+            return ((CombinedIngredient) prep).componentCount();
+        }
+        return 1;
     }
 }
