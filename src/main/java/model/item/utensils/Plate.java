@@ -58,4 +58,5 @@ public class Plate extends KitchenUtensil {
         String status = isDirty ? " (Kotor)" : " (Bersih)";
         
     }
+        return getName() + status;
 }

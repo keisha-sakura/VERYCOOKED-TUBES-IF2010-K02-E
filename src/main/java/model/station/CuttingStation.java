@@ -8,6 +8,8 @@ import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.Item;
 import model.position.Position;
+import model.item.utensils.Plate;
+import model.interfaces.Preparable;
 
 public class CuttingStation extends Station {
     private static final int CHOPPING_DURATION = 3000; // 3 detik

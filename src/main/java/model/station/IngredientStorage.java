@@ -6,6 +6,8 @@ import model.enums.StationType;
 import model.item.Ingredient;
 import model.item.Item;
 import model.position.Position;
+import model.item.utensils.Plate;
+import model.interfaces.Preparable;
 
 //unlimited ingredient
 public class IngredientStorage extends Station {
