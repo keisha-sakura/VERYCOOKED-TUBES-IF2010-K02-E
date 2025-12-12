@@ -30,6 +30,10 @@ public class Position {
         return new Position(x + dir.getDx(), y + dir.getDy());
     }
 
+    public boolean isInBounds(int width, int height) {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
