@@ -1,5 +1,6 @@
 package model.item.utensils;
 
+import model.enums.IngredientState;
 import model.interfaces.CookingDevice;
 import model.interfaces.Preparable;
 import java.util.HashSet;
@@ -26,7 +27,13 @@ public class Oven extends KitchenUtensil implements CookingDevice {
     
     @Override
     public boolean canAccept(Preparable ingredient) {
-        return contents.size() < MAX_CAPACITY;
+        if (ingredient == null) {
+            return false;
+        }
+        if (contents.size() >= MAX_CAPACITY) {
+            return false;
+        }
+        return ingredient.getState() == IngredientState.CHOPPED;
     }
     
     @Override

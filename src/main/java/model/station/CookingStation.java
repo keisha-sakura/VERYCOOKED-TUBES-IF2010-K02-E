@@ -31,15 +31,22 @@ public class CookingStation extends Station {
         if (heldItem instanceof Plate) {
             Plate plate = (Plate) heldItem;
             if (!plate.isDirty() && !plate.isEmpty()) {
-                // Transfer ingredient plate -> oven
+                boolean rejectedUnchopped = false;
                 for (Preparable prep : plate.getContents()) {
+                    if (prep.getState() != IngredientState.CHOPPED) {
+                        rejectedUnchopped = true;
+                        continue;
+                    }
                     if (oven.canAccept(prep)) {
                         oven.addIngredient(prep);
                         plate.removeIngredient(prep);
                     }
                 }
-                
-                // Mulai cooking
+
+                if (rejectedUnchopped) {
+                    System.out.println("Oven only accepts chopped ingredients.");
+                }
+
                 if (!oven.isEmpty() && !oven.isCooking()) {
                     CookingTask task = new CookingTask(oven, COOKING_DURATION, BURNING_DURATION);
                     oven.setIsCooking(true);
