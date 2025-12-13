@@ -11,7 +11,6 @@ Game memasak ala *Overcooked* dimana kamu jadi chef yang harus memasak pizza seb
 - [Requirements](#-requirements)
 - [Installation](#-installation)
 - [How to Run](#-how-to-run)
-  - [CLI Version (main-CLI)](#cli-version-main-cli)
   - [GUI Version (main)](#gui-version-main)
 - [Controls](#-controls)
 - [Gameplay](#-gameplay)
