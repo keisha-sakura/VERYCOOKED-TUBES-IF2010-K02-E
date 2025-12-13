@@ -122,7 +122,31 @@ public class GameController {
 
         if (station != null && station.canInteract(activeChef)) {
             station.interact(activeChef);
+            return;
         }
+
+        Tile tile = gameMap.getTile(frontPos);
+        if (tile == null || !tile.getState().isWalkable()) {
+            return;
+        }
+
+        if (tile.getItem() != null) {
+            if (!activeChef.hasInventory()) {
+                activeChef.setInventory(tile.removeItem());
+            }
+            return;
+        }
+
+        if (!activeChef.hasInventory()) {
+            return;
+        }
+
+        if (gameMap.hasChefAt(frontPos, chefs)) {
+            return;
+        }
+        //drop on floor
+        tile.setItem(activeChef.getInventory());
+        activeChef.clearInventory();
     }
 
     public void interact() {
