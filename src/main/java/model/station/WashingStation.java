@@ -49,7 +49,9 @@ public class WashingStation extends Station {
             isWashing = true;
             WashingTask task = new WashingTask(this, dirtyPlate, WASHING_DURATION);
             task.setChef(chef);
+            chef.setCurrentAction(ChefAction.WASHING);
             task.start();
+            return;
         }
     }
     
