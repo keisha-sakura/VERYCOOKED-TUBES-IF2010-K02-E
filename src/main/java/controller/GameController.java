@@ -3,16 +3,19 @@ package controller;
 import controller.task.OrderTimerTask;
 import java.util.ArrayList;
 import java.util.List;
-import model.chef.*;
+import model.chef.Chef;
 import model.enums.Direction;
 import model.enums.GameStatus;
 import model.item.Item;
+import model.item.utensils.Plate;
 import model.map.Map;
 import model.map.MapPizza;
 import model.map.Tile;
 import model.order.OrderManager;
-import model.position.*;
-import model.station.*;
+import model.position.Position;
+import model.station.PlateStorage;
+import model.station.ServingCounter;
+import model.station.Station;
 
 public class GameController {
     private Map gameMap;
@@ -24,6 +27,7 @@ public class GameController {
     private long gameStartTime;
     private int gameDuration; // dalam detik
     private OrderTimerTask orderTimerTask;
+    private List<PlateStorage> plateStorages;
 
     public GameController(int gameDurationSeconds) {
         this.gameMap = new Map(new MapPizza());
@@ -33,6 +37,7 @@ public class GameController {
         this.gameStatus = GameStatus.MENU;
         this.score = 0;
         this.gameDuration = gameDurationSeconds;
+        this.plateStorages = new ArrayList<>();
 
         initializeChefs();
         linkStationsToController();
@@ -55,9 +60,23 @@ public class GameController {
     private void linkStationsToController() {
         for (Station station : gameMap.getAllStations().values()) {
             if (station instanceof ServingCounter) {
-                ((ServingCounter) station).setOrderManager(orderManager);
-                ((ServingCounter) station).setGameController(this);
+                ServingCounter counter = (ServingCounter) station;
+                counter.setOrderManager(orderManager);
+                counter.setGameController(this);
             }
+            if (station instanceof PlateStorage) {
+                plateStorages.add((PlateStorage) station);
+            }
+        }
+    }
+
+    public void returnPlateToStorage(Plate plate) {
+        if (plate == null) {
+            return;
+        }
+        plate.setDirty(true);
+        if (!plateStorages.isEmpty()) {
+            plateStorages.get(0).returnDirtyPlate(plate);
         }
     }
 
@@ -85,8 +104,7 @@ public class GameController {
         if (activeChef == null || activeChef.isBusy()) return;
 
         Position newPos = activeChef.getPosition().move(direction);
-
-        // Check if walkable and no other chef
+        //cek walkable dan ada chef lain gak
         if (gameMap.isWalkable(newPos) && !gameMap.hasChefAt(newPos, chefs)) {
             activeChef.move(direction);
         } else {
@@ -104,7 +122,6 @@ public class GameController {
 
         if (station != null && station.canInteract(activeChef)) {
             station.interact(activeChef);
-            
         }
     }
 

@@ -70,6 +70,11 @@ public class Chef {
             String invName = inventory.getName();
             if (inventory instanceof Plate) {
                 Plate plate = (Plate) inventory;
+                if (plate.isDirty()) {
+                    invName += " (DIRTY)";
+                } else if (!plate.isDirty()) {
+                    invName += " (CLEAN)";
+                }
                 invName += " [" + plate.describeContents() + "]";
             } else if (inventory instanceof Preparable) {
                 Preparable prep = (Preparable) inventory;

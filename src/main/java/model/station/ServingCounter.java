@@ -73,9 +73,12 @@ public class ServingCounter extends Station {
             }
         }
         
-        // Plate jadi kotor dan dikembalikan (handled by game loop)
-        plate.setDirty(true);
         chef.setInventory(null);
+        if (gameController != null) {
+            gameController.returnPlateToStorage(plate);
+        } else {
+            plate.setDirty(true);
+        }
     }
     
     @Override
