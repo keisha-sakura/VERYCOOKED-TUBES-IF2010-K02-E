@@ -72,12 +72,6 @@ cd VERYCOOKED-TUBES-IF2010-K02-E
 (o^.^)  <- Pikachu siap masak!
 z(_(")(")
 
-### CLI Version (main-CLI)
-
-
-
----
-
 ## 🎨 Quick Start - GUI Version
 
 ### Step 1: Clone & Setup
