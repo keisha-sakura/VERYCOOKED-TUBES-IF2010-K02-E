@@ -72,7 +72,11 @@ public class GameRenderer {
                     if (item != null && (tile.getStation() == null)) {
                         System.out.print(itemSymbol(item));
                     } else {
-                        System.out.print(grid[y][x]);
+                        if (tile != null && tile.getState() == TileState.SPAWN) {
+                            System.out.print('.');
+                        } else {
+                            System.out.print(grid[y][x]);
+                        }
                     }
                 }
             }
