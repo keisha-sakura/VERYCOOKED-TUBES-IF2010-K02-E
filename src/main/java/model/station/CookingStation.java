@@ -3,10 +3,6 @@ package model.station;
 import model.position.*;
 import model.chef.*;
 import model.item.Item;
-<<<<<<< HEAD
-=======
-
->>>>>>> refactor
 import model.item.utensils.Oven;
 import model.item.utensils.Plate;
 import model.interfaces.Preparable;

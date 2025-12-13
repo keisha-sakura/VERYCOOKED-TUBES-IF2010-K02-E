@@ -3,16 +3,17 @@ package controller;
 import controller.task.OrderTimerTask;
 import java.util.ArrayList;
 import java.util.List;
-import model.chef.*;
+import model.chef.Chef;
 import model.enums.Direction;
 import model.enums.GameStatus;
-import model.item.Item;
+import model.item.utensils.Plate;
 import model.map.Map;
 import model.map.MapPizza;
-import model.map.Tile;
 import model.order.OrderManager;
-import model.position.*;
-import model.station.*;
+import model.position.Position;
+import model.station.PlateStorage;
+import model.station.ServingCounter;
+import model.station.Station;
 
 public class GameController {
     private Map gameMap;
@@ -22,8 +23,9 @@ public class GameController {
     private GameStatus gameStatus;
     private int score;
     private long gameStartTime;
-    private int gameDuration; // dalam detik
+    private int gameDuration;
     private OrderTimerTask orderTimerTask;
+    private List<PlateStorage> plateStorages;
 
     public GameController(int gameDurationSeconds) {
         this.gameMap = new Map(new MapPizza());
@@ -33,6 +35,7 @@ public class GameController {
         this.gameStatus = GameStatus.MENU;
         this.score = 0;
         this.gameDuration = gameDurationSeconds;
+        this.plateStorages = new ArrayList<>();
 
         initializeChefs();
         linkStationsToController();
@@ -42,8 +45,8 @@ public class GameController {
         List<Position> spawnPoints = gameMap.getChefSpawnPoints();
 
         if (spawnPoints.size() >= 2) {
-            Chef chef1 = new Chef("CHEF_1", "Kebin", spawnPoints.get(0));
-            Chef chef2 = new Chef("CHEF_2", "Stewart", spawnPoints.get(1));
+            Chef chef1 = new Chef("CHEF_1", "Pikachu", spawnPoints.get(0));
+            Chef chef2 = new Chef("CHEF_2", "Jigglypuff", spawnPoints.get(1));
 
             chef1.setActive(true);
 
@@ -55,9 +58,23 @@ public class GameController {
     private void linkStationsToController() {
         for (Station station : gameMap.getAllStations().values()) {
             if (station instanceof ServingCounter) {
-                ((ServingCounter) station).setOrderManager(orderManager);
-                ((ServingCounter) station).setGameController(this);
+                ServingCounter counter = (ServingCounter) station;
+                counter.setOrderManager(orderManager);
+                counter.setGameController(this);
             }
+            if (station instanceof PlateStorage) {
+                plateStorages.add((PlateStorage) station);
+            }
+        }
+    }
+
+    public void returnPlateToStorage(Plate plate) {
+        if (plate == null) {
+            return;
+        }
+        plate.setDirty(true);
+        if (!plateStorages.isEmpty()) {
+            plateStorages.get(0).returnDirtyPlate(plate);
         }
     }
 
@@ -82,17 +99,37 @@ public class GameController {
 
     public void moveChef(Direction direction) {
         Chef activeChef = getActiveChef();
-        if (activeChef == null || activeChef.isBusy()) return;
+        if (activeChef == null || gameStatus != GameStatus.PLAYING) return;
 
-        Position newPos = activeChef.getPosition().move(direction);
+        activeChef.setDirection(direction);
 
-        // Check if walkable and no other chef
-        if (gameMap.isWalkable(newPos) && !gameMap.hasChefAt(newPos, chefs)) {
-            activeChef.move(direction);
-        } else {
-            // Just turn without moving
-            activeChef.setDirection(direction);
+        Position currentPos = activeChef.getPosition();
+        Position newPos = calculateNewPosition(currentPos, direction);
+
+        if (!canMoveTo(newPos)) {
+            activeChef.resetAnimationFrame();
+            return;
         }
+
+        activeChef.setPosition(newPos);
+    }
+
+    private Position calculateNewPosition(Position current, Direction direction) {
+        return switch (direction) {
+            case UP -> new Position(current.getX(), current.getY() - 1);
+            case DOWN -> new Position(current.getX(), current.getY() + 1);
+            case LEFT -> new Position(current.getX() - 1, current.getY());
+            case RIGHT -> new Position(current.getX() + 1, current.getY());
+        };
+    }
+
+    private boolean canMoveTo(Position pos) {
+        if (pos.getX() < 0 || pos.getY() < 0 ||
+                pos.getX() >= gameMap.getWidth() || pos.getY() >= gameMap.getHeight()) {
+            return false;
+        }
+
+        return gameMap.isWalkable(pos);
     }
 
     public void pickupDrop() {
@@ -104,7 +141,6 @@ public class GameController {
 
         if (station != null && station.canInteract(activeChef)) {
             station.interact(activeChef);
-            
         }
     }
 
@@ -191,11 +227,11 @@ public class GameController {
     }
 
     private void displayResults() {
-        System.out.println("\n========== GAME OVER ==========");
+        System.out.println("\n========== GAME FINISHED ==========");
         System.out.println("Final Score: " + score);
         System.out.println("Status: " + (gameStatus == GameStatus.STAGE_CLEARED ? "PASSED" : "FAILED"));
         System.out.println("Consecutive Failures: " + orderManager.getConsecutiveFailures());
-        System.out.println("===============================\n");
+        System.out.println("=====================================\n");
     }
 
     public GameStatus getGameStatus() {

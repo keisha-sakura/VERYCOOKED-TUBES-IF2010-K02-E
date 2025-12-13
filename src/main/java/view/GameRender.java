@@ -27,10 +27,10 @@ import model.map.Tile;
 import model.order.Order;
 import model.position.Position;
 import model.station.CookingStation;
-import model.station.CuttingStation;
 import model.station.Station;
 import model.station.WashingStation;
 import view.component.ImageLoader;
+import view.component.PlateRenderer;
 import view.component.ProgressBarView;
 
 import java.util.HashMap;
@@ -54,6 +54,7 @@ public class GameRender extends Application {
     private VBox chefsBox;
 
     private ImageLoader imageLoader;
+    private PlateRenderer plateRenderer;
     private java.util.Map<String, ImageView> chefViews = new HashMap<>();
     private java.util.Map<String, ProgressBarView> activeProgressBars = new HashMap<>();
 
@@ -63,16 +64,16 @@ public class GameRender extends Application {
         this.stage = stage;
         this.difficulty = difficulty;
 
-        // Set duration based on difficulty
         int duration = switch (difficulty.toUpperCase()) {
-            case "EASY" -> 240;      // 4 menit
-            case "MEDIUM" -> 180;    // 3 menit
-            case "HARD" -> 120;      // 2 menit
+            case "EASY" -> 240;
+            case "MEDIUM" -> 180;
+            case "HARD" -> 120;
             default -> 180;
         };
 
         this.controller = new GameController(duration);
         this.imageLoader = new ImageLoader();
+        this.plateRenderer = new PlateRenderer(imageLoader);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class GameRender extends Application {
         this.stage = primaryStage;
         this.controller = new GameController(180);
         this.imageLoader = new ImageLoader();
+        this.plateRenderer = new PlateRenderer(imageLoader);
 
         stage.setTitle("VERYCOOKED - Pizza Edition");
         showGame();
@@ -231,10 +233,13 @@ public class GameRender extends Application {
             if (chef == null || chef.getPosition() == null) continue;
 
             Position pos = chef.getPosition();
-            Image chefSprite = imageLoader.getChefSprite(chefIndex);
+            Direction direction = chef.getDirection();  // ← GANTI INI
+            int frame = chef.getAnimationFrame();
+
+            Image chefSprite = imageLoader.getChefSprite(chefIndex, direction, frame);
 
             ImageView chefView = new ImageView(chefSprite);
-            chefView.setFitWidth(80);
+            chefView.setFitWidth(TILE_SIZE);
             chefView.setFitHeight(TILE_SIZE);
             chefView.setPreserveRatio(true);
             chefView.setLayoutX(pos.getX() * TILE_SIZE);
@@ -259,18 +264,28 @@ public class GameRender extends Application {
         Item item = chef.getInventory();
         Position pos = chef.getPosition();
 
-        String itemKey = getItemImageKey(item);
-        Image itemImg = imageLoader.getItemImage(itemKey);
+        if (item instanceof Plate) {
+            Plate plate = (Plate) item;
+            StackPane plateStack = plateRenderer.renderPlateWithContents(plate, TILE_SIZE * 0.6);
+            plateStack.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.2);
+            plateStack.setLayoutY(pos.getY() * TILE_SIZE - 25);
+            plateStack.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.7, 2, 2);");
 
-        ImageView itemView = new ImageView(itemImg);
-        itemView.setFitWidth(TILE_SIZE * 0.6);
-        itemView.setFitHeight(TILE_SIZE * 0.6);
-        itemView.setPreserveRatio(true);
-        itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.2);
-        itemView.setLayoutY(pos.getY() * TILE_SIZE - 25);
-        itemView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.7, 2, 2);");
+            chefLayer.getChildren().add(plateStack);
+        } else {
+            String itemKey = getItemImageKey(item);
+            Image itemImg = imageLoader.getItemImage(itemKey);
 
-        chefLayer.getChildren().add(itemView);
+            ImageView itemView = new ImageView(itemImg);
+            itemView.setFitWidth(TILE_SIZE * 0.6);
+            itemView.setFitHeight(TILE_SIZE * 0.6);
+            itemView.setPreserveRatio(true);
+            itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.2);
+            itemView.setLayoutY(pos.getY() * TILE_SIZE - 25);
+            itemView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.7, 2, 2);");
+
+            chefLayer.getChildren().add(itemView);
+        }
     }
 
     private void renderItemsOnStationsAndFloor() {
@@ -298,31 +313,49 @@ public class GameRender extends Application {
     }
 
     private void renderItemOnStation(Item item, Position pos) {
-        String itemKey = getItemImageKey(item);
-        Image itemImg = imageLoader.getItemImage(itemKey);
+        if (item instanceof Plate) {
+            Plate plate = (Plate) item;
+            StackPane plateStack = plateRenderer.renderPlateWithContents(plate, TILE_SIZE * 0.5);
+            plateStack.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
+            plateStack.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
 
-        ImageView itemView = new ImageView(itemImg);
-        itemView.setFitWidth(TILE_SIZE * 0.5);
-        itemView.setFitHeight(TILE_SIZE * 0.5);
-        itemView.setPreserveRatio(true);
-        itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
-        itemView.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
+            itemLayer.getChildren().add(plateStack);
+        } else {
+            String itemKey = getItemImageKey(item);
+            Image itemImg = imageLoader.getItemImage(itemKey);
 
-        itemLayer.getChildren().add(itemView);
+            ImageView itemView = new ImageView(itemImg);
+            itemView.setFitWidth(TILE_SIZE * 0.5);
+            itemView.setFitHeight(TILE_SIZE * 0.5);
+            itemView.setPreserveRatio(true);
+            itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
+            itemView.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
+
+            itemLayer.getChildren().add(itemView);
+        }
     }
 
     private void renderItemOnFloor(Item item, Position pos) {
-        String itemKey = getItemImageKey(item);
-        Image itemImg = imageLoader.getItemImage(itemKey);
+        if (item instanceof Plate) {
+            Plate plate = (Plate) item;
+            StackPane plateStack = plateRenderer.renderPlateWithContents(plate, TILE_SIZE * 0.5);
+            plateStack.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
+            plateStack.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
 
-        ImageView itemView = new ImageView(itemImg);
-        itemView.setFitWidth(TILE_SIZE * 0.5);
-        itemView.setFitHeight(TILE_SIZE * 0.5);
-        itemView.setPreserveRatio(true);
-        itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
-        itemView.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
+            itemLayer.getChildren().add(plateStack);
+        } else {
+            String itemKey = getItemImageKey(item);
+            Image itemImg = imageLoader.getItemImage(itemKey);
 
-        itemLayer.getChildren().add(itemView);
+            ImageView itemView = new ImageView(itemImg);
+            itemView.setFitWidth(TILE_SIZE * 0.5);
+            itemView.setFitHeight(TILE_SIZE * 0.5);
+            itemView.setPreserveRatio(true);
+            itemView.setLayoutX(pos.getX() * TILE_SIZE + TILE_SIZE * 0.25);
+            itemView.setLayoutY(pos.getY() * TILE_SIZE + TILE_SIZE * 0.25);
+
+            itemLayer.getChildren().add(itemView);
+        }
     }
 
     private void renderOvenItems() {
@@ -365,23 +398,15 @@ public class GameRender extends Application {
         if (item instanceof Ingredient) {
             Ingredient ing = (Ingredient) item;
             IngredientState state = ing.getState();
-
             String baseName = ing.getName();
 
-            switch (state) {
-                case RAW:
-                    return baseName;
-                case CHOPPED:
-                    return baseName + " (Chopped)";
-                case COOKED:
-                    return baseName + " (Cooked)";
-                case BURNED:
-                    return baseName + " (Burned)";
-                case COOKING:
-                    return baseName;
-                default:
-                    return baseName;
-            }
+            return switch (state) {
+                case RAW -> baseName;
+                case CHOPPED -> baseName + " (Chopped)";
+                case COOKED -> baseName + " (Cooked)";
+                case BURNED -> baseName + " (Burned)";
+                case COOKING -> baseName;
+            };
         }
 
         return item.getName();
@@ -413,9 +438,7 @@ public class GameRender extends Application {
                     ProgressBarView bar = new ProgressBarView(
                             frontPos.getX() * TILE_SIZE,
                             frontPos.getY() * TILE_SIZE - 12,
-                            TILE_SIZE,
-                            8,
-                            3000
+                            TILE_SIZE, 8, 3000
                     );
 
                     activeProgressBars.put(chefKey, bar);
@@ -443,11 +466,8 @@ public class GameRender extends Application {
                     if (cookStation.getOven().isCooking()) {
                         if (!activeProgressBars.containsKey(cookKey)) {
                             ProgressBarView bar = new ProgressBarView(
-                                    x * TILE_SIZE,
-                                    y * TILE_SIZE - 12,
-                                    TILE_SIZE,
-                                    8,
-                                    12000
+                                    x * TILE_SIZE, y * TILE_SIZE - 12,
+                                    TILE_SIZE, 8, 12000
                             );
 
                             activeProgressBars.put(cookKey, bar);
@@ -469,11 +489,8 @@ public class GameRender extends Application {
                     if (washStation.isWashing()) {
                         if (!activeProgressBars.containsKey(washKey)) {
                             ProgressBarView bar = new ProgressBarView(
-                                    x * TILE_SIZE,
-                                    y * TILE_SIZE - 12,
-                                    TILE_SIZE,
-                                    8,
-                                    3000
+                                    x * TILE_SIZE, y * TILE_SIZE - 12,
+                                    TILE_SIZE, 8, 3000
                             );
 
                             activeProgressBars.put(washKey, bar);
@@ -506,6 +523,10 @@ public class GameRender extends Application {
                 case Q, ESCAPE -> { stopGameLoop(); backToMenu(); }
             }
 
+            for (Chef chef : controller.getAllChefs()) {
+                chef.updateAnimationFrame();
+            }
+
             renderChefs();
             renderItemsOnStationsAndFloor();
             updateProgressBars();
@@ -520,6 +541,11 @@ public class GameRender extends Application {
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= 100_000_000) {
+                    for (Chef chef : controller.getAllChefs()) {
+                        chef.updateAnimationFrame();
+                    }
+
+                    renderChefs();
                     renderItemsOnStationsAndFloor();
                     updateProgressBars();
                     updateUI();

@@ -4,6 +4,7 @@ import model.position.*;
 import model.enums.*;
 import model.interfaces.Preparable;
 import model.item.*;
+import model.item.utensils.Plate;
 
 public class Chef {
     private String id;
@@ -14,6 +15,9 @@ public class Chef {
     private ChefAction currentAction;
     private boolean isActive;
     private volatile boolean isBusy;
+
+    private int animationFrame = 0;
+    private long lastFrameTime = 0;
 
     public Chef(String id, String name, Position startPosition) {
         this.id = id;
@@ -60,17 +64,33 @@ public class Chef {
         this.inventory = null;
     }
 
+    public int getAnimationFrame() {
+        return animationFrame;
+    }
+
+    public void updateAnimationFrame() {
+        long now = System.currentTimeMillis();
+        if (now - lastFrameTime > 150) {
+            animationFrame = (animationFrame + 1) % 4;
+            lastFrameTime = now;
+        }
+    }
+
+    public void resetAnimationFrame() {
+        animationFrame = 0;
+    }
+
     @Override
     public String toString() {
         String status = isActive ? "[ACTIVE]" : "[IDLE]";
         String action = isBusy ? " (BUSY: " + currentAction + ")" : "";
-<<<<<<< HEAD
-        String inv = hasInventory() ? " | Holding: " + inventory.toString() : " | Empty hands";
-=======
         String inv;
         if (hasInventory()) {
             String invName = inventory.getName();
-            if (inventory instanceof Preparable) {
+            if (inventory instanceof Plate) {
+                Plate plate = (Plate) inventory;
+                invName += " [" + plate.describeContents() + "]";
+            } else if (inventory instanceof Preparable) {
                 Preparable prep = (Preparable) inventory;
                 invName += " (" + prep.getState() + ")";
             }
@@ -78,7 +98,6 @@ public class Chef {
         } else {
             inv = " | Empty hands";
         }
->>>>>>> refactor
         return name + " " + status + action + " at " + position + inv;
     }
 }

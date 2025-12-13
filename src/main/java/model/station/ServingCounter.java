@@ -18,51 +18,51 @@ import model.enums.*;
 public class ServingCounter extends Station {
     private OrderManager orderManager;
     private GameController gameController;
-    
+
     public ServingCounter(Position position) {
         super(position, StationType.SERVING);
     }
-    
+
     public void setOrderManager(OrderManager om) {
         this.orderManager = om;
     }
-    
+
     public void setGameController(GameController gc) {
         this.gameController = gc;
     }
-    
+
     @Override
     public void interact(Chef chef) {
         Item heldItem = chef.getInventory();
-        
+
         if (!(heldItem instanceof Plate)) {
             return;
         }
-        
+
         Plate plate = (Plate) heldItem;
         if (plate.isDirty() || plate.isEmpty()) {
             return;
         }
-        
+
         // Validasi dish = recipe
         List<String> ingredientNames = new ArrayList<>();
         List<IngredientState> states = new ArrayList<>();
-        
+
         for (Preparable prep : plate.getContents()) {
             ingredientNames.add(prep.getName());
             states.add(prep.getState());
         }
-        
+
         RecipeBook recipeBook = RecipeBook.getInstance();
         Recipe matchedRecipe = recipeBook.findMatchingRecipe(ingredientNames, states);
-        
+
         if (matchedRecipe != null) {
             // Order berhasil
             boolean completed = orderManager.completeOrder(matchedRecipe);
             if (completed && gameController != null) {
                 gameController.addScore(matchedRecipe.getReward());
-                System.out.println("✓ Order completed: " + matchedRecipe.getName() + 
-                                 " (+" + matchedRecipe.getReward() + " pts)");
+                System.out.println("✓ Order completed: " + matchedRecipe.getName() +
+                        " (+" + matchedRecipe.getReward() + " pts)");
             }
         } else {
             // Order gagal
@@ -72,17 +72,20 @@ public class ServingCounter extends Station {
                 System.out.println("✗ Wrong dish served! (-50 pts)");
             }
         }
-        
-        // Plate jadi kotor dan dikembalikan (handled by game loop)
-        plate.setDirty(true);
+
         chef.setInventory(null);
+        if (gameController != null) {
+            gameController.returnPlateToStorage(plate);
+        } else {
+            plate.setDirty(true);
+        }
     }
-    
+
     @Override
     public boolean canInteract(Chef chef) {
         return chef.getInventory() instanceof Plate;
     }
-    
+
     @Override
     public String getInteractionPrompt() {
         return "Press V to serve dish";

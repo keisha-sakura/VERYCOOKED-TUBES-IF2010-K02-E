@@ -20,11 +20,7 @@ public class CuttingStation extends Station {
 
     @Override
     public void interact(Chef chef) {
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> refactor
 
         Item heldItem = chef.getInventory();
 
@@ -34,11 +30,7 @@ public class CuttingStation extends Station {
             chef.setInventory(null);
             return;
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> refactor
         // Jika station ada ingredient RAW -> mulai chopping
         if (heldItem == null && itemOnStation instanceof Ingredient) {
             Ingredient ing = (Ingredient) itemOnStation;
@@ -48,15 +40,9 @@ public class CuttingStation extends Station {
                 task.start();
                 return;
             }
-<<<<<<< HEAD
         }
 
 
-=======
-       }
-        
-        
->>>>>>> refactor
         handlePlating(chef);
 
         // Jika chef tidak memegang apa-apa dan station ada item -> ambil item
@@ -65,21 +51,12 @@ public class CuttingStation extends Station {
             removeItemFromStation();
         }
     }
-<<<<<<< HEAD
 
 
     private void handlePlating(Chef chef) {
         Item heldItem = chef.getInventory();
 
 
-=======
-    
-    
-    private void handlePlating(Chef chef) {
-        Item heldItem = chef.getInventory();
-        
-        
->>>>>>> refactor
         if (heldItem instanceof Plate) {
             Plate plate = (Plate) heldItem;
             if (!plate.isDirty() && itemOnStation instanceof Preparable) {

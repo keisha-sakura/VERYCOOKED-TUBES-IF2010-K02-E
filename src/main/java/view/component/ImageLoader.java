@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import model.enums.Direction;
 import model.map.TileState;
 
 import java.util.HashMap;
@@ -11,7 +12,8 @@ import java.util.Map;
 
 public class ImageLoader {
     private final Image[] tileImages = new Image[14];
-    private final Image[] chefSprites = new Image[2];
+    private final Map<String, Image> chefSprites = new HashMap<>();
+    private final Map<String, Image> pizzaImages = new HashMap<>();
     private final Map<String, Image> itemImages = new HashMap<>();
 
     public ImageLoader() {
@@ -22,6 +24,7 @@ public class ImageLoader {
         loadTileImages();
         loadChefSprites();
         loadItemImages();
+        loadPizzaImages();
     }
 
     private void loadTileImages() {
@@ -50,12 +53,25 @@ public class ImageLoader {
 
     private void loadChefSprites() {
         try {
-            chefSprites[0] = loadImage("/chefPikachu/pikachu-front-1.png");
-            chefSprites[1] = loadImage("/chefJig/jigglypuff-front-1.png");
+            for (int chefIndex = 1; chefIndex <= 2; chefIndex++) {
+                String[] directions = {"down", "left", "right", "up"};
 
-            System.out.println("✓ Chef sprites loaded");
+                for (String dir : directions) {
+                    for (int frame = 0; frame < 4; frame++) {
+                        String key = String.format("chef%d-%s-%d", chefIndex, dir, frame);
+                        String path = String.format("/chef/chef%d/%s-%d.png", chefIndex, dir, frame);
+
+                        Image sprite = loadImage(path);
+                        if (sprite != null) {
+                            chefSprites.put(key, sprite);
+                        }
+                    }
+                }
+            }
+
+            System.out.println("✓ Chef sprites loaded (" + chefSprites.size() + " frames)");
         } catch (Exception e) {
-            System.err.println("ERROR loading chefs: " + e.getMessage());
+            System.err.println("ERROR loading chef sprites: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -90,8 +106,39 @@ public class ImageLoader {
         }
     }
 
+    private void loadPizzaImages() {
+        try {
+            pizzaImages.put("Pizza Margherita", loadImage("/pizza/pizza-margherita-cooked.png"));
+            pizzaImages.put("Pizza Sosis", loadImage("/pizza/pizza-sosis-cooked.png"));
+            pizzaImages.put("Pizza Ayam", loadImage("/pizza/pizza-ayam-cooked.png"));
+
+            pizzaImages.put("Pizza Margherita (Burned)", loadImage("/pizza/pizza-margherita-burned.png"));
+            pizzaImages.put("Pizza Sosis (Burned)", loadImage("/pizza/pizza-sosis-burned.png"));
+            pizzaImages.put("Pizza Ayam (Burned)", loadImage("/pizza/pizza-ayam-burned.png"));
+
+            pizzaImages.put("Pizza Margherita (Raw)", loadImage("/pizza/pizza-margherita.png"));
+            pizzaImages.put("Pizza Sosis (Raw)", loadImage("/pizza/pizza-sosis.png"));
+            pizzaImages.put("Pizza Ayam (Raw)", loadImage("/pizza/pizza-ayam.png"));
+
+            System.out.println("✓ Pizza images loaded");
+        } catch (Exception e) {
+            System.err.println("ERROR loading pizzas: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private Image loadImage(String path) {
-        return new Image(getClass().getResource(path).toExternalForm());
+        try {
+            Image img = new Image(getClass().getResourceAsStream(path));
+            if (img.isError()) {
+                System.err.println("Failed to load: " + path);
+                return null;
+            }
+            return img;
+        } catch (Exception e) {
+            System.err.println("Failed to load: " + path + " - " + e.getMessage());
+            return null;
+        }
     }
 
     public Image getTileImage(TileState state, int x, int y) {
@@ -99,8 +146,17 @@ public class ImageLoader {
         return tileImages[id];
     }
 
-    public Image getChefSprite(int index) {
-        return chefSprites[index];
+    public Image getChefSprite(int chefIndex, Direction direction, int frame) {
+        String dirName = direction.name().toLowerCase();
+        String key = String.format("chef%d-%s-%d", chefIndex + 1, dirName, frame);
+
+        Image sprite = chefSprites.get(key);
+        if (sprite == null) {
+            System.err.println("Missing sprite: " + key);
+            return createPlaceholder("Chef");
+        }
+
+        return sprite;
     }
 
     public Image getItemImage(String name) {
@@ -108,6 +164,14 @@ public class ImageLoader {
         if (img == null) {
             img = createPlaceholder(name);
             itemImages.put(name, img);
+        }
+        return img;
+    }
+
+    public Image getPizzaImage(String pizzaName) {
+        Image img = pizzaImages.get(pizzaName);
+        if (img == null) {
+            return createPlaceholder(pizzaName);
         }
         return img;
     }
