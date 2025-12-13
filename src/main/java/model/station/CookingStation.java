@@ -3,6 +3,7 @@ package model.station;
 import model.position.*;
 import model.chef.*;
 import model.item.Item;
+
 import model.item.utensils.Oven;
 import model.item.utensils.Plate;
 import model.interfaces.Preparable;
@@ -14,31 +15,38 @@ public class CookingStation extends Station {
     private Oven oven;
     private static final int COOKING_DURATION = 12000; // 12 detik
     private static final int BURNING_DURATION = 24000; // 24 detik total (12 + 12)
-    
+
     public CookingStation(Position position) {
         super(position, StationType.COOKING);
         this.oven = new Oven();
     }
-    
+
     public Oven getOven() { return oven; }
-    
+
     @Override
     public void interact(Chef chef) {
         Item heldItem = chef.getInventory();
-        
-        
+
+
         if (heldItem instanceof Plate) {
             Plate plate = (Plate) heldItem;
             if (!plate.isDirty() && !plate.isEmpty()) {
-                // Transfer ingredient plate -> oven
+                boolean rejectedUnchopped = false;
                 for (Preparable prep : plate.getContents()) {
+                    if (prep.getState() != IngredientState.CHOPPED) {
+                        rejectedUnchopped = true;
+                        continue;
+                    }
                     if (oven.canAccept(prep)) {
                         oven.addIngredient(prep);
                         plate.removeIngredient(prep);
                     }
                 }
-                
-                // Mulai cooking
+
+                if (rejectedUnchopped) {
+                    System.out.println("Oven only accepts chopped ingredients.");
+                }
+
                 if (!oven.isEmpty() && !oven.isCooking()) {
                     CookingTask task = new CookingTask(oven, COOKING_DURATION, BURNING_DURATION);
                     oven.setIsCooking(true);
@@ -46,8 +54,8 @@ public class CookingStation extends Station {
                 }
             }
         }
-        
-        
+
+
         if (heldItem instanceof Plate) {
             Plate plate = (Plate) heldItem;
             if (!oven.isEmpty() && !oven.isCooking()) {
@@ -60,12 +68,12 @@ public class CookingStation extends Station {
             }
         }
     }
-    
+
     @Override
     public boolean canInteract(Chef chef) {
         return chef.getInventory() instanceof Plate;
     }
-    
+
     @Override
     public String getInteractionPrompt() {
         if (oven.isCooking()) {
@@ -77,5 +85,5 @@ public class CookingStation extends Station {
         return "Press V to put items in oven";
     }
 
-    
+
 }

@@ -15,6 +15,7 @@ public class ImageLoader {
     private final Map<String, Image> chefSprites = new HashMap<>();
     private final Map<String, Image> pizzaImages = new HashMap<>();
     private final Map<String, Image> itemImages = new HashMap<>();
+    private final Map<String, Image> orderImages = new HashMap<>();
 
     public ImageLoader() {
         loadAllImages();
@@ -25,6 +26,29 @@ public class ImageLoader {
         loadChefSprites();
         loadItemImages();
         loadPizzaImages();
+        loadOrderImages();
+    }
+
+    private void loadOrderImages() {
+        try {
+            orderImages.put("Pizza Ayam", loadImage("/order/ayam.png"));
+            orderImages.put("Pizza Margherita", loadImage("/order/margherita.png"));
+            orderImages.put("Pizza Sosis", loadImage("/order/sosis.png"));
+
+            System.out.println("✓ Order images loaded");
+        } catch (Exception e) {
+            System.err.println("ERROR loading order images: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public Image getOrderImage(String recipeName) {
+        Image img = orderImages.get(recipeName);
+        if (img == null) {
+            System.err.println("Missing order image: " + recipeName);
+            return createPlaceholder("Order");
+        }
+        return img;
     }
 
     private void loadTileImages() {

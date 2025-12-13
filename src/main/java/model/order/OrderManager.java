@@ -5,7 +5,6 @@ import model.recipe.RecipeBook;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
 //mengelola queue order
 //Thread-safe menggunakan ConcurrentLinkedQueue
 public class OrderManager {

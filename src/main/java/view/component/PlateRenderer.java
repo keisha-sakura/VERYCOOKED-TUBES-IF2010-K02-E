@@ -25,7 +25,6 @@ public class PlateRenderer {
     public StackPane renderPlateWithContents(Plate plate, double size) {
         StackPane plateStack = new StackPane();
 
-        // 1. Base plate image
         Image plateImg = plate.isDirty()
                 ? imageLoader.getItemImage("Dirty Plate")
                 : imageLoader.getItemImage("Plate");
@@ -37,15 +36,12 @@ public class PlateRenderer {
 
         plateStack.getChildren().add(plateView);
 
-        // 2. Check if contents form a complete pizza
         if (!plate.isEmpty()) {
             String pizzaName = checkForCompletePizza(plate);
 
             if (pizzaName != null) {
-                // Render as complete pizza
                 renderCompletePizza(plateStack, pizzaName, plate, size);
             } else {
-                // Render individual ingredients
                 renderIndividualIngredients(plateStack, plate, size);
             }
         }
@@ -72,7 +68,6 @@ public class PlateRenderer {
     }
 
     private void renderCompletePizza(StackPane plateStack, String pizzaName, Plate plate, double size) {
-        // Check if all ingredients are COOKED
         boolean allCooked = true;
         boolean anyBurned = false;
 
@@ -123,7 +118,6 @@ public class PlateRenderer {
                 ingView.setFitHeight(size * 0.4);
                 ingView.setPreserveRatio(true);
 
-                // Stack dengan slight offset
                 double xOffset = (index % 2 == 0) ? -offset : offset;
                 double yOffset = (index / 2) * offset;
 

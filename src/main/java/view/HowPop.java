@@ -12,6 +12,9 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 
 public class HowPop {
     public static void show(StackPane root) {
@@ -24,6 +27,18 @@ public class HowPop {
         );
         container.setPreserveRatio(true);
         container.setFitWidth(810);
+
+        Text text = new Text("Untuk memainkan VeryCooked, pemain disediakan berbagai tombol control (key button) \n yang berfungsi untuk mengoperasikan karakter serta melakukan berbagai \naksi di dalam permainan. Setiap tombol memiliki peran tertentu dan membantu pemain.\n" +
+                "W: Menggerakan chef ke arah atas\n" +
+                "A: Menggerakan chef ke arah kiri\n" +
+                "S: Menggerakan chef ke arah bawah\n" +
+                "D: Menggerakan chef ke arah kanan\n" +
+                "C: Melakukan aksi drop/pickup item\n" +
+                "V: Melakukan interaksi engan station\n" +
+                "B: Mengganti chef yang aktif\n" +
+                "Q: Keluar dari permainan");
+
+        text.setFont(Font.font("Arial", 17));
 
         Button back = createBackButton();
 
@@ -38,6 +53,9 @@ public class HowPop {
         popup.setPadding(new Insets(20));
 
         overlay.getChildren().add(popup);
+        StackPane.setAlignment(popup, Pos.CENTER);
+
+        overlay.getChildren().add(text);
         StackPane.setAlignment(popup, Pos.CENTER);
 
         root.getChildren().add(overlay);

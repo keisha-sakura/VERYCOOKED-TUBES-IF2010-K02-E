@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -41,7 +43,7 @@ public class GameRender extends Application {
     private GameController controller;
     private String difficulty;
 
-    private StackPane root;  // ← UBAH dari tidak ada jadi StackPane
+    private StackPane root;
     private GridPane mapGrid;
     private Pane itemLayer;
     private Pane chefLayer;
@@ -84,7 +86,7 @@ public class GameRender extends Application {
         this.imageLoader = new ImageLoader();
         this.plateRenderer = new PlateRenderer(imageLoader);
 
-        stage.setTitle("VERYCOOKED - Pizza Edition");
+        stage.setTitle("VERYCOOKED");
         showGame();
     }
 
@@ -101,14 +103,14 @@ public class GameRender extends Application {
     }
 
     private Scene createScene() {
-        BorderPane mainLayout = new BorderPane();  // ← UBAH nama dari root
+        BorderPane mainLayout = new BorderPane();
         mainLayout.setStyle("-fx-background-color: #1a1a2e;");
 
         mainLayout.setTop(createHeader());
         mainLayout.setCenter(createGameArea());
         mainLayout.setRight(createInfoPanel());
 
-        root = new StackPane(mainLayout);  // ← TAMBAH: root sekarang StackPane
+        root = new StackPane(mainLayout);
         Scene scene = new Scene(root, 1280, 720);
         setupInput(scene);
 
@@ -121,7 +123,7 @@ public class GameRender extends Application {
         header.setAlignment(Pos.CENTER);
         header.setStyle("-fx-background-color: #16213e;");
 
-        Text title = new Text("VERYCOOKED - PIZZA EDITION");
+        Text title = new Text("VERYCOOKED");
         title.setFill(Color.WHITE);
         title.setFont(Font.font("Arial", 24));
 
@@ -155,50 +157,56 @@ public class GameRender extends Application {
     }
 
     private VBox createInfoPanel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
-        panel.setPrefWidth(320);
+        VBox panel = new VBox(10);
+        panel.setPadding(new Insets(10));
+        panel.setPrefWidth(380);
         panel.setStyle("-fx-background-color: #16213e;");
 
-        Text ordersTitle = new Text("ACTIVE ORDERS");
+        Text ordersTitle = new Text("ORDERS");
         ordersTitle.setFill(Color.WHITE);
-        ordersTitle.setFont(Font.font("Arial", 18));
+        ordersTitle.setFont(Font.font("Arial", 16));
 
         ordersBox = new VBox(8);
-        ordersBox.setPadding(new Insets(10));
-        ordersBox.setStyle("-fx-background-color: #0f3460; -fx-background-radius: 5;");
+        ordersBox.setPadding(new Insets(5));
+
+        ScrollPane ordersScroll = new ScrollPane(ordersBox);
+        ordersScroll.setFitToWidth(true);
+        ordersScroll.setPrefHeight(410);
+        ordersScroll.setStyle("-fx-background: #0f3460; -fx-background-color: #0f3460;");
+        ordersScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        ordersScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         Text chefsTitle = new Text("CHEFS");
         chefsTitle.setFill(Color.WHITE);
-        chefsTitle.setFont(Font.font("Arial", 18));
+        chefsTitle.setFont(Font.font("Arial", 16));
 
-        chefsBox = new VBox(8);
-        chefsBox.setPadding(new Insets(10));
+        chefsBox = new VBox(5);
+        chefsBox.setPadding(new Insets(5));
         chefsBox.setStyle("-fx-background-color: #0f3460; -fx-background-radius: 5;");
 
         VBox controlsBox = createControlsBox();
 
-        panel.getChildren().addAll(ordersTitle, ordersBox, chefsTitle, chefsBox, controlsBox);
+        panel.getChildren().addAll(ordersTitle, ordersScroll, chefsTitle, chefsBox, controlsBox);
         return panel;
     }
 
     private VBox createControlsBox() {
         Text title = new Text("CONTROLS");
         title.setFill(Color.WHITE);
-        title.setFont(Font.font("Arial", 14));
+        title.setFont(Font.font("Arial", 12));
 
         Text controls = new Text(
-                "WASD/Arrows - Move\n" +
+                "WASD - Move\n" +
                         "C - Pickup/Drop\n" +
-                        "V - Interact (Chop/Cook/Wash)\n" +
+                        "V - Interact\n" +
                         "B - Switch Chef\n" +
-                        "Q/ESC - Quit"
+                        "Q - Quit"
         );
         controls.setFill(Color.LIGHTGRAY);
-        controls.setFont(Font.font("Monospaced", 12));
+        controls.setFont(Font.font("Monospaced", 10));
 
-        VBox box = new VBox(5, title, controls);
-        box.setPadding(new Insets(10));
+        VBox box = new VBox(3, title, controls);
+        box.setPadding(new Insets(8));
         box.setStyle("-fx-background-color: #0f3460; -fx-background-radius: 5;");
 
         return box;
@@ -584,52 +592,74 @@ public class GameRender extends Application {
         ordersBox.getChildren().clear();
 
         for (Order order : controller.getOrderManager().getActiveOrders()) {
-            HBox row = new HBox(10);
-            row.setAlignment(Pos.CENTER_LEFT);
-            row.setPadding(new Insets(5));
-            row.setStyle("-fx-background-color: #1a1a2e; -fx-background-radius: 3;");
-
-            Text num = new Text("[" + order.getPosition() + "]");
-            num.setFill(Color.ORANGE);
-            num.setFont(Font.font("Monospaced", 14));
-
-            Text name = new Text(order.getRecipe().getName());
-            name.setFill(Color.WHITE);
-            name.setFont(Font.font("Arial", 13));
-
-            Text time = new Text(order.getTimeRemaining() + "s");
-            time.setFill(order.getTimeRemaining() < 30 ? Color.RED : Color.LIGHTGREEN);
-            time.setFont(Font.font("Monospaced", 13));
-
-            row.getChildren().addAll(num, name, time);
-            ordersBox.getChildren().add(row);
+            VBox orderCard = createOrderCard(order);
+            ordersBox.getChildren().add(orderCard);
         }
+    }
+
+    private VBox createOrderCard(Order order) {
+        VBox card = new VBox(3);
+        card.setPadding(new Insets(5));
+        card.setAlignment(Pos.CENTER);
+
+        int timeRemaining = order.getTimeRemaining();
+        String borderColor = timeRemaining < 20 ? "#ff4444" : "#666666";
+
+        card.setStyle("-fx-background-color: #1a1a2e; -fx-background-radius: 5; " +
+                "-fx-border-color: " + borderColor + "; -fx-border-width: 2; -fx-border-radius: 5;");
+
+        Text num = new Text("[" + order.getPosition() + "]");
+        num.setFill(Color.ORANGE);
+        num.setFont(Font.font("Monospaced", 14));
+
+        String recipeName = order.getRecipe().getName();
+        Image orderImg = imageLoader.getOrderImage(recipeName);
+        ImageView orderView = new ImageView(orderImg);
+        orderView.setFitWidth(250);
+        orderView.setFitHeight(200);
+        orderView.setPreserveRatio(true);
+
+        HBox timerBox = new HBox(3);
+        timerBox.setAlignment(Pos.CENTER);
+
+        Text time = new Text("⏱ " + timeRemaining + "s");
+        time.setFill(timeRemaining < 20 ? Color.RED :
+                timeRemaining < 40 ? Color.ORANGE : Color.LIGHTGREEN);
+        time.setFont(Font.font("Monospaced", 12));
+
+        timerBox.getChildren().add(time);
+
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setPrefWidth(150);
+        progressBar.setPrefHeight(6);
+        double progress = (double) timeRemaining / 60.0;
+        progressBar.setProgress(progress);
+
+        String barColor = progress < 0.33 ? "#ff4444" : progress < 0.66 ? "#ffaa00" : "#44ff44";
+        progressBar.setStyle("-fx-accent: " + barColor + ";");
+
+        card.getChildren().addAll(num, orderView, timerBox, progressBar);
+        return card;
     }
 
     private void updateChefsBox() {
         chefsBox.getChildren().clear();
 
         for (Chef chef : controller.getAllChefs()) {
-            HBox row = new HBox(8);
+            HBox row = new HBox(5);
             row.setAlignment(Pos.CENTER_LEFT);
-            row.setPadding(new Insets(5));
+            row.setPadding(new Insets(3));
             row.setStyle("-fx-background-color: #1a1a2e; -fx-background-radius: 3;");
 
-            Text status = new Text(chef.isActive() ? "[@]" : "[*]");
+            Text status = new Text(chef.isActive() ? "►" : "○");
             status.setFill(chef.isActive() ? Color.YELLOW : Color.GRAY);
-            status.setFont(Font.font("Monospaced", 14));
+            status.setFont(Font.font("Monospaced", 12));
 
             Text name = new Text(chef.getName());
             name.setFill(Color.WHITE);
-            name.setFont(Font.font("Arial", 12));
+            name.setFont(Font.font("Arial", 10));
 
-            String actionText = chef.isBusy() ? " [" + chef.getCurrentAction() + "]" : "";
-            String invText = chef.getInventory() != null ? chef.getInventory().toString() : "Empty";
-            Text inv = new Text("| " + invText + actionText);
-            inv.setFill(chef.isBusy() ? Color.YELLOW : Color.LIGHTGRAY);
-            inv.setFont(Font.font("Monospaced", 11));
-
-            row.getChildren().addAll(status, name, inv);
+            row.getChildren().addAll(status, name);
             chefsBox.getChildren().add(row);
         }
     }
@@ -643,6 +673,8 @@ public class GameRender extends Application {
     }
 
     private void backToMenu() {
-        System.out.println("Back to menu");
+        LandingPage landingPage = new LandingPage(stage);
+        Scene scene = landingPage.createScene(1280, 720);
+        stage.setScene(scene);
     }
 }

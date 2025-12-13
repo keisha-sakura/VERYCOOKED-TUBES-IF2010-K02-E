@@ -31,7 +31,11 @@ public class SuccessPop {
                 new Image(SuccessPop.class.getResource("/SuccessPop.png").toExternalForm())
         );
         container.setPreserveRatio(true);
-        container.setFitWidth(1000);
+        container.setFitWidth(800);
+
+        VBox containerBox = new VBox(container);
+        containerBox.setAlignment(Pos.TOP_CENTER);
+        containerBox.setPadding(new Insets(40, 0, 0, 0));
 
         Button back = createBackButton();
 
@@ -41,10 +45,9 @@ public class SuccessPop {
         back.setCursor(javafx.scene.Cursor.HAND);
         addHoverEffect(back);
 
-        // ← PERBAIKI: Sekarang stage bisa diakses
         back.setOnAction(e -> {
             LandingPage landingPage = new LandingPage(stage);
-            Scene scene = landingPage.createScene(1280, 720);  // ← GANTI width/height dengan nilai konkret
+            Scene scene = landingPage.createScene(1280, 720);
             stage.setScene(scene);
         });
 
@@ -81,7 +84,7 @@ public class SuccessPop {
                 new Image(SuccessPop.class.getResource("/Back.png").toExternalForm())
         );
         iv.setPreserveRatio(true);
-        iv.setFitWidth(340);
+        iv.setFitWidth(320);
 
         Button button = new Button();
         button.setGraphic(iv);

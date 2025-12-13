@@ -51,9 +51,11 @@ public class Chef {
     }
 
     public void move(Direction dir) {
-        this.direction = dir;
-        this.position = position.move(dir);
-        this.currentAction = ChefAction.MOVING;
+        if (!isBusy()) {
+            this.direction = dir;
+            this.position = position.move(dir);
+            this.currentAction = ChefAction.MOVING;
+        }
     }
 
     public boolean hasInventory() {
