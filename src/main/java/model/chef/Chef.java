@@ -48,7 +48,7 @@ public class Chef {
     }
 
     public void move(Direction dir) {
-        if (!isBusy) {
+        if (!isBusy()) {
             this.direction = dir;
             this.position = position.move(dir);
             this.currentAction = ChefAction.MOVING;
