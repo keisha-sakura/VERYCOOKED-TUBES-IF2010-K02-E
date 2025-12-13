@@ -41,6 +41,7 @@ public class GameRender extends Application {
     private GameController controller;
     private String difficulty;
 
+    private StackPane root;  // ← UBAH dari tidak ada jadi StackPane
     private GridPane mapGrid;
     private Pane itemLayer;
     private Pane chefLayer;
@@ -100,13 +101,14 @@ public class GameRender extends Application {
     }
 
     private Scene createScene() {
-        BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: #1a1a2e;");
+        BorderPane mainLayout = new BorderPane();  // ← UBAH nama dari root
+        mainLayout.setStyle("-fx-background-color: #1a1a2e;");
 
-        root.setTop(createHeader());
-        root.setCenter(createGameArea());
-        root.setRight(createInfoPanel());
+        mainLayout.setTop(createHeader());
+        mainLayout.setCenter(createGameArea());
+        mainLayout.setRight(createInfoPanel());
 
+        root = new StackPane(mainLayout);  // ← TAMBAH: root sekarang StackPane
         Scene scene = new Scene(root, 1280, 720);
         setupInput(scene);
 
@@ -233,7 +235,7 @@ public class GameRender extends Application {
             if (chef == null || chef.getPosition() == null) continue;
 
             Position pos = chef.getPosition();
-            Direction direction = chef.getDirection();  // ← GANTI INI
+            Direction direction = chef.getDirection();
             int frame = chef.getAnimationFrame();
 
             Image chefSprite = imageLoader.getChefSprite(chefIndex, direction, frame);
@@ -633,9 +635,11 @@ public class GameRender extends Application {
     }
 
     private void showGameOver() {
-        System.out.println("\n=== GAME OVER ===");
-        System.out.println("Score: " + controller.getScore());
-        System.out.println("Status: " + controller.getGameStatus());
+        if (controller.getGameStatus() == GameStatus.STAGE_CLEARED) {
+            SuccessPop.show(root, stage);
+        } else {
+            FailedPop.show(root, stage);
+        }
     }
 
     private void backToMenu() {
